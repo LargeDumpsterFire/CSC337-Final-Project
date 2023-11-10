@@ -2,11 +2,13 @@ html, body {
     background-color: #0C234B;
     width: 100%;
     height: 100%;
+    margin: 0;
+
 }
 
 body{
 
-    overflow: auto;
+    overflow: hidden;
 
 }
  /* Login Section Style */
@@ -103,7 +105,7 @@ body{
     border-radius: 50px;
     padding: 12px 15px;
     margin: 8px 0;
-    width: 100%;
+    width: 75%;
   }
   .form-container input:hover {
     transform: scale(101%);
@@ -146,6 +148,8 @@ body{
   
   .overlay-container {
     position: absolute;
+    border-radius: 40px;
+    border: 5px solid #0C234B;
     top: 0;
     left: 50%;
     width: 50%;
@@ -156,7 +160,7 @@ body{
   }
   
   .overlay {
-    background: #ff416c;
+    background: #AB0520;
     background: linear-gradient(to right, #AB0520, #AB0520) no-repeat 0 0 / cover;
     color: #fff;
     position: relative;
