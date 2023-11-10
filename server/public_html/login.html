@@ -5,49 +5,54 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width" />
     <title>DesignDex</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'>
-    <link rel="stylesheet" href="loginStyle.css">
+    <link rel="stylesheet" href="./css/loginStyle.css">
 </head>
 
 <body>
     <section>
         <div class="container" id="container">
-            <div class="form-container sign-up-container">
-                <form action="#" method="post">
-                    <h1>Sign Up</h1>
-                    <div class="social-container">
-                        <a href="about.html" target="_blank" class="social"><i class="fab fa-github"></i></a>
-                        <a href="" target="_blank" class="social"><i class="fab fa-google"></i></a>
-                    </div>
-                    <span>Or use your Email for registration</span>
-                    <label>
-                        <input type="text" placeholder="Name" />
-                    </label>
-                    <label>
-                        <input type="email" placeholder="Email" />
-                    </label>
-                    <label>
-                        <input type="password" placeholder="Password" />
-                    </label>
-                    <button name="signUp"type="submit" id="singUpButton">Sign Up</button>
-                </form>
-            </div>
             <div class="form-container sign-in-container">
-                <form action="#"  method="post">
+                <form id="loginForm">
                     <h1>Sign into DesignDex</h1>
                     <div class="social-container">
                         <a href="" target="_blank" class="social"><i class="fab fa-github"></i></a>
-
                         <a href="" target="_blank" class="social"><i class="fab fa-google"></i></a>
                     </div>
-                    <span> Or sign in using E-Mail Address</span>
-                    <label>
-                        <input type="email" placeholder="Email" />
-                    </label>
-                    <label>
-                        <input type="password" placeholder="Password" />
-                    </label>
+                    <span>Or sign in using your account</span>
+                    <label for="email-login" aria-label="Email"></label>
+                    <input type="email" name="login" id="email-login" placeholder="Enter your email" />
+                    <label for="password" aria-label="Password"></label>
+                    <input type="password" name="password" id="loginPassword" class="password-input"
+                        placeholder="Enter your password" />
+                    <div class="show-password-container">
+                        <input type="checkbox" id="showLoginPassword"
+                            onclick="togglePasswordVisibility(this, 'password-input')" />
+                        <label for="showLoginPassword">Show Password</label>
+                    </div>
                     <a href="#">Forgot your password?</a>
                     <button name="signIn" type="submit" id="loginInButton">Sign in</button>
+                </form>
+            </div>
+            <div class="form-container sign-up-container">
+                <form id="signUpForm">
+                    <h1>Sign Up</h1>
+                    <div class="social-container">
+                        <a href="" target="_blank" class="social"><i class="fab fa-github"></i></a>
+                        <a href="" target="_blank" class="social"><i class="fab fa-google"></i></a>
+                    </div>
+                    <span>Or use your email for registration</span>
+                    <label for="name-signup" aria-label="Email"></label>
+                    <input type="text" name="login" id="name-signup" placeholder="Enter a username" />
+                    <label for="email-signup" aria-label="Email"></label>
+                    <input type="email" name="login" id="login" placeholder="Enter your email" />
+                    <label for="password" aria-label="Password"></label>
+                    <input type="password" name="password" id="signupPassword" class="password-input"
+                        placeholder="Enter your password" />
+                    <div class="show-password-container">
+                        <input type="checkbox" id="showSignupPassword"
+                            onclick="togglePasswordVisibility(this, 'password-input')" />
+                        <label for="showSignupPassword">Show Password</label>
+                    </div>
                 </form>
             </div>
             <div class="overlay-container">
@@ -66,8 +71,6 @@
             </div>
         </div>
     </section>
-    <script src="loginScript.js"></script>
-    </section>
     <div class="bottomContainer">
         <div class='copyright'>
             <p>&copy; 2023 DesignDex</p>
@@ -79,9 +82,9 @@
                     <li><a href="features.html">Features</a></li>
                 </ul>
             </nav>
-
         </div>
     </div>
+    <script src="./js/loginScript.js"></script>
 </body>
 
 </html>
