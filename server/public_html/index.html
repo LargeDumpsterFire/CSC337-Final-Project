@@ -1,12 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" name="viewport" content="width=device-width" />
-    <title>Home Page</title>
-    <link rel="stylesheet" href="indexStyle.css">
-  </head>
-  <body>
-    <!-- Content goes here -->
-    <h1>Success!</h1>
-  </body>
+    <title>DesignDex</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'>
+    <link rel="stylesheet" href="./css/loginStyle.css">
+</head>
+
+<body>
+    <section>
+        <div class="container" id="container">
+            <div class="form-container sign-in-container">
+                <form id="loginForm">
+                    <h1>Sign into DesignDex</h1>
+                    <div class="social-container">
+                        <a href="" target="_blank" class="social"><i class="fab fa-github"></i></a>
+                        <a href="" target="_blank" class="social"><i class="fab fa-google"></i></a>
+                    </div>
+                    <span>Or sign in using your account</span>
+                    <label for="email-login" aria-label="Email"></label>
+                    <input type="email" name="login" id="email-login" placeholder="Enter your email" />
+                    <label for="password" aria-label="Password"></label>
+                    <input type="password" name="password" id="password-login" placeholder="Enter your password" />                    
+                    <div class="show-password-container">
+                        <input type="checkbox" id="showLoginPassword"
+                            onclick="togglePasswordVisibility(this, 'password-login')" />
+                        <label for="showLoginPassword">Show Password</label>
+                    </div>
+                    <a href="#">Forgot your password?</a>
+                    <button name="signIn" type="submit" id="loginInButton">Sign in</button>
+                </form>
+            </div>
+            <div class="form-container sign-up-container">
+                <form id="signUpForm">
+                    <h1>Sign Up</h1>
+                    <div class="social-container">
+                        <a href="" target="_blank" class="social"><i class="fab fa-github"></i></a>
+                        <a href="" target="_blank" class="social"><i class="fab fa-google"></i></a>
+                    </div>
+                    <span>Or use your email for registration</span>
+                    <label for="name-signup" aria-label="Username"></label>
+                    <input type="text" name="login" id="name-signup" placeholder="Enter a username" />
+                    <label for="email-signup" aria-label="Email"></label>
+                    <input type="email" name="login" id="email-signup" placeholder="Enter your email" />
+                    <label for="password-signup" aria-label="Password"></label>
+                    <input type="password" name="password" id="password-signup" class="password-input"
+                        placeholder="Enter your password" />
+                    <div class="show-password-container">
+                        <input type="checkbox" id="showSignupPassword"
+                            onclick="togglePasswordVisibility(this, 'password-signup')" />
+                        <label for="showSignupPassword">Show Password</label>
+                    </div>
+                    <button name="signUp" type="submit" id="singUpButton">Sign Up</button>
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Log in</h1>
+                        <p>Sign in here if you already have an account </p>
+                        <button type="button" class="ghost mt-5" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Create an Account!</h1>
+                        <p>Sign up if you dont have an account!</p>
+                        <button type="button" class="ghost" id="signUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="bottomContainer">
+        <div class='copyright'>
+            <p>&copy; 2023 DesignDex</p>
+        </div>
+        <div class='navContainer'>
+            <nav class='pageNav'>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="features.html">Features</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <script src="./js/loginScript.js"></script>
+</body>
+
 </html>
