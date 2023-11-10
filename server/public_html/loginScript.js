@@ -11,10 +11,28 @@ signInButton.addEventListener('click', () => {
     container.classList.remove('right-panel-active');
 });
 
-document.getElementById("loadIndexButton").addEventListener("click", function() {
-    console.log("loadIndexButton clicked");
-    // Change the window's location to "index.html"
-    window.location.href = "successLogin_html/index.html";
+document.getElementById("loginInButton").addEventListener("click", function () {
+    console.log("loginInButton clicked");
+    auth();
+
+
 });
+document.getElementById("singUpButton").addEventListener("click", function () {
+    console.log("singUpButton clicked");
+
+});
+function auth() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    if (email === "" && password === "") {
+        window.location.href= "about.html";
+        // alert("You Are a ADMIN");
+
+    } else {
+        alert("Invalid information");
+        return;
+    }
 
 
+}
