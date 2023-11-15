@@ -52,19 +52,17 @@ body {
     justify-content: center;
     align-items: center; */
     border-style: 2px solid;
-    overflow: visible;
+    overflow: auto;
 }
 
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 10px;
-    padding: 15px;
+    padding: 20px;
     margin: 20px;
-    border-style: 20px solid;
-    overflow: hidden;
     color: white;
-
+    place-items: center;
 }
 
 .grid-item {
@@ -72,24 +70,56 @@ body {
     position: relative;
     background-color: #0C234B;
     border-radius: 25px;
-    width: 22vw;
-    height: 22vh;
+    width: 15vw;
+    min-width: 140px;
+    height: 30vh;
+    min-height: 140px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 1);
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px;
+}
 
+.inner-box {
+    /* Additional box within each grid item */
+    width: 80%; /* Adjust the size of the inner box */
+    height: 80%; /* Adjust the size of the inner box */
+    border: 2px solid white; /* Border for the inner box */
+    border-radius: 15px; /* Border radius for the inner box */
+    overflow: hidden;
 }
 
 .project-image {
-    top: 0;
-    height: calc(100% - 75px);
-    width: calc(100% - 75px);
-    background-color: #AB0520;
-    border-radius: 25px;
-
+        height: calc(100% - 125px);
+        width: calc(100% - 55px);
+        min-width: 75px;
+        min-height: 75px;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #AB0520;
+    }
+.project-image img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
+.text-container {
+    /* Container for text content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#project-name {
+    margin-bottom: 5px;
+}
 .grid-item:hover {
     background-color: rgba(171, 5, 33, 0.315);
     border-radius: 25px;
-
 }
