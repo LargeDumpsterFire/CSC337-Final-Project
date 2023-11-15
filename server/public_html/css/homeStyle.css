@@ -1,0 +1,125 @@
+body {
+    font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    color: #212529;
+}
+
+.upper-nav-bar {
+    position: static;
+    width: 100%;
+    top: 0;
+    height: 80px;
+    background-color: #9EABAE;
+
+}
+
+.logo {
+    display: inline-block;
+    vertical-align: top;
+    width: 250px;
+    height: 80px;
+    margin-left: 25px;
+}
+
+.left-nav-bar-outside {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    height: calc(100% - 80px);
+    width: 25vw;
+    background-color: #0C234B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-nav-bar-inside {
+    height: calc(100% - 25px);
+    width: calc(100% - 25px);
+    background-color: #AB0520;
+}
+
+.project-area {
+    position: fixed;
+    top: 80px;
+    left: 25vw;
+    height: calc(100% - 80px);
+    width: 75vw;
+    background-color: #e9d8c6;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    border-style: 2px solid;
+    overflow: auto;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    padding: 20px;
+    margin: 20px;
+    color: white;
+    place-items: center;
+}
+
+.grid-item {
+    border-style: 2px solid;
+    position: relative;
+    background-color: #0C234B;
+    border-radius: 25px;
+    width: 15vw;
+    min-width: 140px;
+    height: 30vh;
+    min-height: 140px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px;
+}
+
+.inner-box {
+    /* Additional box within each grid item */
+    width: 80%; /* Adjust the size of the inner box */
+    height: 80%; /* Adjust the size of the inner box */
+    border: 2px solid white; /* Border for the inner box */
+    border-radius: 15px; /* Border radius for the inner box */
+    overflow: hidden;
+}
+
+.project-image {
+        height: calc(100% - 125px);
+        width: calc(100% - 55px);
+        min-width: 75px;
+        min-height: 75px;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #AB0520;
+    }
+.project-image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.text-container {
+    /* Container for text content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#project-name {
+    margin-bottom: 5px;
+}
+.grid-item:hover {
+    background-color: rgba(171, 5, 33, 0.315);
+    border-radius: 25px;
+}
