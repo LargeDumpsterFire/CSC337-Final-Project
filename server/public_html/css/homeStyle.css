@@ -20,7 +20,7 @@ body {
     vertical-align: top;
     width: 250px;
     height: 80px;
-   margin-left: 25px;
+    margin-left: 25px;
 }
 
 .left-nav-bar-outside {
@@ -40,16 +40,56 @@ body {
     width: calc(100% - 25px);
     background-color: #AB0520;
 }
-.project-area{
+
+.project-area {
     position: fixed;
     top: 80px;
     left: 25vw;
     height: calc(100% - 80px);
     width: 75vw;
-    background-color: #F4EDE5;
+    background-color: #e9d8c6;
     /* display: flex;
     justify-content: center;
     align-items: center; */
     border-style: 2px solid;
     overflow: visible;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    padding: 15px;
+    margin: 20px;
+    border-style: 20px solid;
+    overflow: hidden;
+    color: white;
+
+}
+
+.grid-item {
+    border-style: 2px solid;
+    position: relative;
+    background-color: #0C234B;
+    border-radius: 25px;
+    width: 22vw;
+    height: 22vh;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    display: flex;
+
+}
+
+.project-image {
+    top: 0;
+    height: calc(100% - 75px);
+    width: calc(100% - 75px);
+    background-color: #AB0520;
+    border-radius: 25px;
+
+}
+
+.grid-item:hover {
+    background-color: rgba(171, 5, 33, 0.315);
+    border-radius: 25px;
+
 }
