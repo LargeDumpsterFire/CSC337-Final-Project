@@ -50,4 +50,23 @@ const gridContainer = document.getElementById("grid");
 userProjects.forEach(project => {
     const card = createProjectCard(project);
     gridContainer.appendChild(card);
+
+    
+});
+var wrapper = document.getElementById("wrapper");
+
+document.addEventListener("click", function (event) {
+  if (!event.target.matches(".list")) return;
+
+  // List view
+  event.preventDefault();
+  wrapper.classList.add("list");
+});
+
+document.addEventListener("click", function (event) {
+  if (!event.target.matches(".grid")) return;
+
+  // List view
+  event.preventDefault();
+  wrapper.classList.remove("list");
 });

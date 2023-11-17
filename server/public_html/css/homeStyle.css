@@ -83,25 +83,26 @@ body {
 }
 
 .inner-box {
-    /* Additional box within each grid item */
-    width: 80%; /* Adjust the size of the inner box */
-    height: 80%; /* Adjust the size of the inner box */
-    border: 2px solid white; /* Border for the inner box */
-    border-radius: 15px; /* Border radius for the inner box */
-    overflow: hidden;
+    width: 80%;
+    /* Adjust the size of the inner box */
+    height: 80%;
+    /* Adjust the size of the inner box */
+    border-radius: 15px;
+    /* Border radius for the inner box */
 }
 
 .project-image {
-        height: calc(100% - 125px);
-        width: calc(100% - 55px);
-        min-width: 75px;
-        min-height: 75px;
-        border-radius: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #AB0520;
-    }
+    height: calc(100% - 125px);
+    width: calc(100% - 55px);
+    min-width: 75px;
+    min-height: 75px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #AB0520;
+}
+
 .project-image img {
     max-width: 100%;
     max-height: 100%;
@@ -119,7 +120,46 @@ body {
 #project-name {
     margin-bottom: 5px;
 }
-.grid-item:hover {
-    background-color: rgba(171, 5, 33, 0.315);
+
+.grid-item:hover,
+.grid-item:hover .project-image {
+    background-color: #1e5188b4;
     border-radius: 25px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+.buttons {
+    display: flex;
+}
+.buttons div {
+    margin: 0px 10px;
+    color: #fffffa;
+    cursor: pointer;
+}
+.buttons div > * {
+    pointer-events: none;
+}
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+}
+.wrapper.list {
+    grid-template-columns: 1fr;
+}
+.wrapper .col {
+    width: calc(100% - 20px);
+    height: 200px;
+    background: #912f40;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fffffa;
+    margin: 10px;
 }

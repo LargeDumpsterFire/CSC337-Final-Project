@@ -54,7 +54,7 @@ body{
   .container {
     background: #9eabae;
     border-radius: 40px;
-    box-shadow: 30px 14px 28px rgba(0, 0, 5, .2), 0 10px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 1);
     position: relative;
     overflow: hidden;
     opacity: 85%;
@@ -70,7 +70,7 @@ body{
     background: #9eabae;
     display: flex;
     flex-direction: column;
-    padding:  0 50px;
+    padding:  0 100px;
     height: 100%;
     justify-content: center;
     align-items: center;
