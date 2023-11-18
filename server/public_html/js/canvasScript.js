@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.fill();
         ctx.stroke();
 
-        // Draw inner rectangle and its text
+        // draw inner rectangle to house text
         if (shape.innerRect) {
             var innerX = shape.x + shape.width / 2 - shape.innerRect.width / 2;
             var innerY = shape.y + shape.height / 2 - shape.innerRect.height / 2;
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
 
             if (shape.innerRect.text) {
-                ctx.font = '12px Arial'; // Adjust font size as needed
+                ctx.font = '12px Arial'; 
                 ctx.fillStyle = 'black';
                 ctx.fillText(
                     shape.innerRect.text, 
@@ -80,7 +80,55 @@ document.addEventListener('DOMContentLoaded', function () {
         return dx * dx + dy * dy <= shape.radius * shape.radius;
     }
 
-    // Event listener for holding a mouse click
+    function isInsideDiamond(shape, x, y) {
+        // Calculate the coordinates of the diamond's top, bottom, left, and right points
+        var topX = shape.x;
+        var topY = shape.y - shape.height / 2;
+        var bottomX = shape.x;
+        var bottomY = shape.y + shape.height / 2;
+        var leftX = shape.x - shape.width / 2;
+        var leftY = shape.y;
+        var rightX = shape.x + shape.width / 2;
+        var rightY = shape.y;
+    
+        // Check if the point is inside the diamond by comparing its position to the diamond's vertices
+        if (
+            (x >= leftX && x <= topX && y >= topY && y <= bottomY) ||
+            (x >= topX && x <= rightX && y >= topY && y <= bottomY) ||
+            (x >= leftX && x <= rightX && y >= topY && y <= topY + shape.height) ||
+            (x >= leftX && x <= rightX && y >= bottomY - shape.height && y <= bottomY)
+        ) {
+            return true;
+        }
+    
+        return false;
+    }
+    
+    
+    function isInsideTriangle(shape, x, y) {
+        // Calculate the coordinates of the triangle's vertices
+        var x1 = shape.x;
+        var y1 = shape.y - shape.height / 2;
+        var x2 = shape.x + shape.width / 2;
+        var y2 = shape.y + shape.height / 2;
+        var x3 = shape.x - shape.width / 2;
+        var y3 = shape.y + shape.height / 2;
+        
+        // Calculate the areas of the three triangles formed by the point (x, y) and the vertices
+        var area1 = Math.abs((x1*(y2-y) + x2*(y-y1) + x*(y1-y2)) / 2);
+        var area2 = Math.abs((x2*(y3-y) + x3*(y-y2) + x*(y2-y3)) / 2);
+        var area3 = Math.abs((x1*(y3-y) + x3*(y-y1) + x*(y1-y3)) / 2);
+        
+        // Calculate the total area of the triangle
+        var totalArea = Math.abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2);
+        
+        // Check if the point is inside the triangle using the areas
+        return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
+    }
+    
+
+
+    // event listener for mouse clicks
     canvas.addEventListener('mousedown', function (e) {
         var mouseX = e.clientX - canvas.getBoundingClientRect().left;
         var mouseY = e.clientY - canvas.getBoundingClientRect().top;
@@ -107,6 +155,20 @@ document.addEventListener('DOMContentLoaded', function () {
             shapes.forEach(function (shape) {
                 if (shape.type === 'circle') { // for circles
                     if (isInsideCircle(shape, mouseX, mouseY)) {
+                        isDragging = true;
+                        currentShape = shape;
+                        dragOffsetX = mouseX - shape.x;
+                        dragOffsetY = mouseY - shape.y;
+                    }
+                }else if(shape.type === 'triangle'){
+                    if (isInsideTriangle(shape, mouseX, mouseY)) {
+                        isDragging = true;
+                        currentShape = shape;
+                        dragOffsetX = mouseX - shape.x;
+                        dragOffsetY = mouseY - shape.y;
+                    }
+                }else if(shape.type === 'diamond'){
+                    if (isInsideDiamond(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
