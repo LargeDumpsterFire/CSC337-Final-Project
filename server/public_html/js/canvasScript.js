@@ -37,6 +37,27 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'square':
                 ctx.rect(shape.x, shape.y, shape.width, shape.height);
                 break;
+            case "line":
+                const headlen = 10;
+                const startX = shape.x;
+                const endX = shape.x + shape.width; // Use shape.width for the length of the arrow
+                const y = shape.y; // Assuming this is the central y-coordinate of the arrow
+                ctx.beginPath();
+                ctx.moveTo(startX, y);
+                ctx.lineTo(endX, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(endX, y);
+                ctx.lineTo(
+                    endX - headlen * Math.cos(0 - Math.PI / 7),
+                    y - headlen * Math.sin(0 - Math.PI / 7)
+                );
+                ctx.lineTo(
+                    endX - headlen * Math.cos(0 + Math.PI / 7),
+                    y - headlen * Math.sin(0 + Math.PI / 7)
+                );
+                ctx.lineTo(endX, y);
+                break;
         }
         ctx.closePath();
         ctx.fill();
@@ -126,7 +147,42 @@ document.addEventListener('DOMContentLoaded', function () {
         return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
     }
     
-
+    function isOnArrow(arrow, x, y) {
+        // Inner function to check if a point is on a line segment
+        const isOnLine = (x, y, x1, y1, x2, y2, lineWidth) => {
+          const A = x - x1;
+          const B = y - y1;
+          const C = x2 - x1;
+          const D = y2 - y1;
+    
+          const dot = A * C + B * D;
+          const len_sq = C * C + D * D;
+          const param = len_sq !== 0 ? dot / len_sq : -1;
+    
+          let xx, yy;
+    
+          if (param < 0) {
+            xx = x1;
+            yy = y1;
+          } else if (param > 1) {
+            xx = x2;
+            yy = y2;
+          } else {
+            xx = x1 + param * C;
+            yy = y1 + param * D;
+          }
+    
+          const dx = x - xx;
+          const dy = y - yy;
+          return dx * dx + dy * dy <= lineWidth * lineWidth;
+        };
+    
+        const startX = arrow.x;
+        const endX = arrow.x + arrow.width; // End point based on the width
+        const yCoord = arrow.y;
+    
+        return isOnLine(x, y, startX, yCoord, endX, yCoord, arrow.lineWidth || 2);
+      }
 
     // event listener for mouse clicks
     canvas.addEventListener('mousedown', function (e) {
@@ -153,7 +209,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!clickedInnerRect) {
             shapes.forEach(function (shape) {
-                if (shape.type === 'circle') { // for circles
+                if (shape.type === "line") {
+                    if (isOnArrow(shape, mouseX, mouseY)) {
+                      isDragging = true;
+                      currentShape = shape;
+                      dragOffsetX = mouseX - shape.x;
+                      dragOffsetY = mouseY - shape.y;
+                    }
+                }else if (shape.type === 'circle') { // for circles
                     if (isInsideCircle(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
@@ -240,4 +303,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         drawShapes();
     });
+
+    document.getElementById("line").addEventListener("click", function () {
+        shapes.push({ type: "line", x: 500, y: 500, width: 100, height: 100 });
+        drawShapes();
+      });
 });
