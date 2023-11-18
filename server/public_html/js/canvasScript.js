@@ -1,7 +1,5 @@
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
 
 document.addEventListener('DOMContentLoaded', function () {
     var canvas = document.getElementById('canvas');
@@ -14,8 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function drawShape(shape) {
         ctx.fillStyle = 'white';
         ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2; 
+        ctx.lineWidth = 2;
         ctx.beginPath();
+
+        
         switch (shape.type) {
             case 'rectangle':
                 ctx.rect(shape.x, shape.y, shape.width, shape.height);
@@ -41,6 +41,24 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
+
+        // Draw inner rectangle and its text
+        if (shape.innerRect) {
+            var innerX = shape.x + shape.width / 2 - shape.innerRect.width / 2;
+            var innerY = shape.y + shape.height / 2 - shape.innerRect.height / 2;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // Change as desired
+            ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
+
+            if (shape.innerRect.text) {
+                ctx.font = '12px Arial'; // Adjust font size as needed
+                ctx.fillStyle = 'black';
+                ctx.fillText(
+                    shape.innerRect.text, 
+                    innerX + shape.innerRect.width / 2 - ctx.measureText(shape.innerRect.text).width / 2, 
+                    innerY + shape.innerRect.height / 2 + 6 // Adjust for vertical centering
+                );
+            }
+        }
     }
 
     // Function to redraw all shapes
@@ -62,29 +80,48 @@ document.addEventListener('DOMContentLoaded', function () {
         return dx * dx + dy * dy <= shape.radius * shape.radius;
     }
 
-    
-    // event listener for holding a mouse click
+    // Event listener for holding a mouse click
     canvas.addEventListener('mousedown', function (e) {
         var mouseX = e.clientX - canvas.getBoundingClientRect().left;
         var mouseY = e.clientY - canvas.getBoundingClientRect().top;
+        var clickedInnerRect = false;
+
         shapes.forEach(function (shape) {
-            if (shape.type === 'circle') {// for circles
-                if (isInsideCircle(shape, mouseX, mouseY)) {
-                    isDragging = true;
-                    currentShape = shape;
-                    dragOffsetX = mouseX - shape.x;
-                    dragOffsetY = mouseY - shape.y;
-                }
-            } else { // for rectangles and squares
-                if (isInsideRect(shape, mouseX, mouseY)) {
-                    isDragging = true;
-                    currentShape = shape;
-                    dragOffsetX = mouseX - shape.x;
-                    dragOffsetY = mouseY - shape.y;
+            if (shape.innerRect) {
+                var innerX = shape.x + shape.width / 2 - shape.innerRect.width / 2;
+                var innerY = shape.y + shape.height / 2 - shape.innerRect.height / 2;
+
+                if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
+                    mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
+                    var text = prompt("Enter text for the inner rectangle:");
+                    if (text) {
+                        shape.innerRect.text = text;
+                        drawShapes();
+                    }
+                    clickedInnerRect = true;
                 }
             }
-            
         });
+
+        if (!clickedInnerRect) {
+            shapes.forEach(function (shape) {
+                if (shape.type === 'circle') { // for circles
+                    if (isInsideCircle(shape, mouseX, mouseY)) {
+                        isDragging = true;
+                        currentShape = shape;
+                        dragOffsetX = mouseX - shape.x;
+                        dragOffsetY = mouseY - shape.y;
+                    }
+                } else { // for rectangles and squares
+                    if (isInsideRect(shape, mouseX, mouseY)) {
+                        isDragging = true;
+                        currentShape = shape;
+                        dragOffsetX = mouseX - shape.x;
+                        dragOffsetY = mouseY - shape.y;
+                    }
+                }
+            });
+        }
     });
 
     canvas.addEventListener('mousemove', function (e) {
@@ -101,31 +138,44 @@ document.addEventListener('DOMContentLoaded', function () {
         isDragging = false;
     });
 
-    // event listeners for buttons to create the different shapes
+    // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
-        shapes.push({ type: 'rectangle', x: 500, y: 500, width: 120, height: 80});
+        shapes.push({
+            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, 
+            innerRect: { width: 30, height: 20, text: '' }
+        });
         drawShapes();
     });
 
     document.getElementById('square').addEventListener('click', function () {
-        shapes.push({ type: 'square', x: 500, y: 500, width: 50, height: 50});
+        shapes.push({
+            type: 'square', x: 500, y: 500, width: 50, height: 50, 
+            innerRect: { width: 30, height: 20, text: '' }
+        });
         drawShapes();
     });
 
     document.getElementById('circle').addEventListener('click', function () {
-        shapes.push({ type: 'circle', x: 500, y: 500, radius: 50});
+        shapes.push({
+            type: 'circle', x: 500, y: 500, radius: 50, 
+            innerRect: { width: 30, height: 20, text: '' }
+        });
         drawShapes();
     });
 
     document.getElementById('triangle').addEventListener('click', function () {
-        shapes.push({ type: 'triangle', x: 500, y: 500, width: 100, height: 100});
+        shapes.push({
+            type: 'triangle', x: 500, y: 500, width: 100, height: 100, 
+            innerRect: { width: 30, height: 20, text: '' }
+        });
         drawShapes();
     });
 
     document.getElementById('diamond').addEventListener('click', function () {
-        shapes.push({ type: 'diamond', x: 500, y: 500, width: 100, height: 100});
+        shapes.push({
+            type: 'diamond', x: 500, y: 500, width: 100, height: 100, 
+            innerRect: { width: 30, height: 20, text: '' }
+        });
         drawShapes();
     });
-
-
 });
