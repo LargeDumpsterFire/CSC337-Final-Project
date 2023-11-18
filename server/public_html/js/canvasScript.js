@@ -105,14 +105,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Calculate the coordinates of the diamond's top, bottom, left, and right points
         var topX = shape.x;
         var topY = shape.y - shape.height / 2;
-        var bottomX = shape.x;
         var bottomY = shape.y + shape.height / 2;
         var leftX = shape.x - shape.width / 2;
-        var leftY = shape.y;
         var rightX = shape.x + shape.width / 2;
-        var rightY = shape.y;
+
     
-        // Check if the point is inside the diamond by comparing its position to the diamond's vertices
+
+        // Check if the point is inside the diamond by comparing the slopes
         if (
             (x >= leftX && x <= topX && y >= topY && y <= bottomY) ||
             (x >= topX && x <= rightX && y >= topY && y <= bottomY) ||
@@ -121,6 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ) {
             return true;
         }
+    
+
     
         return false;
     }
