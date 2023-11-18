@@ -74,11 +74,11 @@ body {
 
 #canvas {
     position: relative; 
-    margin-top: 50px; 
+    margin-top: 46px; 
     padding: 20px;
     background-color: #f0f0f0;
     box-sizing: border-box;
-    width: 100%;
-    height: calc(100vh - 50px); 
+    width: 100vw;
+    height: 100vh; 
     z-index: 1; 
 }
