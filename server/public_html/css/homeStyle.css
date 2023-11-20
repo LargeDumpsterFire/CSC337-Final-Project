@@ -118,7 +118,7 @@ body {
 .wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
+    gap: 40px 0px;
     padding: 20px;
     margin: 20px;
     color: white;
@@ -127,8 +127,55 @@ body {
 
 .wrapper.list {
     grid-template-columns: 1fr;
+    place-items: start;
 
 }
+
+/* this section is the styling for the warpper.list so when the user changes to list it styles the boxes */
+.wrapper.list .outside-image-box {
+    position: relative;
+    background-color: #0C234B;
+    border-radius: 25px;
+    width: 15vw;
+    min-width: 140px;
+    height: 30vh;
+    min-height: 175px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.wrapper.list .project-image {
+    height: calc(100% - 125px);
+    width: calc(100% - 55px);
+    min-width: 75px;
+    min-height: 75px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #AB0520;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.wrapper.list .image-box-text {
+    position: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Adjust this value as needed */
+    justify-content: center;
+    left: 150px; /* Adjust this value as needed */
+    color: #000;
+    font-size: larger;
+}
+
+/* end of wrapper list styling */
 
 .wrapper .outside-image-box {
     position: relative;
@@ -162,12 +209,14 @@ body {
     left: 28%;
     transform: translate(-50%, -50%);
     cursor: grab;
-    z-index: 2;  /* Ensure it's above other elements */
+    z-index: 2;
+    /* Ensure it's above other elements */
 }
 
 .navCircle.grabbing {
     cursor: grabbing;
 }
+
 .navCircle input {
     display: none;
 }

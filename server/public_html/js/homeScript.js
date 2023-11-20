@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const projectImage = document.createElement("div");
       projectImage.className = "project-image";
       projectImage.innerHTML = `<img src="${project.imageUrl}" alt="Project Image">`;
-
       const textContainer = document.createElement("div");
       textContainer.className = "image-box-text";
 
@@ -44,6 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return card;
   }
+  //this function is going to try to add text and break lines to the description
+  function textAndLineTest(){
+    var date = document.getElementById("date");
+    var projectName = document.getElementById("projectName");
+    
+  }
 
   // Populate the grid container with project cards
   const gridContainer = document.getElementById("wrapper");
@@ -60,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // List view
           event.preventDefault();
           wrapper.classList.add("list");
+          
       } else if (event.target.matches(".grid")) {
           // Grid view
           event.preventDefault();
