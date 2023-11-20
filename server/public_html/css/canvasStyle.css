@@ -1,0 +1,84 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+#top-bar {
+    background-color: #0C234B;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+#top-bar button {
+    background-color: #555454;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+#user-info {
+    display: flex;
+    align-items: center;
+}
+
+#user-info span {
+    margin-right: 10px;
+}
+
+#user-icon {
+    width: 24px;
+    height: 24px;
+    background-color: blue;
+    border-radius: 50%;
+}
+
+#sidebar {
+    position: fixed; 
+    top: 100px;
+    left: 20px;
+    width: 200px; 
+    height: calc(100vh - 150px);
+    padding: 10px;
+    background-color: #9EABAE;
+    border-radius: 10px;
+    box-sizing: border-box;
+    z-index: 2; 
+    border: 5px solid #001C48;
+}
+
+.shape, .line {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+#canvas {
+    position: relative; 
+    margin-top: 50px; 
+    padding: 20px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100vh - 50px); 
+    z-index: 1; 
+}
