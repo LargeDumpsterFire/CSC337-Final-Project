@@ -4,7 +4,7 @@ const path = require('node:path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'mongodb+srv://doadmin:Package-L0ck@dbaas-db-2541741-298d880c.mongo.ondigitalocean.com/admin?authSource=admin&replicaSet=dbaas-db-2541741&tls=true&tlsCAFile=<replace-with-path-to-CA-cert>';
+const connectStr = 'This_Shouldnt_be_on_GitHub';
 const store = new MongoDBStore({
     uri: connectStr,
     collection: 'sessions'
