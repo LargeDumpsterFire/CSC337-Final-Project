@@ -1,3 +1,28 @@
+/*
+    BUGS/NEEDS WORK:
+
+    When you click on a text box and two shape's text boxes are
+    over eachother it will click both
+
+    Resizing screen ruins canvas and destroys all x y locations
+    for shape dragging and other functions
+
+
+    ADDITIONS
+
+    MAJOR:
+    Z index for shapes
+    Arrows having multiple anchor points
+    Resizing shapes
+
+
+    MINOR:
+    Changing colors of shapes
+
+
+*/
+
+
 
 // set canvas size
 canvas.width = window.innerWidth;
@@ -42,7 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // using built in canvas function
         switch (shape.type) {
             case 'rectangle':
-                ctx.rect(shape.x, shape.y, shape.width, shape.height);
+                ctx.moveTo(shape.x - shape.width / 2, shape.y - shape.height / 2);
+                ctx.lineTo(shape.x + shape.width / 2, shape.y - shape.height / 2);
+                ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
+                ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
                 break;
             case 'circle':
                 ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
@@ -57,9 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.lineTo(shape.x + shape.width / 2, shape.y);
                 ctx.lineTo(shape.x, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y);
-                break;
-            case 'square':
-                ctx.rect(shape.x, shape.y, shape.width, shape.height);
                 break;
             case "line":
                 const headlen = 10;
@@ -89,7 +114,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
-            var center = getCenter(shape);
             var innerX = shape.x;
             var innerY = shape.y;
             ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
@@ -100,48 +124,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.fillStyle = 'black';
                 // Center text horizontally and vertically
                 var textWidth = ctx.measureText(shape.innerRect.text).width;
-                var textX = center.x - textWidth / 2;
-                var textY = center.y + 6; 
+                var textX = shape.x - textWidth / 2;
+                var textY = shape.y + 6; 
                 ctx.fillText(shape.innerRect.text, textX, textY);
             }
         }
     }
 
 
-    // gets the center for each shape type to use for
-    // placing the inner rectangle that will house
-    // text placement for our shapes
-    function getCenter(shape) {
-        let center = { x: 0, y: 0 };
+   
     
-        switch (shape.type) {
-            case 'circle':
-                center.x = shape.x;
-                center.y = shape.y;
-                break;
-            case 'rectangle':
-            case 'square':
-                center.x = shape.x + shape.width / 2;
-                center.y = shape.y + shape.height / 2;
-                break;
-            case 'triangle':
-                center.x = (shape.x1 + shape.x2 + shape.x3) / 3;
-                center.y = (shape.y1 + shape.y2 + shape.y3) / 3;
-                break;
-            case 'diamond':
-                center.x = shape.x + shape.width / 2;
-                center.y = shape.y + shape.height / 2;
-                break;
-        }
-    
-        return center;
-    }
-    
-
-
-
-
-
 
     // Function to draw shapes and redraw all shapes when user moves them around
     function drawShapes() {
@@ -151,8 +143,14 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
-        return x >= shape.x && x <= shape.x + shape.width &&
-               y >= shape.y && y <= shape.y + shape.height;
+
+        var rightX = shape.x + shape.width/2;
+        var leftX = shape.x - shape.width/2;
+        var topY = shape.y - shape.height/2;
+        var bottomY = shape.y + shape.height/2;
+
+        return x >= leftX && x <= rightX &&
+               y >= topY && y <= bottomY;
     }
 
     // Function to check if a point is inside a circle
@@ -171,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var rightX = shape.x + shape.width / 2;
 
     
-
         // Check if the point is inside the diamond by comparing the slopes
         if (
             (x >= leftX && x <= topX && y >= topY && y <= bottomY) ||
@@ -254,8 +251,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         shapes.forEach(function (shape) {
             if (shape.innerRect) {
-                var innerX = shape.x + shape.width / 2 - shape.innerRect.width / 2;
-                var innerY = shape.y + shape.height / 2 - shape.innerRect.height / 2;
+                var innerX = shape.x;
+                var innerY = shape.y;
 
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
@@ -303,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                } else { // for rectangles and squares
+                } else { // for rectangles 
                     if (isInsideRect(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
@@ -340,14 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
             type: 'rectangle', x: 500, y: 500, width: 120, height: 80, 
-            innerRect: { width: 30, height: 20, text: '' }
-        });
-        drawShapes();
-    });
-
-    document.getElementById('square').addEventListener('click', function () {
-        shapes.push({
-            type: 'square', x: 500, y: 500, width: 50, height: 50, 
             innerRect: { width: 30, height: 20, text: '' }
         });
         drawShapes();
