@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return isOnLine(x, y, startX, yCoord, endX, yCoord, arrow.lineWidth || 2);
       }
 
-    // event listener for mouse clicks
+    // event listener for mouse clicks in center rect for text
     canvas.addEventListener('mousedown', function (e) {
         var mouseX = e.clientX - canvas.getBoundingClientRect().left;
         var mouseY = e.clientY - canvas.getBoundingClientRect().top;
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
-                    var text = prompt("Enter text for the inner rectangle:");
+                    var text = prompt("Enter text here:");
                     if (text) {
                         shape.innerRect.text = text;
                         drawShapes();
@@ -315,6 +315,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // event listener for moving the shapes
+    // checks if a user is moving the mouse
+    // if yes checks if isDragging is true to verify
+    // the user is also holding the shape so it knows when to
+    // drag or when not to
     canvas.addEventListener('mousemove', function (e) {
         if (isDragging) {
             var mouseX = e.clientX - canvas.getBoundingClientRect().left;
