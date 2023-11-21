@@ -9,7 +9,7 @@
     <div id="top-bar">
       
       <button>Save Document</button>
-      <button>Export</button>
+      <button id="download">Export</button>
       <button>Remove Element</button>
       <div id="user-info">
           <span>Username</span>
@@ -18,14 +18,17 @@
   </div>
   <div id="sidebar">
       
-      <div class="shape">Circle</div>
-      <div class="shape">Diamond</div>
-      <div class="line">Line</div>
+      <div id="square" class="shape">Square</div>
+      <div id="rectangle" class="shape">Rectangle</div>
+      <div id="circle" class="shape">Circle</div>
+      <div id="triangle" class="shape">Triangle</div>
+      <div id="diamond" class="shape">Diamond</div>
+      <div id="line" class="line">Line</div>
       
   </div>
-  <div id="canvas">
-      
-  </div>
+  <canvas id="canvas">
+    
+  </canvas>
     <script src="./js/canvasScript.js"></script>
   </body>
 </html>

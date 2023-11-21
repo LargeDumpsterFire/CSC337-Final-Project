@@ -29,7 +29,7 @@ body {
     background-color: #555454;
     color: white;
     border: none;
-    padding: 5px 15px;
+    padding: 7px 15px;
     margin: 0 5px;
     cursor: pointer;
 }
@@ -74,11 +74,11 @@ body {
 
 #canvas {
     position: relative; 
-    margin-top: 50px; 
+    margin-top: 30px; 
     padding: 20px;
     background-color: #f0f0f0;
     box-sizing: border-box;
-    width: 100%;
-    height: calc(100vh - 50px); 
+    width: 100vw;
+    height: 100vh; 
     z-index: 1; 
 }
