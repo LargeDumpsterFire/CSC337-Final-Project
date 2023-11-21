@@ -141,11 +141,10 @@ body {
     height: 30vh;
     min-height: 175px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 1);
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-
 }
 
 .wrapper.list .project-image {
@@ -158,23 +157,22 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #AB0520;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .wrapper.list .image-box-text {
-    position: inherit;
+    position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Adjust this value as needed */
+    align-items: flex-start;
     justify-content: center;
-    left: 150px; /* Adjust this value as needed */
+    left: calc(100% + 20px); /* Adjust this value as needed */
+    top: 50%;
+    transform: translate(0, -50%);
     color: #000;
     font-size: larger;
+    width: 150px;
+    margin: 0px;
 }
-
 /* end of wrapper list styling */
 
 .wrapper .outside-image-box {
