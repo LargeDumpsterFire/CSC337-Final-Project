@@ -14,6 +14,7 @@
     Z index for shapes
     Arrows having multiple anchor points
     Resizing shapes
+    Change textbox entry to direct entry instead of pop up
 
 
     MINOR:
