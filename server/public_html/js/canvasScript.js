@@ -16,6 +16,8 @@
     Resizing shapes
     Change textbox entry to direct entry instead of pop up
 
+    Saving as a mongo schema to save projects to users for use later
+
 
     MINOR:
     Changing colors of shapes
