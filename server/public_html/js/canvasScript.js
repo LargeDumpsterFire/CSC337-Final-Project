@@ -8,6 +8,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var isDragging = false;
     var dragOffsetX, dragOffsetY, currentShape;
 
+
+
+    document.getElementById('download').addEventListener('click', function(e) {
+        // convert canvas to data url
+        let canvasUrl = canvas.toDataURL();
+        const createEl = document.createElement('a');
+        createEl.href = canvasUrl;
+    
+        
+        createEl.download = "diagram";
+    
+        // click download button to download, dont want to download it twice
+        createEl.click();
+        createEl.remove();
+    });
+    
+
+
+
     // Function to draw a specific shape
     function drawShape(shape) {
         ctx.fillStyle = 'white';
