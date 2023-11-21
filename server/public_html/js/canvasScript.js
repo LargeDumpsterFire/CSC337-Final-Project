@@ -1,7 +1,11 @@
+
+// set canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// wait for dom content to load
 document.addEventListener('DOMContentLoaded', function () {
+    // set up our canvas
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     var shapes = [];
@@ -16,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const createEl = document.createElement('a');
         createEl.href = canvasUrl;
     
-        
+        // name download
         createEl.download = "diagram";
     
         // click download button to download, dont want to download it twice
@@ -34,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.lineWidth = 2;
         ctx.beginPath();
 
-        
+        // depending on shape we will draw it a different way
+        // using built in canvas function
         switch (shape.type) {
             case 'rectangle':
                 ctx.rect(shape.x, shape.y, shape.width, shape.height);
@@ -82,31 +87,68 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.fill();
         ctx.stroke();
 
-        // draw inner rectangle to house text
+        // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
-            var innerX = shape.x + shape.width / 2 - shape.innerRect.width / 2;
-            var innerY = shape.y + shape.height / 2 - shape.innerRect.height / 2;
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // Change as desired
+            var center = getCenter(shape);
+            var innerX = shape.x;
+            var innerY = shape.y;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
-
+        
             if (shape.innerRect.text) {
-                ctx.font = '12px Arial'; 
+                ctx.font = '12px Arial';
                 ctx.fillStyle = 'black';
-                ctx.fillText(
-                    shape.innerRect.text, 
-                    innerX + shape.innerRect.width / 2 - ctx.measureText(shape.innerRect.text).width / 2, 
-                    innerY + shape.innerRect.height / 2 + 6 // Adjust for vertical centering
-                );
+                // Center text horizontally and vertically
+                var textWidth = ctx.measureText(shape.innerRect.text).width;
+                var textX = center.x - textWidth / 2;
+                var textY = center.y + 6; 
+                ctx.fillText(shape.innerRect.text, textX, textY);
             }
         }
     }
 
-    // Function to redraw all shapes
+
+    // gets the center for each shape type to use for
+    // placing the inner rectangle that will house
+    // text placement for our shapes
+    function getCenter(shape) {
+        let center = { x: 0, y: 0 };
+    
+        switch (shape.type) {
+            case 'circle':
+                center.x = shape.x;
+                center.y = shape.y;
+                break;
+            case 'rectangle':
+            case 'square':
+                center.x = shape.x + shape.width / 2;
+                center.y = shape.y + shape.height / 2;
+                break;
+            case 'triangle':
+                center.x = (shape.x1 + shape.x2 + shape.x3) / 3;
+                center.y = (shape.y1 + shape.y2 + shape.y3) / 3;
+                break;
+            case 'diamond':
+                center.x = shape.x + shape.width / 2;
+                center.y = shape.y + shape.height / 2;
+                break;
+        }
+    
+        return center;
+    }
+    
+
+
+
+
+
+
+    // Function to draw shapes and redraw all shapes when user moves them around
     function drawShapes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
         shapes.forEach(drawShape); // Redraw each shape
     }
-
+    
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
         return x >= shape.x && x <= shape.x + shape.width &&
@@ -227,6 +269,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // if not clicking in inner rectangle used for text
+        // it will check if the users cursor is inside the shape
+        // by comparing x y coordinates
+        // then if it is it will make the shape draggable
         if (!clickedInnerRect) {
             shapes.forEach(function (shape) {
                 if (shape.type === "line") {
@@ -279,6 +325,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // checks for non clicking and makes shapes non draggable
+    // if the user is not clicking anything
     canvas.addEventListener('mouseup', function (e) {
         isDragging = false;
     });
