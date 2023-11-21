@@ -42,15 +42,15 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('download').addEventListener('click', function(e) {
         // convert canvas to data url
         let canvasUrl = canvas.toDataURL();
-        const createEl = document.createElement('a');
-        createEl.href = canvasUrl;
+        const imgElement = document.createElement('a');
+        imgElement.href = canvasUrl;
     
         // name download
-        createEl.download = "diagram";
+        imgElement.download = "diagram";
     
         // click download button to download, dont want to download it twice
-        createEl.click();
-        createEl.remove();
+        imgElement.click();
+        imgElement.remove();
     });
     
 
@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
-            var innerX = shape.x;
-            var innerY = shape.y;
+            var innerX = shape.x-14;
+            var innerY = shape.y-9;
             ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
         
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, width: 100, height: 100, 
+            type: 'triangle', x: 500, y: 500, width: 98, height: 85, 
             innerRect: { width: 30, height: 20, text: '' }
         });
         drawShapes();
