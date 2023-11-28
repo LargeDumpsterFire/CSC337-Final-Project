@@ -15,6 +15,7 @@
     Arrows having multiple anchor points
     Resizing shapes
     Change textbox entry to direct entry instead of pop up
+    Remove shapes
 
     Saving as a mongo schema to save projects to users for use later
 
