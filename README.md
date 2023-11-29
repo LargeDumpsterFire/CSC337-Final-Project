@@ -11,16 +11,11 @@ We will be deploying both our server and mongoDB on the same droplet in DigitalO
 Things Josh is working on currently: 
 
 -server.js
-
    - Sanitize and validate inputs
      
 -other .js scripts for page functionalities.
-
    - about, features, settings
-     
-- Implement HTTPS?
-  
-- (if possible/time allows) Implement a logging system 
-    for security monitoring.
 
+-Implement HTTPS?  
+-(if possible/time allows) Implement a logging system for security monitoring.       
 -adjusting our license.
