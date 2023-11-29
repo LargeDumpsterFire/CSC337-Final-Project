@@ -10,12 +10,18 @@
 
     ADDITIONS
 
+    IMPORTANT: 
+    Import to img (smaller images)
+    Save to user/ mongo schema
+    Arrows attach to shapes
+
+
     MAJOR:
-    Z index for shapes
-    Arrows having multiple anchor points
-    Resizing shapes
-    Change textbox entry to direct entry instead of pop up
+    Z index for shapes (slider)
+    Resizing shapes (slider)
+    Color changing RGB (slider)
     Remove shapes
+<<<<<<< Updated upstream
 
     Saving as a mongo schema to save projects to users for use later
 
@@ -24,6 +30,8 @@
     Changing colors of shapes
 
 
+=======
+>>>>>>> Stashed changes
 */
 
 
@@ -31,6 +39,13 @@
 // set canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+// draws white background
+function drawBackground(ctx) {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 
 // wait for dom content to load
 document.addEventListener('DOMContentLoaded', function () {
@@ -43,9 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+    
+
+
     document.getElementById('download').addEventListener('click', function(e) {
         // convert canvas to data url
-        let canvasUrl = canvas.toDataURL();
+        let canvasUrl = canvas.toDataURL("image/jpeg", 1);
         const imgElement = document.createElement('a');
         imgElement.href = canvasUrl;
     
@@ -142,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to draw shapes and redraw all shapes when user moves them around
     function drawShapes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+        drawBackground(ctx);
         shapes.forEach(drawShape); // Redraw each shape
     }
     
