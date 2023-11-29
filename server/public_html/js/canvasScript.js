@@ -7,7 +7,6 @@
     Resizing screen ruins canvas and destroys all x y locations
     for shape dragging and other functions
 
-
     ADDITIONS
 
     MAJOR:
@@ -19,14 +18,9 @@
 
     Saving as a mongo schema to save projects to users for use later
 
-
     MINOR:
     Changing colors of shapes
-
-
 */
-
-
 
 // set canvas size
 canvas.width = window.innerWidth;
@@ -35,13 +29,11 @@ canvas.height = window.innerHeight;
 // wait for dom content to load
 document.addEventListener('DOMContentLoaded', function () {
     // set up our canvas
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var shapes = [];
-    var isDragging = false;
-    var dragOffsetX, dragOffsetY, currentShape;
-
-
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let shapes = [];
+    let isDragging = false;
+    let dragOffsetX, dragOffsetY, currentShape;
 
     document.getElementById('download').addEventListener('click', function(e) {
         // convert canvas to data url
@@ -56,9 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
         imgElement.click();
         imgElement.remove();
     });
-    
-
-
 
     // Function to draw a specific shape
     function drawShape(shape) {
@@ -118,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
-            var innerX = shape.x-14;
-            var innerY = shape.y-9;
+            let innerX = shape.x-14;
+            let innerY = shape.y-9;
             ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
         
@@ -127,17 +116,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.font = '12px Arial';
                 ctx.fillStyle = 'black';
                 // Center text horizontally and vertically
-                var textWidth = ctx.measureText(shape.innerRect.text).width;
-                var textX = shape.x - textWidth / 2;
-                var textY = shape.y + 6; 
+                let textWidth = ctx.measureText(shape.innerRect.text).width;
+                let textX = shape.x - textWidth / 2;
+                let textY = shape.y + 6; 
                 ctx.fillText(shape.innerRect.text, textX, textY);
             }
         }
     }
-
-
-   
-    
 
     // Function to draw shapes and redraw all shapes when user moves them around
     function drawShapes() {
@@ -148,10 +133,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
 
-        var rightX = shape.x + shape.width/2;
-        var leftX = shape.x - shape.width/2;
-        var topY = shape.y - shape.height/2;
-        var bottomY = shape.y + shape.height/2;
+        let rightX = shape.x + shape.width/2;
+        let leftX = shape.x - shape.width/2;
+        let topY = shape.y - shape.height/2;
+        let bottomY = shape.y + shape.height/2;
 
         return x >= leftX && x <= rightX &&
                y >= topY && y <= bottomY;
@@ -159,18 +144,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to check if a point is inside a circle
     function isInsideCircle(shape, x, y) {
-        var dx = x - shape.x;
-        var dy = y - shape.y;
+        let dx = x - shape.x;
+        let dy = y - shape.y;
         return dx * dx + dy * dy <= shape.radius * shape.radius;
     }
 
     function isInsideDiamond(shape, x, y) {
         // Calculate the coordinates of the diamond's top, bottom, left, and right points
-        var topX = shape.x;
-        var topY = shape.y - shape.height / 2;
-        var bottomY = shape.y + shape.height / 2;
-        var leftX = shape.x - shape.width / 2;
-        var rightX = shape.x + shape.width / 2;
+        let topX = shape.x;
+        let topY = shape.y - shape.height / 2;
+        let bottomY = shape.y + shape.height / 2;
+        let leftX = shape.x - shape.width / 2;
+        let rightX = shape.x + shape.width / 2;
 
     
         // Check if the point is inside the diamond by comparing the slopes
@@ -188,23 +173,22 @@ document.addEventListener('DOMContentLoaded', function () {
         return false;
     }
     
-    
     function isInsideTriangle(shape, x, y) {
         // Calculate the coordinates of the triangle's vertices
-        var x1 = shape.x;
-        var y1 = shape.y - shape.height / 2;
-        var x2 = shape.x + shape.width / 2;
-        var y2 = shape.y + shape.height / 2;
-        var x3 = shape.x - shape.width / 2;
-        var y3 = shape.y + shape.height / 2;
+        let x1 = shape.x;
+        let y1 = shape.y - shape.height / 2;
+        let x2 = shape.x + shape.width / 2;
+        let y2 = shape.y + shape.height / 2;
+        let x3 = shape.x - shape.width / 2;
+        let y3 = shape.y + shape.height / 2;
         
         // Calculate the areas of the three triangles formed by the point (x, y) and the vertices
-        var area1 = Math.abs((x1*(y2-y) + x2*(y-y1) + x*(y1-y2)) / 2);
-        var area2 = Math.abs((x2*(y3-y) + x3*(y-y2) + x*(y2-y3)) / 2);
-        var area3 = Math.abs((x1*(y3-y) + x3*(y-y1) + x*(y1-y3)) / 2);
+        let area1 = Math.abs((x1*(y2-y) + x2*(y-y1) + x*(y1-y2)) / 2);
+        let area2 = Math.abs((x2*(y3-y) + x3*(y-y2) + x*(y2-y3)) / 2);
+        let area3 = Math.abs((x1*(y3-y) + x3*(y-y1) + x*(y1-y3)) / 2);
         
         // Calculate the total area of the triangle
-        var totalArea = Math.abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2);
+        let totalArea = Math.abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2);
         
         // Check if the point is inside the triangle using the areas
         return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
@@ -249,18 +233,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // event listener for mouse clicks in center rect for text
     canvas.addEventListener('mousedown', function (e) {
-        var mouseX = e.clientX - canvas.getBoundingClientRect().left;
-        var mouseY = e.clientY - canvas.getBoundingClientRect().top;
-        var clickedInnerRect = false;
+        let mouseX = e.clientX - canvas.getBoundingClientRect().left;
+        let mouseY = e.clientY - canvas.getBoundingClientRect().top;
+        let clickedInnerRect = false;
 
         shapes.forEach(function (shape) {
             if (shape.innerRect) {
-                var innerX = shape.x;
-                var innerY = shape.y;
+                let innerX = shape.x;
+                let innerY = shape.y;
 
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
-                    var text = prompt("Enter text here:");
+                    let text = prompt("Enter text here:");
                     if (text) {
                         shape.innerRect.text = text;
                         drawShapes();
@@ -323,8 +307,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // drag or when not to
     canvas.addEventListener('mousemove', function (e) {
         if (isDragging) {
-            var mouseX = e.clientX - canvas.getBoundingClientRect().left;
-            var mouseY = e.clientY - canvas.getBoundingClientRect().top;
+            let mouseX = e.clientX - canvas.getBoundingClientRect().left;
+            let mouseY = e.clientY - canvas.getBoundingClientRect().top;
             currentShape.x = mouseX - dragOffsetX;
             currentShape.y = mouseY - dragOffsetY;
             drawShapes();
