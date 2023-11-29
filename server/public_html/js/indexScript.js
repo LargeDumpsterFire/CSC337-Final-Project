@@ -13,7 +13,7 @@ const handleSignUp = async (event) => {
 
     const signUpData = {
         username: username,
-        email: email,
+        email: email, 
         password: password
     };
 
@@ -98,7 +98,7 @@ signInForm.addEventListener('submit', handleSignIn);
 
 
 function togglePasswordVisibility(checkbox, passwordClass) {
-    var passwordInputs = document.getElementsByClassName(passwordClass);
+    let passwordInputs = document.getElementsByClassName(passwordClass);
 
     Array.from(passwordInputs).forEach(function (passwordInput) {
         if (checkbox.checked) {

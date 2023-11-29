@@ -33,7 +33,8 @@ app.use(express.static(path.join(__dirname, 'public_html')));
 // Define the user schema, can be adjusted as needed.
 const userSchema = new mongoose.Schema({
     username: String,
-    password: String
+    password: String,
+    projects: {}
 });
 
 const User = mongoose.model('User', userSchema);
