@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
     let selectedAnchorPoint = null;
-    let lines = []; // store current lines
+
     
 
 
