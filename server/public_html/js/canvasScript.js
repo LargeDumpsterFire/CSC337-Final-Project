@@ -11,13 +11,24 @@
     Import to img (smaller images)
     Save to user/ mongo schema
     Arrows attach to shapes
-
+    diamond borders are too big for grabbing
 
     MAJOR:
     Z index for shapes (slider)
     Resizing shapes (slider)
     Color changing RGB (slider)
     Remove shapes
+
+
+
+
+    NOTES 11/30
+    I have gotten the arrow to work again, but now it will change with direction. IE if you 
+    make it face any direction it will draw correctly
+
+    Next I need to make a function to check if its clicking on anchor points on the line
+    and if so let the user drag from the anchor point only and dynamically update the section 
+    point x y of the arrow at that anchor point
 */
 
 // set canvas size
@@ -109,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case "line":
                 ctx.moveTo(shape.x, shape.y);
+                ctx.lineTo(shape.middle.x, shape.middle.y)
                 ctx.lineTo(shape.end.x, shape.end.y);
                     // Calculate the angle of the line
                 const angle = Math.atan2(shape.end.y - shape.y, shape.end.x - shape.x);
@@ -235,50 +247,53 @@ document.addEventListener('DOMContentLoaded', function () {
         return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
     }
     
-    function isOnArrow(arrow, x, y) {
-        // Inner function to check if a point is on a line segment
-        const isOnLine = (x, y, x1, y1, x2, y2, lineWidth) => {
-          const A = x - x1;
-          const B = y - y1;
-          const C = x2 - x1;
-          const D = y2 - y1;
+    function isOnArrow(arrow, mouseX, mouseY) {
+        const x1 = arrow.x;
+        const y1 = arrow.y;
+        const x2 = arrow.end.x;
+        const y2 = arrow.end.y;
     
-          const dot = A * C + B * D;
-          const len_sq = C * C + D * D;
-          const param = len_sq !== 0 ? dot / len_sq : -1;
+        // Calculate the distance from the point to the line segment
+        const A = mouseX - x1;
+        const B = mouseY - y1;
+        const C = x2 - x1;
+        const D = y2 - y1;
     
-          let xx, yy;
+        const dot = A * C + B * D;
+        const lenSq = C * C + D * D;
+        const param = lenSq !== 0 ? dot / lenSq : -1;
     
-          if (param < 0) {
+        let xx, yy;
+    
+        if (param < 0) {
             xx = x1;
             yy = y1;
-          } else if (param > 1) {
+        } else if (param > 1) {
             xx = x2;
             yy = y2;
-          } else {
+        } else {
             xx = x1 + param * C;
             yy = y1 + param * D;
-          }
+        }
     
-          const dx = x - xx;
-          const dy = y - yy;
-          return dx * dx + dy * dy <= lineWidth * lineWidth;
-        };
+        const dx = mouseX - xx;
+        const dy = mouseY - yy;
+        
+        // Define the 'nearness' margin
+        const margin = 5; 
     
-        const startX = arrow.start.x;
-        const endX = arrow.end.x; 
-        const yCoord = arrow.y;
-    
-        return isOnLine(x, y, startX, yCoord, endX, yCoord, arrow.lineWidth || 2);
+        // Check if the distance is within the margin
+        return (dx * dx + dy * dy) <= margin * margin;
       }
+
+
+
 
     // event listener for mouse clicks in center rect for text
     canvas.addEventListener('mousedown', function (e) {
         let mouseX = e.clientX - canvas.getBoundingClientRect().left;
         let mouseY = e.clientY - canvas.getBoundingClientRect().top;
         let clickedInnerRect = false;
-
-
 
         shapes.forEach(function (shape) {
             if (shape.innerRect) {
@@ -309,7 +324,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
-                        
                     }
                 }else if (shape.type === 'circle') { // for circles
                     if (isInsideCircle(shape, mouseX, mouseY)) {
@@ -381,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 shape.anchorPoints = [
                     { x: shape.x, y: shape.y}, // Start point
                     { x: shape.end.x, y: shape.end.y},// End point
-                    //{ x: shape.x + 30, y: shape.y}, // middle left
+                    { x: shape.x + 30, y: shape.y}, // middle 
                     //{ x: shape.x + 60, y: shape.y}, // middle right
                 ];
             
@@ -400,8 +414,18 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isDragging) {
             let mouseX = e.clientX - canvas.getBoundingClientRect().left;
             let mouseY = e.clientY - canvas.getBoundingClientRect().top;
+            let deltaX = mouseX - dragOffsetX - currentShape.x;
+            let deltaY = mouseY - dragOffsetY - currentShape.y;
             currentShape.x = mouseX - dragOffsetX;
             currentShape.y = mouseY - dragOffsetY;
+    
+            if (currentShape.type === "line") {
+                // Update the end point of the line as well
+                currentShape.end.x += deltaX;
+                currentShape.end.y += deltaY;
+                currentShape.middle.x += deltaX;
+                currentShape.middle.y += deltaY;
+            }
 
             // makes anchor points follow shape as its dragged
             shapes.forEach(function (shape) {
@@ -437,8 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     shape.anchorPoints = [
                         { x: shape.x, y: shape.y}, // Start point
                         { x: shape.end.x, y: shape.end.y},// End point
-                        //{ x: shape.x + 30, y: shape.y}, // middle left
-                        //{ x: shape.x + 60, y: shape.y}, // middle right
+                        { x: shape.middle.x, y: shape.middle.y}, // middle 
                     ];
                     
                 }
@@ -517,13 +540,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById("line").addEventListener("click", function () {
         shapes.push({ type: "line", x: 500, y: 500, width: 100, height: 100, 
-        start: { x: 500, y: 500, type: 'start' },// keep track of start and end of arrow
-        end: { x: 600, y: 500, type: 'end' },
+        start: { x: 500, y: 500},// keep track of start middle and end of arrow
+        middle: { x: 550, y: 500},
+        end: { x: 600, y: 500},
         anchorPoints: [
-            { x: 500, y: 500, type: 'start' }, // far left
-            //{ x: 530, y: 500 }, // middle left
+            { x: 500, y: 500}, // far left
+            { x: 550, y: 500 }, // middle 
             //{ x: 560, y: 500 }, // middle right
-            { x: 600, y: 500, type: 'end' } // far right
+            { x: 600, y: 500} // far right
         ]
         });
         drawShapes();
