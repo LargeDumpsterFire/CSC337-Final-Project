@@ -43,7 +43,26 @@ document.addEventListener('DOMContentLoaded', function () {
     let dragOffsetX, dragOffsetY, currentShape;
     let selectedAnchorPoint = null;
 
-    
+    // Add an event listener for window resize
+    window.addEventListener('resize', function() {
+        let oldWidth = canvas.width;
+        let oldHeight = canvas.height;
+        // update canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // update shape positions
+        shapes.forEach(shape => {
+            shape.x = (shape.x / oldWidth) * canvas.width;
+            shape.y = (shape.y / oldHeight) * canvas.height;
+            
+            updateAnchorPoints(shapes)
+            
+        });
+
+        // Redraw the shapes
+        drawShapes();
+    });
 
 
     document.getElementById('download').addEventListener('click', function(e) {
@@ -92,10 +111,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case "line":
                 const headlen = 10;
-                const startX = shape.start.x;
+                const startX = shape.x;
                 const endX = shape.end.x;
                 const y = shape.y; 
-                ctx.moveTo(startX, y);
+                ctx.moveTo(shape.x, shape.y);
                 ctx.lineTo(endX, y);
                 ctx.stroke();
                 ctx.beginPath();
@@ -109,6 +128,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     y - headlen * Math.sin(0 + Math.PI / 7)
                 );
                 ctx.lineTo(endX, y);
+
+                
+
                 break;
         }
         ctx.closePath();
@@ -324,6 +346,53 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+
+
+    function updateAnchorPoints(shapes){
+        // makes anchor points follow shape as its dragged
+        shapes.forEach(function (shape) {
+            if (shape.type === 'rectangle') {
+                shape.anchorPoints = [
+                    { x: shape.x - shape.width / 2, y: shape.y }, // Left middle
+                    { x: shape.x + shape.width / 2, y: shape.y }, // Right middle
+                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top middle
+                    { x: shape.x, y: shape.y + shape.height / 2 }  // Bottom middle
+                ];
+            }else if (shape.type === 'circle') {
+                shape.anchorPoints = [
+                    { x: shape.x, y: shape.y - shape.radius }, // Top
+                    { x: shape.x + shape.radius, y: shape.y }, // Right
+                    { x: shape.x, y: shape.y + shape.radius }, // Bottom
+                    { x: shape.x - shape.radius, y: shape.y }  // Left
+                ];
+            } else if (shape.type === 'triangle') {
+                shape.anchorPoints = [
+                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top vertex
+                    { x: shape.x + shape.width / 2, y: shape.y + shape.height / 2 }, // Bottom right vertex
+                    { x: shape.x - shape.width / 2, y: shape.y + shape.height / 2 },  // Bottom left vertex
+                    { x: shape.x, y: shape.y + shape.height / 2 }// center point
+                ];
+            } else if (shape.type === 'diamond') {
+                shape.anchorPoints = [
+                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top vertex
+                    { x: shape.x + shape.width / 2, y: shape.y }, // Right vertex
+                    { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom vertex
+                    { x: shape.x - shape.width / 2, y: shape.y }  // Left vertex
+                ];
+            } else if (shape.type === "line"){
+                shape.anchorPoints = [
+                    { x: shape.x, y: shape.y}, // Start point
+                    { x: shape.end.x, y: shape.end.y},// End point
+                    //{ x: shape.x + 30, y: shape.y}, // middle left
+                    //{ x: shape.x + 60, y: shape.y}, // middle right
+                ];
+            
+            }
+        });
+                        
+    }
+
+
     // event listener for moving the shapes
     // checks if a user is moving the mouse
     // if yes checks if isDragging is true to verify
@@ -368,18 +437,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     ];
                 } else if (shape.type === "line"){
 
-                    // find way to update using the types
-                    // of the anchor points
-                    // want to do 3 anchor points
-                    // make function to check
-                    // whether youre clicking on line
-                    // or on anchor points
-
-                    currentShape.end.x = mouseX;
-                    currentShape.end.y = mouseY;
 
                     shape.anchorPoints = [
-                        { x: shape.start.x, y: shape.start.y}, // Start point
+                        { x: shape.x, y: shape.y}, // Start point
                         { x: shape.end.x, y: shape.end.y},// End point
                         //{ x: shape.x + 30, y: shape.y}, // middle left
                         //{ x: shape.x + 60, y: shape.y}, // middle right
@@ -398,6 +458,9 @@ document.addEventListener('DOMContentLoaded', function () {
         isDragging = false;
 
     });
+
+
+    
 
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
@@ -461,10 +524,10 @@ document.addEventListener('DOMContentLoaded', function () {
         start: { x: 500, y: 500, type: 'start' },// keep track of start and end of arrow
         end: { x: 600, y: 500, type: 'end' },
         anchorPoints: [
-            { x: 500, y: 500 }, // far left
+            { x: 500, y: 500, type: 'start' }, // far left
             //{ x: 530, y: 500 }, // middle left
             //{ x: 560, y: 500 }, // middle right
-            { x: 600, y: 500 } // far right
+            { x: 600, y: 500, type: 'end' } // far right
         ]
         });
         drawShapes();
