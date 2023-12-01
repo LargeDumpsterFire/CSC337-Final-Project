@@ -4,8 +4,6 @@
     When you click on a text box and two shape's text boxes are
     over eachother it will click both
 
-    Resizing screen ruins canvas and destroys all x y locations
-    for shape dragging and other functions
 
     ADDITIONS
 
@@ -110,26 +108,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.lineTo(shape.x - shape.width / 2, shape.y);
                 break;
             case "line":
-                const headlen = 10;
-                const startX = shape.x;
-                const endX = shape.end.x;
-                const y = shape.y; 
                 ctx.moveTo(shape.x, shape.y);
-                ctx.lineTo(endX, y);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(endX, y);
-                ctx.lineTo(
-                    endX - headlen * Math.cos(0 - Math.PI / 7),
-                    y - headlen * Math.sin(0 - Math.PI / 7)
-                );
-                ctx.lineTo(
-                    endX - headlen * Math.cos(0 + Math.PI / 7),
-                    y - headlen * Math.sin(0 + Math.PI / 7)
-                );
-                ctx.lineTo(endX, y);
+                ctx.lineTo(shape.end.x, shape.end.y);
+                    // Calculate the angle of the line
+                const angle = Math.atan2(shape.end.y - shape.y, shape.end.x - shape.x);
 
-                
+                // Length and width of the arrow head
+                const arrowLength = 10; // Length of the arrow head lines
+                const arrowWidth = Math.PI / 8; // Width of the arrow head (in radians)
+
+                // Draw one side of the arrow head
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle - arrowWidth), 
+                        shape.end.y - arrowLength * Math.sin(angle - arrowWidth));
+
+                // Move back to the tip of the arrow
+                ctx.moveTo(shape.end.x, shape.end.y);
+
+                // Draw the other side of the arrow head
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth), 
+                        shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
 
                 break;
         }
@@ -141,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if(shape.anchorPoints) {
             shape.anchorPoints.forEach(point => {
                 ctx.beginPath();
+                //ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
                 ctx.arc(point.x, point.y, 5, 0, Math.PI * 2); // Draw small circle for anchor point
                 ctx.fill();
                 ctx.stroke();
@@ -268,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     
         const startX = arrow.start.x;
-        const endX = arrow.end.x; // End point based on the width
+        const endX = arrow.end.x; 
         const yCoord = arrow.y;
     
         return isOnLine(x, y, startX, yCoord, endX, yCoord, arrow.lineWidth || 2);
@@ -307,11 +305,11 @@ document.addEventListener('DOMContentLoaded', function () {
             shapes.forEach(function (shape) {
                 if (shape.type === "line") {
                     if (isOnArrow(shape, mouseX, mouseY)) {
-                      isDragging = true;
-                      currentShape = shape;
-                      dragOffsetX = mouseX - shape.x;
-                      dragOffsetY = mouseY - shape.y;
-
+                        isDragging = true;
+                        currentShape = shape;
+                        dragOffsetX = mouseX - shape.x;
+                        dragOffsetY = mouseY - shape.y;
+                        
                     }
                 }else if (shape.type === 'circle') { // for circles
                     if (isInsideCircle(shape, mouseX, mouseY)) {
@@ -347,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-
+    // update anchor function
     function updateAnchorPoints(shapes){
         // makes anchor points follow shape as its dragged
         shapes.forEach(function (shape) {
@@ -436,8 +434,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         { x: shape.x - shape.width / 2, y: shape.y }  // Left vertex
                     ];
                 } else if (shape.type === "line"){
-
-
                     shape.anchorPoints = [
                         { x: shape.x, y: shape.y}, // Start point
                         { x: shape.end.x, y: shape.end.y},// End point
