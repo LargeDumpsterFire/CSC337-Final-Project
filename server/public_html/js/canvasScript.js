@@ -29,6 +29,8 @@
     Next I need to make a function to check if its clicking on anchor points on the line
     and if so let the user drag from the anchor point only and dynamically update the section 
     point x y of the arrow at that anchor point
+
+    Fix screen resizing for arrow
 */
 
 // set canvas size
@@ -120,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case "line":
                 ctx.moveTo(shape.x, shape.y);
-                ctx.lineTo(shape.middle.x, shape.middle.y)
+                //ctx.lineTo(shape.middle.x, shape.middle.y)
                 ctx.lineTo(shape.end.x, shape.end.y);
                     // Calculate the angle of the line
                 const angle = Math.atan2(shape.end.y - shape.y, shape.end.x - shape.x);
