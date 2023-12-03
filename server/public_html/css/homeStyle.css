@@ -1,287 +1,52 @@
 * {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
-    display: flex;
     margin: 0;
     padding: 0;
-    color: #212529;
+    box-sizing: border-box;
+    overflow: visible;
 }
-
-.upper-nav-bar {
-    position: static;
+html,
+body {
     width: 100%;
-    top: 0;
-    height: 80px;
+    height: 100%;
+    display: flex;
+    background-color: #F4EDE5;
+    font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
+    
+}
+.upper-navbar-container {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #9EABAE;
-
 }
+.upper-navbar img {
 
-.logo {
-    display: inline-block;
-    vertical-align: top;
-    width: 250px;
-    height: 80px;
-    margin-left: 25px;
+    width: 225px;
+    height: 100px;
+    margin-left: 20px;
 }
-
-.left-nav-bar-outside {
-    position: fixed;
-    top: 80px;
+.left-navbar-container{
+   
+    position: absolute;
+    top: 100px;
     left: 0;
-    height: calc(100% - 80px);
+    height: calc(100% - 100px);
     width: 25vw;
     background-color: #0C234B;
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-.left-nav-bar-inside {
-    height: calc(100% - 25px);
-    width: calc(100% - 25px);
+}
+.left-navbar {
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
     background-color: #AB0520;
-}
-
-.project-area {
-    position: fixed;
-    top: 80px;
-    left: 25vw;
-    height: calc(100% - 80px);
-    width: 75vw;
-    background-color: #e9d8c6;
-    overflow: auto;
-}
-
-.project-image {
-    height: calc(100% - 125px);
-    width: calc(100% - 55px);
-    min-width: 75px;
-    min-height: 75px;
     border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #AB0520;
 }
 
-.project-image img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.inside-image-box img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-.container {
-
-    position: relative;
-
-}
-
-/* original button styles   */
-.buttons {
-    position: sticky;
-    margin: 10px;
-    display: grid;
-    justify-content: center;
-    color: #000;
-}
-
-/* .buttons {
-    position: absolute;
-    background-color: #0C234B;
-    border-radius: 75%;
-    padding: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    cursor: grab;  
-    z-index: 1;
-    color: #ffffff;
-
-} */
-.buttons div {
-    margin: 0px 10px;
-    color: #ffffff;
-    cursor: pointer;
-
-}
-
-.buttons div>* {
-    pointer-events: none;
-}
-
-
-.wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px 0px;
-    padding: 20px;
-    margin: 20px;
-    color: white;
-    place-items: center;
-}
-
-.wrapper.list {
-    grid-template-columns: 1fr;
-    place-items: start;
-
-}
-
-/* this section is the styling for the warpper.list so when the user changes to list it styles the boxes */
-.wrapper.list .outside-image-box {
-    position: relative;
-    background-color: #0C234B;
-    border-radius: 25px;
-    width: 15vw;
-    min-width: 140px;
-    height: 30vh;
-    min-height: 175px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.wrapper.list .project-image {
-    height: calc(100% - 125px);
-    width: calc(100% - 55px);
-    min-width: 75px;
-    min-height: 75px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #AB0520;
-}
-
-.wrapper.list .image-box-text {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    left: calc(100% + 20px); /* Adjust this value as needed */
-    top: 50%;
-    transform: translate(0, -50%);
-    color: #000;
-    font-size: larger;
-    width: 150px;
-    margin: 0px;
-}
-/* end of wrapper list styling */
-
-.wrapper .outside-image-box {
-    position: relative;
-    background-color: #0C234B;
-    border-radius: 25px;
-    width: 15vw;
-    min-width: 140px;
-    height: 30vh;
-    min-height: 175px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 25px;
-}
-
-.wrapper .image-box-text {
-    /* Container for text content */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 15px;
-    color: white;
-}
-
-.navCircle {
-    position: absolute;
-    top: 30%;
-    left: 28%;
-    transform: translate(-50%, -50%);
-    cursor: grab;
-    z-index: 2;
-    /* Ensure it's above other elements */
-}
-
-.navCircle.grabbing {
-    cursor: grabbing;
-}
-
-.navCircle input {
-    display: none;
-}
-
-.navCircle label {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #0C234B;
-    display: block;
-    margin: 0 auto;
-    cursor: pointer;
-    transform: rotate(0deg);
-    transition: all 300ms ease-in-out;
-}
-
-.navCircle label:before,
-.navCircle label:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 25px;
-    width: 5px;
-    background: #AB0520;
-}
-
-.navCircle label:before {
-    transform: translate(-50%, -50%);
-}
-
-.navCircle label:after {
-    transform: translate(-50%, -50%) rotate(90deg);
-}
-
-.navCircle .nav {
-    position: relative;
-    top: 20px;
-    width: 200px;
-    /* border: 1px solid #ffffff; */
-    box-shadow: 2px 2px 5px 2px #00000080;
-    background: #0C234B;
-    border-radius: 5px;
-    opacity: 0;
-    left: -100vw;
-    transition: left 0ms ease-in-out 300ms, top 300ms ease-in-out, opacity 300ms ease-in-out;
-}
-
-.navCircle .nav a {
-    border: 2px solid #AB0520;
-    display: block;
-    text-decoration: none;
-    margin: 15px 0px;
-    text-align: center;
-    color: #AB0520;
-}
-
-.navCircle #toggle-btn:checked~.nav {
-
-    left: 0px;
-    top: 10px;
-    opacity: 1;
-    transition: left 0ms ease-in-out 0ms, top 300ms ease-in-out, opacity 300ms ease-in-out;
-}
-
-.navCircle #toggle-btn:checked+label {
-
-    transform: rotate(135deg);
+.project-card-container{
+    border: solid 1px black;
 }

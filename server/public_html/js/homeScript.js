@@ -79,8 +79,10 @@ const createDate = (date) => {
   formattedDate.innerText = date.toLocaleDateString();
   return formattedDate;
 };
+/* this is the code for making the left outside navbar resizable with user input*/
 
-document.addEventListener("DOMContentLoaded", function () {
+/* end of code for rezising*/
+/* document.addEventListener("DOMContentLoaded", function () {
   // Sample user projects
   const userProjects = [
       { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
@@ -95,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   // Function to create project cards
-  function createProjectCard(project) {
+  function createProjectCards(project) {
       const card = document.createElement("div");
       card.className = "outside-image-box";
 
@@ -155,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   });
 });
-
+ */
 // Save projects to the database and populate the grid container
 const initializeApp = async () => {
   await saveProjectsToDB();
