@@ -21,14 +21,6 @@
     Remove shapes
 
 
-
-
-    NOTES 12/2
-    need to find a way to detect the arrow anchor points correctly. However
-    the drag and drop for resizing works well besides that
-
-
-
     
 */
 
