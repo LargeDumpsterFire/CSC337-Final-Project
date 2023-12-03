@@ -21,16 +21,10 @@
     Remove shapes
 
 
-
-
-    NOTES 12/2
-    need to find a way to detect the arrow anchor points correctly. However
-    the drag and drop for resizing works well besides that
-
-
-
     
 */
+
+const SNAP_THRESHOLD = 10;
 
 // set canvas size
 canvas.width = window.innerWidth;
@@ -116,22 +110,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.lineTo(shape.x + shape.width / 2, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
             case 'circle':
                 ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
             case 'triangle':
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
             case 'diamond':
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y);
                 ctx.lineTo(shape.x, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
-            case "line":
+            case 'line':
                 ctx.moveTo(shape.start.x, shape.start.y);
                 ctx.lineTo(shape.middle.x, shape.middle.y)
                 ctx.lineTo(shape.end.x, shape.end.y);
@@ -153,11 +159,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth), 
                         shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
             
+                ctx.closePath();
+                ctx.stroke();
                 break;
         }
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+
 
 
         // to draw anchor points
@@ -166,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.beginPath();
                 //ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
                 ctx.arc(point.x, point.y, 5, 0, Math.PI * 2); // Draw small circle for anchor point
-                ctx.fill();
                 ctx.stroke();
             });
         }
@@ -320,9 +325,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let clickedInnerRect = false;
 
 
-
-
-
         // check for click on a text box
         shapes.forEach(function (shape) {
             if (shape.innerRect) {
@@ -386,13 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             });
-        
-
-
         }
-        
-
-
     });
         
 
@@ -441,6 +437,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         
     }
 
+  
+
+    // distance calculation function for mouse distance to anchor point on arrow
+    function distance(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
 
     // event listener for moving the shapes
     // checks if a user is moving the mouse
@@ -457,14 +459,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
 
-                closestPoint = 'none';
+                // Calculate distances to start, middle, and end points
+                let distanceToStart = distance(mouseX, mouseY, currentShape.start.x, currentShape.start.y);
+                let distanceToMiddle = distance(mouseX, mouseY, currentShape.middle.x, currentShape.middle.y);
+                let distanceToEnd = distance(mouseX, mouseY, currentShape.end.x, currentShape.end.y);
 
-
+                // Find the minimum distance
+                let minDistance = Math.min(distanceToStart, distanceToMiddle, distanceToEnd);
 
                 // check which point to use cant figure it out
 
+                const threshold = 20;
+                let closestPoint;
+                if (distanceToStart <= threshold && minDistance === distanceToStart) {
+                    closestPoint = 'start';
+                } else if (distanceToMiddle <= threshold && minDistance === distanceToMiddle) {
+                    closestPoint = 'middle';
+                } else if (distanceToEnd <= threshold && minDistance === distanceToEnd) {
+                    closestPoint = 'end';
+                } else {
+                    closestPoint = 'none'; // No point is near the mouse pointer
+                }
+    
+
+
                 if(closestPoint === 'start'){
-                    console.log(closestPoint);
                     currentShape.start.x = mouseX;
                     currentShape.start.y = mouseY;
                 }else if(closestPoint === 'middle'){
@@ -475,51 +494,49 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentShape.end.y = mouseY;
                 }else if(closestPoint === 'none'){
                     // move entire arrow
-                    let deltaX = mouseX - dragOffsetX - currentShape.x;
-                    let deltaY = mouseY - dragOffsetY - currentShape.y;
+                    
+                    // let deltaX = mouseX - dragOffsetX - currentShape.x;
+                    // let deltaY = mouseY - dragOffsetY - currentShape.y;
                         
-                    currentShape.x = mouseX - dragOffsetX;
-                    currentShape.y = mouseY - dragOffsetY;
-                    currentShape.start.x += deltaX;
-                    currentShape.start.y += deltaY;
-                    currentShape.middle.x += deltaX;
-                    currentShape.middle.y += deltaY;
-                    currentShape.end.x += deltaX;
-                    currentShape.end.y += deltaY;
+                    // currentShape.x = mouseX - dragOffsetX;
+                    // currentShape.y = mouseY - dragOffsetY;
+                    // currentShape.start.x += deltaX;
+                    // currentShape.start.y += deltaY;
+                    // currentShape.middle.x += deltaX;
+                    // currentShape.middle.y += deltaY;
+                    // currentShape.end.x += deltaX;
+                    // currentShape.end.y += deltaY;
                 }
+
+                
 
                 // update anchor points
                 updateAnchorPoints(shapes);
         
                 drawShapes();
-            }else{
+            }else{ // shape dragging for all other shapes
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
         
-
-
                 currentShape.x = mouseX - dragOffsetX;
                 currentShape.y = mouseY - dragOffsetY;
-
 
                 // update anchor points
                 updateAnchorPoints(shapes);
 
                 drawShapes();
                 }
-
         } 
-
-        
     });
 
 
     // checks for non clicking and makes shapes non draggable
     // if the user is not clicking anything
     canvas.addEventListener('mouseup', function (e) {
-        isDragging = false;
-    });
 
+        isDragging = false;
+
+    });
 
     
 
