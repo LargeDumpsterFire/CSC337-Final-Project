@@ -6,10 +6,15 @@
 
     diamond borders are too big for grabbing
 
-    ADDITIONS
+    ADDITIONS:
+
+    Need to create a save to user function that calls the stringify function and 
+    calls the createThumbnail function to successfully save both pieces we need
+    of the project for the user 
+
 
     IMPORTANT: 
-    Import to img (smaller images)
+
     Save to user/ mongo schema
     Arrows attach to shapes
 
@@ -19,6 +24,10 @@
     Resizing shapes (slider)
     Color changing RGB (slider)
     Remove shapes
+
+
+
+
 
 
     
@@ -37,14 +46,33 @@ function drawBackground(ctx) {
 }
 
 
+
+
+
 // wait for dom content to load
 document.addEventListener('DOMContentLoaded', function () {
     // set up our canvas
-    let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
-    let shapes = []; // store current shapes
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var shapes = []; // store current shapes
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
+
+    // draw initial background
+    drawBackground(ctx);
+
+
+    // Add a button for saving the canvas state
+    document.getElementById('save').addEventListener('click', function () {
+        let canvasJson = getCanvasJson(shapes); // Convert canvas state to JSON
+        console.log("Canvas JSON:", canvasJson);
+    
+        let thumbnailUrl = createThumbnail();   // Generate a thumbnail image
+        console.log("Thumbnail URL:", thumbnailUrl);
+    
+        // For visual inspection of the thumbnail:
+        document.getElementById('thumbnailDisplay').src = thumbnailUrl;
+    });
 
 
     // Add an event listener for window resize
@@ -610,4 +638,53 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         drawShapes();
       });
+
+
+
+
+    // create thumbnail for user project storage
+    function createThumbnail() {
+        let thumbnailCanvas = document.createElement('canvas');
+        thumbnailCanvas.width = canvas.width;
+        thumbnailCanvas.height = canvas.height;
+        let ctx = thumbnailCanvas.getContext('2d');
+    
+        ctx.drawImage(canvas, 0, 0);
+    
+        return thumbnailCanvas.toDataURL("image/jpeg", 1);
+    }
+
+
+
+    
+
+    // loads json canvas data and draws it to current window
+    document.getElementById('load').addEventListener('click', function() {
+
+        const jsonString = getCanvasJson(shapes);
+        // tester json
+        //const jsonString = '[{"type":"circle","x":557,"y":369,"radius":50,"innerRect":{"width":30,"height":20,"text":"asdfasdfasdfasdf"},"anchorPoints":[{"x":557,"y":319},{"x":607,"y":369},{"x":557,"y":419},{"x":507,"y":369}]},{"type":"rectangle","x":404,"y":207,"width":120,"height":80,"innerRect":{"width":30,"height":20,"text":"asdfasdfasdfasdfasdf"},"anchorPoints":[{"x":344,"y":207},{"x":464,"y":207},{"x":404,"y":167},{"x":404,"y":247}]},{"type":"triangle","x":800,"y":257,"width":98,"height":85,"innerRect":{"width":30,"height":20,"text":"MANUALLY ENETERED JSON DATA"},"anchorPoints":[{"x":800,"y":214.5},{"x":849,"y":299.5},{"x":751,"y":299.5},{"x":800,"y":299.5}]},{"type":"diamond","x":743,"y":180,"width":100,"height":100,"innerRect":{"width":30,"height":20,"text":"THIS PICTURE WAS CREATED AFTER LOADING FOR"},"anchorPoints":[{"x":743,"y":130},{"x":793,"y":180},{"x":743,"y":230},{"x":693,"y":180}]},{"type":"line","x":500,"y":500,"width":100,"height":100,"start":{"x":1052,"y":506},"middle":{"x":644,"y":89},"end":{"x":1138,"y":102},"anchorPoints":[{"x":1052,"y":506},{"x":1138,"y":102},{"x":644,"y":89}]},{"type":"line","x":500,"y":500,"width":100,"height":100,"start":{"x":500,"y":500},"middle":{"x":392,"y":64},"end":{"x":600,"y":500},"anchorPoints":[{"x":500,"y":500},{"x":600,"y":500},{"x":392,"y":64}]}]';
+        console.log(jsonString);
+        const shapesData = JSON.parse(jsonString);
+
+        // Clear existing shapes on canvas if needed
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        shapes = [];
+        // clearCanvas();
+        drawBackground(ctx);
+        // Iterate over each shape data and draw it on the canvas
+        shapesData.forEach(shapeData => {
+            shapes.push(shapeData);
+            drawShape(shapeData);
+        });
+    });
+
+
+    // function to stringify shapes, to store in user
+    function getCanvasJson(shapes) {
+        return JSON.stringify(shapes);
+    }
+
+
+
 });
