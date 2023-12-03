@@ -4,6 +4,7 @@
     box-sizing: border-box;
     overflow: visible;
 }
+
 html,
 body {
     width: 100%;
@@ -11,8 +12,8 @@ body {
     display: flex;
     background-color: #F4EDE5;
     font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
-    
 }
+
 .upper-navbar-container {
     width: 100%;
     height: 100px;
@@ -21,32 +22,222 @@ body {
     align-items: center;
     background-color: #9EABAE;
 }
-.upper-navbar img {
 
+.upper-navbar img {
     width: 225px;
     height: 100px;
     margin-left: 20px;
 }
-.left-navbar-container{
-   
+
+.main-container {
     position: absolute;
     top: 100px;
     left: 0;
     height: calc(100% - 100px);
+    width: 100%;
+    display: flex;
+}
+
+.left-navbar-container {
+    position: relative;
+    height: 100%;
     width: 25vw;
     background-color: #0C234B;
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
+
 .left-navbar {
     height: calc(100% - 30px);
     width: calc(100% - 30px);
     background-color: #AB0520;
     border-radius: 25px;
+    
 }
 
-.project-card-container{
-    border: solid 1px black;
+.left-navbar-insides {
+    padding: 20px;
+    text-align: start; /* Center text in the container */
+}
+
+.left-navbar-insides ul {
+    list-style-type: none; /* Remove default list styling */
+    
+}
+
+.left-navbar-insides ul li {
+    margin-bottom: 10px; /* Add margin to list items for spacing */
+}
+
+
+.resizer {
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    cursor: col-resize;
+    top: 0;
+    right: 0;
+    cursor: ew-resize;
+    background-color: #0C234B;
+}
+
+.project-card-container {
+    flex-grow: 1;
+    text-align: center;
+    overflow: auto;
+    /* Added this property for scrolling if needed */
+}
+
+/*Adding style to the buttons */
+.display-buttons {
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+    margin-top: 25px;
+    margin-right: 45px;
+}
+.btn {
+    margin-right: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 12px 16px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+.btn.active {
+    background-color: #666;
+    color: white;
+}
+
+/* this is the project card styling section */
+
+.project-image {
+    height: calc(100% - 125px);
+    width: calc(100% - 55px);
+    min-width: 75px;
+    min-height: 75px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #AB0520;
+}
+
+.project-image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.inside-image-box img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 
+.display-buttons div {
+    margin: 0px 10px;
+    color: #000000;
+    cursor: pointer;
+
+}
+
+.display-buttons div>* {
+    pointer-events: none;
+} */
+
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 0px;
+    padding: 20px;
+    margin: 20px;
+    color: white;
+    place-items: center;
+}
+
+.wrapper.list {
+    grid-template-columns: 1fr;
+    place-items: start;
+
+}
+
+/* this section is the styling for the warpper.list so when the user changes to list it styles the boxes */
+.wrapper.list .outside-image-box {
+    position: relative;
+    background-color: #0C234B;
+    border-radius: 25px;
+    width: 15vw;
+    min-width: 140px;
+    height: 30vh;
+    min-height: 175px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.wrapper.list .project-image {
+    height: calc(100% - 125px);
+    width: calc(100% - 55px);
+    min-width: 75px;
+    min-height: 75px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #AB0520;
+}
+
+.wrapper.list .image-box-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    left: calc(100% + 20px);
+    /* Adjust this value as needed */
+    top: 50%;
+    transform: translate(0, -50%);
+    color: #000;
+    font-size: larger;
+    width: 150px;
+    margin: 0px;
+}
+
+/* end of wrapper list styling */
+
+.wrapper .outside-image-box {
+    position: relative;
+    background-color: #0C234B;
+    border-radius: 25px;
+    width: 15vw;
+    min-width: 140px;
+    height: 30vh;
+    min-height: 175px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 25px;
+}
+
+.wrapper .image-box-text {
+    /* Container for text content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    color: white;
 }

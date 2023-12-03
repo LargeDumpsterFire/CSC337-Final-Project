@@ -16,24 +16,37 @@
       <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
     </div>
   </div>
-  <div class="left-navbar-container">
-    <div class="left-navbar">
+  <div class="main-container">
+    <div class="left-navbar-container">
+      <div class="left-navbar">
+        <div class="left-navbar-insides">
+          <h2>New Project</h2>
+          <ul>
+              <li><a href="./canvas.html">Canvas Page</a></li> <!-- Added a list item for the canvas page -->
+          </ul>
+          <h2>How to</h2>
+          <ul>
+              <li><a href="">Home</a></li>
+              <li><a href="">Settings</a></li>
+          </ul>
+        </div>
+        <div class="resizer"></div>
+      </div>
+    </div>
+    <div class="project-card-container">
+      <!-- <p>testing where the position is</p> -->
+      <div class="display-buttons" id="buttonContainer">
+        <button type="button" class="btn list" onclick=""><i class="fa fa-bars"></i> List</button>
+        <button type="button" class="btn grid active" onclick=""><i class="fa fa-th-large"></i> Grid</button>
+      </div>
+      <div class="wrapper" id="wrapper">
+        <!-- the div should add project cards here -->
 
+      </div>
     </div>
   </div>
 
-  </div>
-  <div class="project-card-container">
-    <p>testing where the position is</p>
-    <div class="display-buttons">
-
-    </div>
-    <div class="wrapper">
-      <!-- the div should add project cards here  -->
-    </div>
-
-  </div>
+  <script src="./js/homeScript.js"></script>
 </body>
-<script src="./js/homeScript.js"></script>
 
 </html>
