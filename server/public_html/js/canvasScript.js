@@ -4,6 +4,7 @@
     When you click on a text box and two shape's text boxes are
     over eachother it will click both
 
+    diamond borders are too big for grabbing
 
     ADDITIONS
 
@@ -11,7 +12,7 @@
     Import to img (smaller images)
     Save to user/ mongo schema
     Arrows attach to shapes
-    diamond borders are too big for grabbing
+
 
     MAJOR:
     Z index for shapes (slider)
@@ -22,15 +23,13 @@
 
 
 
-    NOTES 11/30
-    I have gotten the arrow to work again, but now it will change with direction. IE if you 
-    make it face any direction it will draw correctly
+    NOTES 12/2
+    need to find a way to detect the arrow anchor points correctly. However
+    the drag and drop for resizing works well besides that
 
-    Next I need to make a function to check if its clicking on anchor points on the line
-    and if so let the user drag from the anchor point only and dynamically update the section 
-    point x y of the arrow at that anchor point
 
-    Fix screen resizing for arrow
+
+    
 */
 
 // set canvas size
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let shapes = []; // store current shapes
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
-    let selectedAnchorPoint = null;
+
 
     // Add an event listener for window resize
     window.addEventListener('resize', function() {
@@ -312,13 +311,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // event listener for mouse clicks in center rect for text
+
+
+    // event listener for mouse clicks on shapes, also determines the location of the click
     canvas.addEventListener('mousedown', function (e) {
         let mouseX = e.clientX - canvas.getBoundingClientRect().left;
         let mouseY = e.clientY - canvas.getBoundingClientRect().top;
         let clickedInnerRect = false;
 
 
+
+
+
+        // check for click on a text box
         shapes.forEach(function (shape) {
             if (shape.innerRect) {
                 let innerX = shape.x;
@@ -341,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // it will check if the users cursor is inside the shape
         // by comparing x y coordinates
         // then if it is it will make the shape draggable
+        
         if (!clickedInnerRect) {
             shapes.forEach(function (shape) {
                 if (shape.type === "line") {
@@ -380,9 +386,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             });
-        }
-    });
+        
 
+
+        }
+        
+
+
+    });
+        
 
     // update anchor function
     function updateAnchorPoints(shapes){
@@ -436,69 +448,69 @@ document.addEventListener('DOMContentLoaded', function () {
     // the user is also holding the shape so it knows when to
     // drag or when not to
     canvas.addEventListener('mousemove', function (e) {
+
         if (isDragging) {
-            let mouseX = e.clientX - canvas.getBoundingClientRect().left;
-            let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-            let deltaX = mouseX - dragOffsetX - currentShape.x;
-            let deltaY = mouseY - dragOffsetY - currentShape.y;
-            currentShape.x = mouseX - dragOffsetX;
-            currentShape.y = mouseY - dragOffsetY;
+
+            if(currentShape.type === "line"){
+
+                let mouseX = e.clientX - canvas.getBoundingClientRect().left;
+                let mouseY = e.clientY - canvas.getBoundingClientRect().top;
+
+
+                closestPoint = 'none';
 
 
 
-            // set line coordinates for drawing
-            if (currentShape.type === "line") {
-                // Update the end point of the line as well
-                currentShape.end.x += deltaX;
-                currentShape.end.y += deltaY;
-                currentShape.middle.x += deltaX;
-                currentShape.middle.y += deltaY;
-                currentShape.start.x += deltaX;
-                currentShape.start.y += deltaY;
-            }
+                // check which point to use cant figure it out
 
-            // makes anchor points follow shape as its dragged
-            shapes.forEach(function (shape) {
-                if (shape.type === 'rectangle') {
-                    shape.anchorPoints = [
-                        { x: shape.x - shape.width / 2, y: shape.y }, // Left middle
-                        { x: shape.x + shape.width / 2, y: shape.y }, // Right middle
-                        { x: shape.x, y: shape.y - shape.height / 2 }, // Top middle
-                        { x: shape.x, y: shape.y + shape.height / 2 }  // Bottom middle
-                    ];
-                }else if (shape.type === 'circle') {
-                    shape.anchorPoints = [
-                        { x: shape.x, y: shape.y - shape.radius }, // Top
-                        { x: shape.x + shape.radius, y: shape.y }, // Right
-                        { x: shape.x, y: shape.y + shape.radius }, // Bottom
-                        { x: shape.x - shape.radius, y: shape.y }  // Left
-                    ];
-                } else if (shape.type === 'triangle') {
-                    shape.anchorPoints = [
-                        { x: shape.x, y: shape.y - shape.height / 2 }, // Top vertex
-                        { x: shape.x + shape.width / 2, y: shape.y + shape.height / 2 }, // Bottom right vertex
-                        { x: shape.x - shape.width / 2, y: shape.y + shape.height / 2 },  // Bottom left vertex
-                        { x: shape.x, y: shape.y + shape.height / 2 }// center point
-                    ];
-                } else if (shape.type === 'diamond') {
-                    shape.anchorPoints = [
-                        { x: shape.x, y: shape.y - shape.height / 2 }, // Top vertex
-                        { x: shape.x + shape.width / 2, y: shape.y }, // Right vertex
-                        { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom vertex
-                        { x: shape.x - shape.width / 2, y: shape.y }  // Left vertex
-                    ];
-                } else if (shape.type === "line"){
-                    shape.anchorPoints = [
-                        { x: shape.start.x, y: shape.start.y}, // Start point
-                        { x: shape.end.x, y: shape.end.y},// End point
-                        { x: shape.middle.x, y: shape.middle.y}, // middle 
-                    ];
-                    
+                if(closestPoint === 'start'){
+                    console.log(closestPoint);
+                    currentShape.start.x = mouseX;
+                    currentShape.start.y = mouseY;
+                }else if(closestPoint === 'middle'){
+                    currentShape.middle.x = mouseX;
+                    currentShape.middle.y = mouseY;
+                }else if(closestPoint === 'end'){
+                    currentShape.end.x = mouseX;
+                    currentShape.end.y = mouseY;
+                }else if(closestPoint === 'none'){
+                    // move entire arrow
+                    let deltaX = mouseX - dragOffsetX - currentShape.x;
+                    let deltaY = mouseY - dragOffsetY - currentShape.y;
+                        
+                    currentShape.x = mouseX - dragOffsetX;
+                    currentShape.y = mouseY - dragOffsetY;
+                    currentShape.start.x += deltaX;
+                    currentShape.start.y += deltaY;
+                    currentShape.middle.x += deltaX;
+                    currentShape.middle.y += deltaY;
+                    currentShape.end.x += deltaX;
+                    currentShape.end.y += deltaY;
                 }
-                
-            });
-            drawShapes();
-        }
+
+                // update anchor points
+                updateAnchorPoints(shapes);
+        
+                drawShapes();
+            }else{
+                let mouseX = e.clientX - canvas.getBoundingClientRect().left;
+                let mouseY = e.clientY - canvas.getBoundingClientRect().top;
+        
+
+
+                currentShape.x = mouseX - dragOffsetX;
+                currentShape.y = mouseY - dragOffsetY;
+
+
+                // update anchor points
+                updateAnchorPoints(shapes);
+
+                drawShapes();
+                }
+
+        } 
+
+        
     });
 
 
@@ -506,7 +518,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // if the user is not clicking anything
     canvas.addEventListener('mouseup', function (e) {
         isDragging = false;
-        selectedAnchorPoint = null;
     });
 
 
@@ -575,10 +586,9 @@ document.addEventListener('DOMContentLoaded', function () {
         middle: { x: 550, y: 500},
         end: { x: 600, y: 500},
         anchorPoints: [
-            { x: 500, y: 500}, // far left
-            { x: 550, y: 500 }, // middle 
-            //{ x: 560, y: 500 }, // middle right
-            { x: 600, y: 500} // far right
+            { x: 500, y: 500, type: 'start' }, // Label for start
+            { x: 550, y: 500, type: 'middle' }, // Label for middle
+            { x: 600, y: 500, type: 'end' } // Label for end
         ]
         });
         drawShapes();
