@@ -1,37 +1,158 @@
 * {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
-    display: flex;
     margin: 0;
     padding: 0;
-    color: #212529;
+    box-sizing: border-box;
+    overflow: visible;
 }
 
-.upper-nav-bar {
-    position: static;
+html,
+body {
     width: 100%;
-    top: 0;
-    height: 80px;
+    height: 100%;
+    display: flex;
+    background-color: #F4EDE5;
+    font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
+}
+
+/* start of upper navbar header styling */
+header {
+    width: 100%;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
     background-color: #9EABAE;
+    z-index: 2;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.40);
+
+ }
+ 
+ .upper-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+ }
+ 
+ .upper-navbar img {
+    width: 225px;
+    height: 100px;
+    margin-left: 20px;
+ }
+ 
+ nav {
+    float: right;
+    margin-right: 60px;
+ }
+ 
+ nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+ }
+ 
+ nav li {
+    margin-right: 20px;
+ }
+ 
+ nav t {
+    font-size: 25px;
+    margin-right: 15px;
+ }
+ 
+ .dropdown {
+    position: relative;
+    /* Add relative positioning to the dropdown container */
+ }
+ 
+ /* Update transition properties for smoother animation */
+ .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 35%);
+    opacity: 0;
+    border-radius: 15px;
+
+    transition: opacity 0.5s, transform 0.5s, display 0.5s;
+  }
+ /* Add a class to show the dropdown with animation */
+ .dropdown-content.show {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, 35%);
+  }
+ 
+ .dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    display: block;
+    text-decoration: none;
+    border-radius: 15px;
+    transition: background-color 0.5s ease;
+    /* Added transition for a smooth effect */
+ }
+
+ .icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+ }
+ 
+ /* No need for :hover, we'll handle it with JavaScript */
+ 
+ .dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 1s ease;
+    /* Add transition for a smooth effect */
+    border-radius: 15px;
+ 
+ }
+ 
+ .dropdown-content a:hover {
+    background-color: #f2f2f2;
+    /* Change background color on hover */
+    border-radius: 15px;
+ }
+ 
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    display: block;
+    text-decoration: none;
+    transition: background-color 1s ease;
+    /* Add transition for a smooth effect */
+    border-radius: 15px;
 
 }
 
-.logo {
-    display: inline-block;
-    vertical-align: top;
-    width: 250px;
-    height: 80px;
-    margin-left: 25px;
+.dropdown-content a:hover {
+    background-color: #f2f2f2;
+    /* Change background color on hover */
+    border-radius: 15px;
 }
 
-.left-nav-bar-outside {
-    position: fixed;
-    top: 80px;
+/*end of upper nav bar header styling*/
+
+.main-container {
+    position: absolute;
+    top: 100px;
     left: 0;
-    height: calc(100% - 80px);
+    height: calc(100% - 100px);
+    width: 100%;
+    display: flex;
+}
+
+.left-navbar-container {
+    position: relative;
+    height: 100%;
     width: 25vw;
     background-color: #0C234B;
     display: flex;
@@ -39,21 +160,80 @@ body {
     align-items: center;
 }
 
-.left-nav-bar-inside {
-    height: calc(100% - 25px);
-    width: calc(100% - 25px);
+.left-navbar {
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
     background-color: #AB0520;
+    border-radius: 25px;
+
 }
 
-.project-area {
-    position: fixed;
-    top: 80px;
-    left: 25vw;
-    height: calc(100% - 80px);
-    width: 75vw;
-    background-color: #e9d8c6;
-    overflow: auto;
+.left-navbar-insides {
+    padding: 20px;
+    text-align: start;
+    /* Center text in the container */
 }
+
+.left-navbar-insides ul {
+    list-style-type: none;
+    /* Remove default list styling */
+
+}
+
+.left-navbar-insides ul li {
+    margin-bottom: 10px;
+    /* Add margin to list items for spacing */
+}
+
+
+.resizer {
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    cursor: col-resize;
+    top: 0;
+    right: 0;
+    cursor: ew-resize;
+    background-color: #0C234B;
+}
+
+.project-card-container {
+    flex-grow: 1;
+    text-align: center;
+    overflow: auto;
+    /* Added this property for scrolling if needed */
+}
+
+/*Adding style to the buttons */
+.display-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 25px;
+    margin-right: 45px;
+}
+
+.btn {
+    margin-right: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 12px 16px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+.btn.active {
+    background-color: #666;
+    color: white;
+}
+
+/* this is the project card styling section */
 
 .project-image {
     height: calc(100% - 125px);
@@ -68,51 +248,30 @@ body {
 }
 
 .project-image img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 95%;
+    max-height: 95%;
+    border-radius: 25%;
+overflow: hidden;
 }
 
 .inside-image-box img {
     max-width: 100%;
     max-height: 100%;
-}
-
-.container {
-
-    position: relative;
+    border-radius: 50%;
 
 }
 
-/* original button styles   */
-.buttons {
-    position: sticky;
-    margin: 10px;
-    display: grid;
-    justify-content: center;
-    color: #000;
-}
-
-/* .buttons {
-    position: absolute;
-    background-color: #0C234B;
-    border-radius: 75%;
-    padding: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    cursor: grab;  
-    z-index: 1;
-    color: #ffffff;
-
-} */
-.buttons div {
+/* 
+.display-buttons div {
     margin: 0px 10px;
-    color: #ffffff;
+    color: #000000;
     cursor: pointer;
 
 }
 
-.buttons div>* {
+.display-buttons div>* {
     pointer-events: none;
-}
+} */
 
 
 .wrapper {
@@ -165,7 +324,8 @@ body {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    left: calc(100% + 20px); /* Adjust this value as needed */
+    left: calc(100% + 20px);
+    /* Adjust this value as needed */
     top: 50%;
     transform: translate(0, -50%);
     color: #000;
@@ -173,6 +333,7 @@ body {
     width: 150px;
     margin: 0px;
 }
+
 /* end of wrapper list styling */
 
 .wrapper .outside-image-box {
@@ -201,6 +362,7 @@ body {
     color: white;
 }
 
+/* how to make a drop down for a fab */
 .navCircle {
     position: absolute;
     top: 30%;
@@ -285,3 +447,6 @@ body {
 
     transform: rotate(135deg);
 }
+
+
+
