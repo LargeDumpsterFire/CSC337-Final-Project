@@ -10,29 +10,63 @@
 </head>
 
 <body>
-
-  <div class="upper-navbar-container">
-    <div class="upper-navbar">
-      <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
+  <header>
+    <div class="upper-navbar-container">
+      <div class="upper-navbar">
+        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
+        <nav>
+          <ul class="menu">
+            <li class="dropdown" id="cogDropdown">
+              <button type="button" title="settings" class="icon-button"><i class="fas fa-cog fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Settings 1</a>
+              </div>
+            </li>
+            <li class="dropdown" id="homeDropdown">
+              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Home 1</a>
+              </div>
+            </li>
+            <li class="dropdown" id="profileDropdown">
+              <button type="button" title="profileDropdown" class="icon-button"><t>Username</t><i class="fa-solid fa-user fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="./index.html">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-  </div>
+  </header>
   <div class="main-container">
     <div class="left-navbar-container">
       <div class="left-navbar">
         <div class="left-navbar-insides">
           <h2>New Project</h2>
           <ul>
-              <li><a href="./canvas.html">Canvas Page</a></li> <!-- Added a list item for the canvas page -->
+            <li><a href="./canvas.html">Canvas Page</a></li> <!-- Added a list item for the canvas page -->
           </ul>
           <h2>How to</h2>
           <ul>
-              <li><a href="">Home</a></li>
-              <li><a href="">Settings</a></li>
+            <li><a href="">Home</a></li>
+            <li><a href="">Settings</a></li>
           </ul>
         </div>
         <div class="resizer"></div>
       </div>
     </div>
+    <!--     <div class="navCircle">
+      <input type="checkbox" id="toggle-btn" title="Toggle Button" placeholder="Toggle Button">
+      <label for="toggle-btn"></label>
+      <div class="nav">
+        <div class="buttons">
+          <div class="list"><i class="fa fa-list fa-lg"></i></div>
+          <div class="grid"><i class="fa fa-th-large fa-lg"></i></div>
+        </div>
+      </div>
+    </div> -->
     <div class="project-card-container">
       <!-- <p>testing where the position is</p> -->
       <div class="display-buttons" id="buttonContainer">
