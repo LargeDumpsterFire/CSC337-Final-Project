@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Sample user projects
   const userProjects = [
     { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/diagram 2.png" },
     { name: "Project 3", description: "Description for Project 3", date: "2023-11-15", imageUrl: "./img/TeamLogo.png" },
     { name: "Project 4", description: "Description for Project 4", date: "2023-11-16", imageUrl: "./img/TeamLogo.png" },
     { name: "Project 5", description: "Description for Project 5", date: "2023-11-17", imageUrl: "./img/TeamLogo.png" },
@@ -152,11 +152,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Close dropdown and reset icon animations
         if (dropdownContent && dropdownContent.classList.contains('show')) {
           dropdownContent.classList.remove('show');
-          console.log('Dropdown content hidden');
+          //console.log('Dropdown content hidden');
         }
 
         if (icon) {
-          console.log('Resetting icon:', icon.className);
+          //console.log('Resetting icon:', icon.className);
           resetIcon(icon);
         }
       }
@@ -168,17 +168,17 @@ document.addEventListener("DOMContentLoaded", function () {
   dropdowns.forEach(function (dropdown) {
     dropdown.addEventListener('click', function (event) {
       event.stopPropagation();
-      console.log('Dropdown clicked');
+      //console.log('Dropdown clicked');
 
       // Reset previous active icon and close its dropdown
       if (activeIcon && activeIcon !== dropdown.querySelector('.dropdown i')) {
-        console.log('Resetting active icon');
+        //console.log('Resetting active icon');
         resetIcon(activeIcon);
 
         const prevDropdown = activeIcon.parentElement.parentElement;
         if (prevDropdown) {
           prevDropdown.querySelector('.dropdown-content').classList.remove('show');
-          console.log('Previous dropdown content hidden');
+          // console.log('Previous dropdown content hidden');
         }
       }
 
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const icon = this.querySelector('.dropdown i');
       if (icon) {
-        console.log('Icon clicked:', icon.className);
+        //console.log('Icon clicked:', icon.className);
         // Reset animations for clicked icon
         if (icon.classList.contains('fa-cog')) {
           animateIcon(icon, 'rotate(135deg)');
