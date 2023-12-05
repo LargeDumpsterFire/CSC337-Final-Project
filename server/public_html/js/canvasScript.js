@@ -34,7 +34,6 @@ function drawBackground(ctx) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-
 // wait for dom content to load
 document.addEventListener('DOMContentLoaded', function () {
     // set up our canvas
@@ -43,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let shapes = []; // store current shapes
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
-
 
     // Add an event listener for window resize
     window.addEventListener('resize', function() {
@@ -71,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 shape.x *= scaleX;
                 shape.y *= scaleY;
             }   
-
             updateAnchorPoints(shapes); 
         });
 
@@ -142,15 +139,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.moveTo(shape.end.x, shape.end.y);
             
                 // Draw the other side of the arrow head
-                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth), 
-                        shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
-            
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + 
+                                                            arrowWidth), 
+                          shape.end.y - arrowLength * Math.sin(angle + 
+                                                            arrowWidth));      
                 break;
         }
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-
 
         // to draw anchor points
         if(shape.anchorPoints) {
@@ -162,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
             });
         }
-
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
@@ -183,14 +179,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
     // Function to draw shapes and redraw all shapes when user moves them around
     function drawShapes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
         drawBackground(ctx);
         shapes.forEach(drawShape); // Redraw each shape
     }
-    
 
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
@@ -204,14 +198,12 @@ document.addEventListener('DOMContentLoaded', function () {
                y >= topY && y <= bottomY;
     }
 
-
     // Function to check if a point is inside a circle
     function isInsideCircle(shape, x, y) {
         let dx = x - shape.x;
         let dy = y - shape.y;
         return dx * dx + dy * dy <= shape.radius * shape.radius;
     }
-
 
     function isInsideDiamond(shape, x, y) {
         // Calculate the coordinates of the diamond's top, bottom, left, and right points
@@ -220,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let bottomY = shape.y + shape.height / 2;
         let leftX = shape.x - shape.width / 2;
         let rightX = shape.x + shape.width / 2;
-
     
         // Check if the point is inside the diamond by comparing the slopes
         if (
@@ -231,12 +222,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ) {
             return true;
         }
-    
-
-    
         return false;
     }
-    
 
     function isInsideTriangle(shape, x, y) {
         // Calculate the coordinates of the triangle's vertices
@@ -258,7 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Check if the point is inside the triangle using the areas
         return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
     }
-    
 
     function isOnArrow(arrow, mouseX, mouseY) {
         // Define grab margin
@@ -301,19 +287,11 @@ document.addEventListener('DOMContentLoaded', function () {
                isNearSegment(arrow.middle.x, arrow.middle.y, arrow.end.x, arrow.end.y);
     }
 
-
-
-
-
     // event listener for mouse clicks on shapes, also determines the location of the click
     canvas.addEventListener('mousedown', function (e) {
         let mouseX = e.clientX - canvas.getBoundingClientRect().left;
         let mouseY = e.clientY - canvas.getBoundingClientRect().top;
         let clickedInnerRect = false;
-
-
-
-
 
         // check for click on a text box
         shapes.forEach(function (shape) {
@@ -332,7 +310,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-
 
         // if not clicking in inner rectangle used for text
         // it will check if the users cursor is inside the shape
@@ -378,15 +355,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             });
-        
-
-
         }
-        
-
-
-    });
-        
+    });    
 
     // update anchor function
     function updateAnchorPoints(shapes){
@@ -427,13 +397,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     { x: shape.middle.x, y: shape.middle.y}, // middle 
                     //{ x: shape.x + 60, y: shape.y}, // middle right
                 ];
-            
             }
-        });
-                        
+        });                  
     }
-
-
 
     function distance(x1, y1, x2, y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -453,7 +419,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
-
                 // Calculate distances to start, middle, and end points
                 let distanceToStart = distance(mouseX, mouseY, currentShape.start.x, currentShape.start.y);
                 let distanceToMiddle = distance(mouseX, mouseY, currentShape.middle.x, currentShape.middle.y);
@@ -463,7 +428,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 let minDistance = Math.min(distanceToStart, distanceToMiddle, distanceToEnd);
 
                 // check which point to use cant figure it out
-
                 const threshold = 10;
                 let closestPoint;
                 if (distanceToStart <= threshold && minDistance === distanceToStart) {
@@ -475,8 +439,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     closestPoint = 'none'; // No point is near the mouse pointer
                 }
-    
-
 
                 if(closestPoint === 'start'){
                     currentShape.start.x = mouseX;
@@ -509,33 +471,23 @@ document.addEventListener('DOMContentLoaded', function () {
             }else{
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-        
-
 
                 currentShape.x = mouseX - dragOffsetX;
                 currentShape.y = mouseY - dragOffsetY;
-
 
                 // update anchor points
                 updateAnchorPoints(shapes);
 
                 drawShapes();
                 }
-
-        } 
-
-        
+        }   
     });
-
 
     // checks for non clicking and makes shapes non draggable
     // if the user is not clicking anything
     canvas.addEventListener('mouseup', function (e) {
         isDragging = false;
     });
-
-
-    
 
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
