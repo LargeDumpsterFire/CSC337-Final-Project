@@ -10,9 +10,7 @@
 
     IMPORTANT: 
     Import to img (smaller images)
-    Save to user/ mongo schema
     Arrows attach to shapes
-
 
     MAJOR:
     Z index for shapes (slider)
@@ -20,8 +18,8 @@
     Color changing RGB (slider)
     Remove shapes
 
-
-    
+    COMPLETED:
+    Save to user/ mongo schema
 */
 
 // set canvas size
@@ -559,4 +557,37 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         drawShapes();
       });
+
+    // Function to save canvas data
+    function saveCanvasData() {
+        // Gather canvas data to be saved
+        const canvas = document.getElementById('canvas');
+        const imageData = canvas.toDataURL(); 
+        // Get canvas image data (base64 encoded)
+
+        // Make request to save canvas data to server
+        fetch('/save-canvas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ imageData })
+        })
+        .then(response => {
+            // Handle the response after saving
+            if (response.ok) {
+                console.log('Canvas data saved successfully.');
+            } else {
+                console.error('Failed to save canvas data.');
+            }
+        })
+        .catch(error => {
+            console.error('Error while saving canvas data:', error);
+        });
+    }
+
+    // Save button needs to be implemented in the canvas.html file
+    document.getElementById('saveButton').addEventListener('click', () => {
+        saveCanvasData();
+    });
 });
