@@ -6,11 +6,19 @@
 
     diamond borders are too big for grabbing
 
-    ADDITIONS
+    ADDITIONS:
+
+    Need to create a save to user function that calls the stringify function and 
+    calls the createThumbnail function to successfully save both pieces we need
+    of the project for the user 
+
 
     IMPORTANT: 
-    Import to img (smaller images)
+    Save to user/ mongo schema
     Arrows attach to shapes
+
+    make anchor point appear on clicking a shape
+
 
     MAJOR:
     Z index for shapes (slider)
@@ -18,9 +26,50 @@
     Color changing RGB (slider)
     Remove shapes
 
-    COMPLETED:
-    Save to user/ mongo schema
+
+    TO DO LIST:
+    Copy this 
+      <header>
+    <div class="upper-navbar-container">
+      <div class="upper-navbar">
+        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
+        <nav>
+          <ul class="menu">
+            <li class="dropdown" id="cogDropdown">
+              <button type="button" title="settings" class="icon-button"><i class="fas fa-cog fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Settings 1</a>
+              </div>
+            </li>
+            <li class="dropdown" id="homeDropdown">
+              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Home 1</a>
+              </div>
+            </li>
+            <li class="dropdown" id="profileDropdown">
+              <button type="button" title="profileDropdown" class="icon-button"><t>Username</t><i class="fa-solid fa-user fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="./index.html">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  to html and use home script js for the funtionality
+
+
+
+    
 */
+
+const SNAP_THRESHOLD = 10;
+
+
 
 // set canvas size
 canvas.width = window.innerWidth;
