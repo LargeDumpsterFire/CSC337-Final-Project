@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
       {
           imageName: String, // Name to identify the image
           imageData: Buffer, // Buffer to store binary image data
-          imageType: String  // MIME type of the image
+          imageType: String,  // MIME type of the image
+          shapesData: String // JSON string to store shapes data
       }
   ]
 });
@@ -160,14 +161,15 @@ app.post('/save-canvas', async (req, res) => {
       const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
       const imageDataBuffer = Buffer.from(base64Data, 'base64');
 
-      // Create a new canvas image object with the generated name and image data
+      // Create new canvas object /w generated name and image data
       const newCanvasImage = {
           imageName: imageName,
           imageData: imageDataBuffer,
-          imageType: 'image/jpeg' // Change this based on the actual image type
+          imageType: 'image/jpeg',
+          shapesData: req.body.shapesData
       };
 
-      // Push the new canvas image to the user's canvasImages array
+      // Push the new canvas image to the user's  projects array
       currentUser.projects.push(newCanvasImage);
 
       // Save the updated user document
@@ -181,6 +183,23 @@ app.post('/save-canvas', async (req, res) => {
   }
 });
 
+app.get('/home/:userId/projects', requireAuth, async (req, res) => {
+  try {
+    const userId = req.params.userId; // Get the userId from request parameters
+    const user = await User.findById(userId); 
+    // Fetch the user data from MongoDB based on the userId
+
+    // If the user is found, send the user's projects data as a response
+    if (user) {
+      res.status(200).json(user.projects);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Route for the root path ("/") to serve home.html
 app.get('/', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
@@ -190,10 +209,6 @@ app.get('/', requireAuth, (req, res) => {
 // directly via URL
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, 'public_html', 'index.html'));
-});
-
-app.get('/home', requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
 });
 
 app.get('/canvas', requireAuth, (req, res) => {
