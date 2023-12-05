@@ -33,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public_html')));
 // Define the user schema, can be adjusted as needed.
 const userSchema = new mongoose.Schema({
     username: String,
+    email: String,
     password: String,
     projects: [
       {
@@ -72,47 +73,46 @@ const requireAuth = async (req, res, next) => {
   };
 
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
   
     try {
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ email });
   
       if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ success: false, 
-                                      message: 'Invalid credentials' });
+        return res.status(401).json({ success: false, message: 'Invalid credentials' });
       }
   
-      req.session.user = username; // Set the session user
+      req.session.user = email; // Set the session user
   
       res.send({ success: true });
     } catch (error) {
       console.error('Error logging in:', error);
       res.status(500).send({ success: false, message: 'Error logging in' });
     }
-  });  
+});
+  
 
 app.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
-  
-    try {
-      const existingUser = await User.findOne({ username });
-  
-      if (existingUser) {
-        return res.status(400).send({ success: false, 
-                                      message: 'Username already taken' });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({ username, password: hashedPassword });
-  
-      await newUser.save();
-  
-      res.send({ success: true });
-    } catch (error) {
-      console.error('Error signing up:', error);
-      res.status(500).send({ success: false, message: 'Error signing up' });
+  const { username, email, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+
+    if (existingUser) {
+      return res.status(400).send({ success: false, message: 'Username or Email already taken' });
     }
-  });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
+
+    await newUser.save();
+
+    res.send({ success: true });
+  } catch (error) {
+    console.error('Error signing up:', error);
+    res.status(500).send({ success: false, message: 'Error signing up' });
+  }
+});
 
 // Logout route
 app.get('/logout', (req, res) => {
