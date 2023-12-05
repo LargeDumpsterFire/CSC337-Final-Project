@@ -96,15 +96,21 @@ signInButton.addEventListener('click', () => {
 signUpForm.addEventListener('submit', handleSignUp);
 signInForm.addEventListener('submit', handleSignIn);
 
+const toggleSignupPassword = document.querySelector('#showSignupPassword');
+const toggleSignInPassword = document.querySelector('#showLoginPassword');
 
-function togglePasswordVisibility(checkbox, passwordClass) {
-    let passwordInputs = document.getElementsByClassName(passwordClass);
+const signupPassword = document.querySelector('#passwordSignup');
+const signInPassword = document.querySelector('#passwordLogin');
 
-    Array.from(passwordInputs).forEach(function (passwordInput) {
-        if (checkbox.checked) {
-            passwordInput.type = 'text';
-        } else {
-            passwordInput.type = 'password';
-        }
-    });
-};
+toggleSignupPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = signupPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    signupPassword.setAttribute('type', type);
+    
+});
+toggleSignInPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = signInPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    signInPassword.setAttribute('type', type);
+    
+});
