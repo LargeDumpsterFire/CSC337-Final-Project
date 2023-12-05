@@ -175,8 +175,9 @@ header {
 }
 
 .left-navbar-insides ul {
-    list-style-type: none;
     /* Remove default list styling */
+
+    list-style-type: none;
 
 }
 
@@ -195,6 +196,8 @@ header {
     right: 0;
     cursor: ew-resize;
     background-color: #0C234B;
+
+    
 }
 
 .project-card-container {
@@ -250,8 +253,8 @@ header {
 .project-image img {
     max-width: 95%;
     max-height: 95%;
-    border-radius: 25%;
-overflow: hidden;
+    overflow: hidden;
+    border-radius: 25px;
 }
 
 .inside-image-box img {
@@ -282,6 +285,18 @@ overflow: hidden;
     margin: 20px;
     color: white;
     place-items: center;
+
+}
+.wrapper div:hover {
+    transform: scale(1.1);
+    transition: transform 0.5s;
+    cursor: pointer;
+ 
+    
+}
+.wrapper .outside-image-box:hover {
+    background-color: #81d2eb;
+    transition: background-color 0.7s;
 }
 
 .wrapper.list {
@@ -289,7 +304,10 @@ overflow: hidden;
     place-items: start;
 
 }
-
+.wrapper.list .outside-image-box:hover {
+    background-color: #81d2eb;
+    transition: background-color 0.7s;
+}
 /* this section is the styling for the warpper.list so when the user changes to list it styles the boxes */
 .wrapper.list .outside-image-box {
     position: relative;
@@ -304,6 +322,7 @@ overflow: hidden;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+
 }
 
 .wrapper.list .project-image {

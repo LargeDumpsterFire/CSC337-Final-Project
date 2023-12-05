@@ -93,6 +93,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fetch and populate project cards upon successful login or home page load
   populateProjectCards(userId); 
+  // Sample user projects
+  const userProjects = [
+    { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/diagram2.png" },
+    { name: "Project 3", description: "Description for Project 3", date: "2023-11-15", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 4", description: "Description for Project 4", date: "2023-11-16", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 5", description: "Description for Project 5", date: "2023-11-17", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 6", description: "Description for Project 6", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 7", description: "Description for Project 7", date: "2023-11-19", imageUrl: "./img/TeamLogo.png" },
+    { name: "Project 8", description: "Description for Project 8", date: "2023-11-12", imageUrl: "./img/diagram2.png" },
+    { name: "Project 9", description: "Description for Project 9", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
+  ];
 
   // Function to create project cards
   function createProjectCard(project) {
@@ -162,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdownContent = dropdown.querySelector('.dropdown-content');
     if (dropdownContent) {
       dropdownContent.classList.toggle('show');
-      console.log('Dropdown content toggled');
+      //console.log('Dropdown content toggled');
     }
   }
 
@@ -186,11 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Close dropdown and reset icon animations
         if (dropdownContent && dropdownContent.classList.contains('show')) {
           dropdownContent.classList.remove('show');
-          //console.log('Dropdown content hidden');
+         // //console.log('Dropdown content hidden');
         }
 
         if (icon) {
-          //console.log('Resetting icon:', icon.className);
+         // //console.log('Resetting icon:', icon.className);
           resetIcon(icon);
         }
       }
@@ -212,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const prevDropdown = activeIcon.parentElement.parentElement;
         if (prevDropdown) {
           prevDropdown.querySelector('.dropdown-content').classList.remove('show');
-          // console.log('Previous dropdown content hidden');
+          //// console.log('Previous dropdown content hidden');
         }
       }
 
