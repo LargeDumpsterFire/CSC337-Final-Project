@@ -186,10 +186,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.moveTo(shape.end.x, shape.end.y);
             
                 // Draw the other side of the arrow head
-                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + 
-                                                            arrowWidth), 
-                          shape.end.y - arrowLength * Math.sin(angle + 
-                                                            arrowWidth));      
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth), 
+                        shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
+            
+                ctx.closePath();
+                ctx.stroke();
                 break;
         }
         ctx.closePath();
