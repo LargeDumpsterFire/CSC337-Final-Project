@@ -6,25 +6,16 @@
 
     diamond borders are too big for grabbing
 
-    ADDITIONS:
-
-    Need to create a save to user function that calls the stringify function and 
-    calls the createThumbnail function to successfully save both pieces we need
-    of the project for the user 
 
 
     IMPORTANT: 
-    Save to user/ mongo schema
     Arrows attach to shapes
-
     make anchor point appear on clicking a shape
 
 
     MAJOR:
-    Z index for shapes (slider)
     Resizing shapes (slider)
     Color changing RGB (slider)
-    Remove shapes
 
 
     TO DO LIST:
