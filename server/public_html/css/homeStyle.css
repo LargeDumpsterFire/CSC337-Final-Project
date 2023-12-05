@@ -290,7 +290,12 @@ header {
     transform: scale(1.1);
     transition: transform 0.5s;
     cursor: pointer;
+ 
     
+}
+.wrapper .outside-image-box:hover {
+    background-color: #81d2eb;
+    transition: background-color 0.7s;
 }
 
 .wrapper.list {
@@ -298,7 +303,10 @@ header {
     place-items: start;
 
 }
-
+.wrapper.list .outside-image-box:hover {
+    background-color: #81d2eb;
+    transition: background-color 0.7s;
+}
 /* this section is the styling for the warpper.list so when the user changes to list it styles the boxes */
 .wrapper.list .outside-image-box {
     position: relative;
