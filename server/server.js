@@ -11,7 +11,7 @@ const store = new MongoDBStore({
 });
 const bcrypt = require('bcrypt');
 const app = express();
-const port = 3000;
+const port = 80;
 
 mongoose.connect(connectStr, {
     useNewUrlParser: true,
@@ -34,7 +34,13 @@ app.use(express.static(path.join(__dirname, 'public_html')));
 const userSchema = new mongoose.Schema({
     username: String,
     password: String,
-    projects: {}
+    projects: [
+      {
+          imageName: String, // Name to identify the image
+          imageData: Buffer, // Buffer to store binary image data
+          imageType: String  // MIME type of the image
+      }
+  ]
 });
 
 const User = mongoose.model('User', userSchema);
@@ -107,6 +113,74 @@ app.post('/signup', async (req, res) => {
     }
   });
 
+// Logout route
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+      if (err) {
+          console.error('Error destroying session:', err);
+          res.status(500).send({ success: false, 
+                                 message: 'Error logging out' });
+      } else {
+          res.clearCookie('connect.sid'); // Clear the session cookie
+          delete req.session.user; // Unset the session user
+          res.redirect('./index.html'); 
+          // Redirect to login after logout
+      }
+  });
+});
+
+// Route to save canvas image to database
+app.post('/save-canvas', async (req, res) => {
+  try {
+      // Retrieve the current user from the database
+      const userId = req.user.id;
+      const currentUser = await User.findById(userId);
+
+      if (!currentUser) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      let imageName;
+      let isDuplicate = true;
+      while (isDuplicate) {
+          const randomNumber = Math.floor(1000 + Math.random() * 9000);
+          imageName = `Project${randomNumber}.jpeg`;
+
+          // Check if the generated name already exists in canvasImages array
+          const isExisting = currentUser.projects.some(image => image.imageName === imageName);
+          if (!isExisting) {
+              isDuplicate = false; // Exit the loop if the name is unique
+          }
+      }
+
+      // Get the imageData from the request body
+      const { imageData } = req.body;
+
+      // Convert base64 imageData to a Buffer object
+      const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
+      const imageDataBuffer = Buffer.from(base64Data, 'base64');
+
+      // Create a new canvas image object with the generated name and image data
+      const newCanvasImage = {
+          imageName: imageName,
+          imageData: imageDataBuffer,
+          imageType: 'image/jpeg' // Change this based on the actual image type
+      };
+
+      // Push the new canvas image to the user's canvasImages array
+      currentUser.projects.push(newCanvasImage);
+
+      // Save the updated user document
+      await currentUser.save();
+
+      // Respond with a success message
+      res.status(200).json({ success: true, message: 'Canvas image saved successfully' });
+  } catch (error) {
+      console.error('Error saving canvas image:', error);
+      res.status(500).json({ success: false, message: 'Failed to save canvas image' });
+  }
+});
+
 // Route for the root path ("/") to serve home.html
 app.get('/', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
@@ -136,22 +210,6 @@ app.get('/about', (req, res) => {
 
 app.get('/features', (req, res) => {
   res.sendFile(path.join(__dirname, 'public_html', 'features.html'));
-});
-
-// Logout route
-app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error('Error destroying session:', err);
-            res.status(500).send({ success: false, 
-                                   message: 'Error logging out' });
-        } else {
-            res.clearCookie('connect.sid'); // Clear the session cookie
-            delete req.session.user; // Unset the session user
-            res.redirect('public_html/index.html'); 
-            // Redirect to login after logout
-        }
-    });
 });
 
 
