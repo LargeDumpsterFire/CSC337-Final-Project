@@ -1,54 +1,54 @@
-//this code section is for the left navbar resizing by user 
-var resizer = document.querySelector(".resizer"),
+//this code section is for the left navbar resizing by user
+let resizer = document.querySelector(".resizer"),
   sidebar = document.querySelector(".left-navbar-container"),
   projectCardContainer = document.querySelector(".project-card-container");
 
 function initResizerFn(resizer, sidebar, projectCardContainer) {
+  let x, w;
 
-  var x, w;
+    function rs_mousedownHandler(e) {
 
-  function rs_mousedownHandler(e) {
+      x = e.clientX;
 
-    x = e.clientX;
+  let sbWidth = window.getComputedStyle(sidebar).width;
+      w = parseInt(sbWidth, 10);
 
-    var sbWidth = window.getComputedStyle(sidebar).width;
-    w = parseInt(sbWidth, 10);
-
-    document.addEventListener("mousemove", rs_mousemoveHandler);
-    document.addEventListener("mouseup", rs_mouseupHandler);
-  }
-
-  function rs_mousemoveHandler(e) {
-    var dx = e.clientX - x;
-
-    var cw = w + dx; // complete width
-
-    if (cw <= 700 && cw >= 250) {
-      sidebar.style.width = `${cw}px`;
-      projectCardContainer.style.left = `${cw + 30}px`; // Add the width of the .left-navbar-container and any additional spacing
+      document.addEventListener("mousemove", rs_mousemoveHandler);
+      document.addEventListener("mouseup", rs_mouseupHandler);
     }
-  }
 
-  function rs_mouseupHandler() {
-    document.removeEventListener("mouseup", rs_mouseupHandler);
-    document.removeEventListener("mousemove", rs_mousemoveHandler);
-  }
+    function rs_mousemoveHandler(e) {
+  let dx = e.clientX - x;
 
-  resizer.addEventListener("mousedown", rs_mousedownHandler);
+  let cw = w + dx; // complete width
+
+      if (cw <= 700 && cw >= 250) {
+        sidebar.style.width = `${cw}px`;
+        projectCardContainer.style.left = `${cw + 30}px`; // Add the width of the .left-navbar-container and any additional spacing
+      }
+    }
+
+    function rs_mouseupHandler() {
+      document.removeEventListener("mouseup", rs_mouseupHandler);
+      document.removeEventListener("mousemove", rs_mousemoveHandler);
+    }
+
+    resizer.addEventListener("mousedown", rs_mousedownHandler);
 }
 
 initResizerFn(resizer, sidebar, projectCardContainer);
 /* Optional: Add active class to the current button (highlight it) */
-var container = document.getElementById("buttonContainer");
-var btns = container.getElementsByClassName("btn");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function () {
-    var current = document.getElementsByClassName("active");
-    current[0].className = current[0].className.replace(" active", "");
-    this.className += " active";
+let container = document.getElementById("buttonContainer")
+let btns = container.getElementsByClassName("btn");
+for (let i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function () {
+  let current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
   });
 }
 //end of left navbar resizing code section
+
 //start of project cards section
 document.addEventListener("DOMContentLoaded", function () {
   // Sample user projects
