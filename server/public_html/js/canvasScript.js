@@ -152,22 +152,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.lineTo(shape.x + shape.width / 2, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
             case 'circle':
                 ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
             case 'triangle':
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
             case 'diamond':
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y);
                 ctx.lineTo(shape.x, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
                 break;
-            case "line":
+            case 'line':
                 ctx.moveTo(shape.start.x, shape.start.y);
                 ctx.lineTo(shape.middle.x, shape.middle.y)
                 ctx.lineTo(shape.end.x, shape.end.y);
@@ -193,9 +205,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
         }
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
 
         // to draw anchor points
         if(shape.anchorPoints) {
