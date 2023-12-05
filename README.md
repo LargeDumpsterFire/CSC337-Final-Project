@@ -8,14 +8,9 @@ We will be deploying both our server and mongoDB on the same droplet in DigitalO
    I do not intend to post the address on here just in case but it is accessible through ssh if anyone needs to get in there. DM me for login info and please 
    let me know what you're doing. 
 
-Things Josh is working on currently: 
-
 -server.js
-   - Sanitize and validate inputs
-     
--other .js scripts for page functionalities.
-   - about, features, settings
+   - Sanitize and validate inputs?
 
 -Implement HTTPS?  
--(if possible/time allows) Implement a logging system for security monitoring.       
--adjusting our license.
+-(if possible/time allows) Implement a logging system for security monitoring?     
+-adjusting our license?
