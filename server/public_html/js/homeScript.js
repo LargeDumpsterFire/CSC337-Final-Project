@@ -1,98 +1,56 @@
-//this code section is for the left navbar resizing by user
-let resizer = document.querySelector(".resizer"),
+//this code section is for the left navbar resizing by user 
+var resizer = document.querySelector(".resizer"),
   sidebar = document.querySelector(".left-navbar-container"),
   projectCardContainer = document.querySelector(".project-card-container");
 
 function initResizerFn(resizer, sidebar, projectCardContainer) {
-  let x, w;
 
-    function rs_mousedownHandler(e) {
+  var x, w;
 
-      x = e.clientX;
+  function rs_mousedownHandler(e) {
 
-  let sbWidth = window.getComputedStyle(sidebar).width;
-      w = parseInt(sbWidth, 10);
+    x = e.clientX;
 
-      document.addEventListener("mousemove", rs_mousemoveHandler);
-      document.addEventListener("mouseup", rs_mouseupHandler);
+    var sbWidth = window.getComputedStyle(sidebar).width;
+    w = parseInt(sbWidth, 10);
+
+    document.addEventListener("mousemove", rs_mousemoveHandler);
+    document.addEventListener("mouseup", rs_mouseupHandler);
+  }
+
+  function rs_mousemoveHandler(e) {
+    var dx = e.clientX - x;
+
+    var cw = w + dx; // complete width
+
+    if (cw <= 700 && cw >= 250) {
+      sidebar.style.width = `${cw}px`;
+      projectCardContainer.style.left = `${cw + 30}px`; // Add the width of the .left-navbar-container and any additional spacing
     }
+  }
 
-    function rs_mousemoveHandler(e) {
-  let dx = e.clientX - x;
+  function rs_mouseupHandler() {
+    document.removeEventListener("mouseup", rs_mouseupHandler);
+    document.removeEventListener("mousemove", rs_mousemoveHandler);
+  }
 
-  let cw = w + dx; // complete width
-
-      if (cw <= 700 && cw >= 250) {
-        sidebar.style.width = `${cw}px`;
-        projectCardContainer.style.left = `${cw + 30}px`; // Add the width of the .left-navbar-container and any additional spacing
-      }
-    }
-
-    function rs_mouseupHandler() {
-      document.removeEventListener("mouseup", rs_mouseupHandler);
-      document.removeEventListener("mousemove", rs_mousemoveHandler);
-    }
-
-    resizer.addEventListener("mousedown", rs_mousedownHandler);
+  resizer.addEventListener("mousedown", rs_mousedownHandler);
 }
 
 initResizerFn(resizer, sidebar, projectCardContainer);
 /* Optional: Add active class to the current button (highlight it) */
-let container = document.getElementById("buttonContainer")
-let btns = container.getElementsByClassName("btn");
-for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function () {
-  let current = document.getElementsByClassName("active");
-      current[0].className = current[0].className.replace(" active", "");
-      this.className += " active";
+var container = document.getElementById("buttonContainer");
+var btns = container.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function () {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
   });
 }
 //end of left navbar resizing code section
-
 //start of project cards section
 document.addEventListener("DOMContentLoaded", function () {
-  // Get the userId from the URL query parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('userId');
-
-  // Function to fetch user projects data from MongoDB
-  async function fetchUserProjects(userId) {
-    try {
-      const response = await fetch(`/home/${userId}/projects`);
-      if (response.ok) {
-        const projectsData = await response.json();
-        return projectsData;
-      } else {
-        console.error('Failed to fetch user projects');
-        return [];
-      }
-    } catch (error) {
-      console.error('Error fetching user projects:', error);
-      return [];
-    }
-  }
-
-  // Function to populate project cards based on user projects data
-  async function populateProjectCards(userId) {
-    const gridContainer = document.getElementById('wrapper');
-
-    // Fetch user projects data
-    const userProjects = await fetchUserProjects(userId);
-
-    // Check if projects data is available
-    if (userProjects.length > 0) {
-      userProjects.forEach(project => {
-        const card = createProjectCard(project); 
-        gridContainer.appendChild(card);
-      });
-    } else {
-      // Handle scenario when no projects are available
-      console.log('No projects found for the user');
-    }
-  }
-
-  // Fetch and populate project cards upon successful login or home page load
-  populateProjectCards(userId); 
   // Sample user projects
   const userProjects = [
     { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
@@ -142,10 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const gridContainer = document.getElementById("wrapper");
   userProjects.forEach(project => {
     const card = createProjectCard(project);
-    card.addEventListener('click', function() {
-      // Redirect the user to the canvas page with the project ID as a query parameter
-      window.location.href = `/canvas?projectId=${projectId}`;
-  });
     gridContainer.appendChild(card);
   });
 
@@ -198,11 +152,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Close dropdown and reset icon animations
         if (dropdownContent && dropdownContent.classList.contains('show')) {
           dropdownContent.classList.remove('show');
-         // //console.log('Dropdown content hidden');
+         // console.log('Dropdown content hidden');
         }
 
         if (icon) {
-         // //console.log('Resetting icon:', icon.className);
+         // console.log('Resetting icon:', icon.className);
           resetIcon(icon);
         }
       }
@@ -224,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const prevDropdown = activeIcon.parentElement.parentElement;
         if (prevDropdown) {
           prevDropdown.querySelector('.dropdown-content').classList.remove('show');
-          //// console.log('Previous dropdown content hidden');
+          //console.log('Previous dropdown content hidden');
         }
       }
 
