@@ -210,12 +210,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if(shape.anchorPoints) {
             shape.anchorPoints.forEach(point => {
                 ctx.beginPath();
-                //ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
                 ctx.arc(point.x, point.y, 5, 0, Math.PI * 2); // Draw small circle for anchor point
-                ctx.fill();
                 ctx.stroke();
             });
         }
+
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
