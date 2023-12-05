@@ -51,18 +51,48 @@ for (let i = 0; i < btns.length; i++) {
 
 //start of project cards section
 document.addEventListener("DOMContentLoaded", function () {
-  // Sample user projects
-  const userProjects = [
-    { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/diagram 2.png" },
-    { name: "Project 3", description: "Description for Project 3", date: "2023-11-15", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 4", description: "Description for Project 4", date: "2023-11-16", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 5", description: "Description for Project 5", date: "2023-11-17", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 6", description: "Description for Project 6", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 7", description: "Description for Project 7", date: "2023-11-19", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 8", description: "Description for Project 8", date: "2023-11-12", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 9", description: "Description for Project 9", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
-  ];
+  // Get the userId from the URL query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('userId');
+
+  // Function to fetch user projects data from MongoDB
+  async function fetchUserProjects(userId) {
+    try {
+      const response = await fetch(`/home/${userId}/projects`);
+      if (response.ok) {
+        const projectsData = await response.json();
+        return projectsData;
+      } else {
+        console.error('Failed to fetch user projects');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching user projects:', error);
+      return [];
+    }
+  }
+
+  // Function to populate project cards based on user projects data
+  async function populateProjectCards(userId) {
+    const gridContainer = document.getElementById('wrapper');
+
+    // Fetch user projects data
+    const userProjects = await fetchUserProjects(userId);
+
+    // Check if projects data is available
+    if (userProjects.length > 0) {
+      userProjects.forEach(project => {
+        const card = createProjectCard(project); 
+        gridContainer.appendChild(card);
+      });
+    } else {
+      // Handle scenario when no projects are available
+      console.log('No projects found for the user');
+    }
+  }
+
+  // Fetch and populate project cards upon successful login or home page load
+  populateProjectCards(userId); 
 
   // Function to create project cards
   function createProjectCard(project) {
@@ -100,6 +130,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const gridContainer = document.getElementById("wrapper");
   userProjects.forEach(project => {
     const card = createProjectCard(project);
+    card.addEventListener('click', function() {
+      // Redirect the user to the canvas page with the project ID as a query parameter
+      window.location.href = `/canvas?projectId=${projectId}`;
+  });
     gridContainer.appendChild(card);
   });
 
