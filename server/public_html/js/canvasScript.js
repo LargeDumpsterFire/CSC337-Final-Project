@@ -476,6 +476,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
+
                 // Calculate distances to start, middle, and end points
                 let distanceToStart = distance(mouseX, mouseY, currentShape.start.x, currentShape.start.y);
                 let distanceToMiddle = distance(mouseX, mouseY, currentShape.middle.x, currentShape.middle.y);
@@ -485,7 +486,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 let minDistance = Math.min(distanceToStart, distanceToMiddle, distanceToEnd);
 
                 // check which point to use cant figure it out
-                const threshold = 10;
+
+                const threshold = 20;
                 let closestPoint;
                 if (distanceToStart <= threshold && minDistance === distanceToStart) {
                     closestPoint = 'start';
@@ -496,6 +498,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     closestPoint = 'none'; // No point is near the mouse pointer
                 }
+    
+
 
                 if(closestPoint === 'start'){
                     currentShape.start.x = mouseX;
@@ -508,6 +512,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentShape.end.y = mouseY;
                 }else if(closestPoint === 'none'){
                     // move entire arrow
+                    
                     let deltaX = mouseX - dragOffsetX - currentShape.x;
                     let deltaY = mouseY - dragOffsetY - currentShape.y;
                         
@@ -521,14 +526,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentShape.end.y += deltaY;
                 }
 
+                
+
                 // update anchor points
                 updateAnchorPoints(shapes);
         
                 drawShapes();
-            }else{
+            }else{ // shape dragging for all other shapes
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-
+        
                 currentShape.x = mouseX - dragOffsetX;
                 currentShape.y = mouseY - dragOffsetY;
 
@@ -537,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 drawShapes();
                 }
-        }   
+        } 
     });
 
     // checks for non clicking and makes shapes non draggable
