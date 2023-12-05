@@ -457,10 +457,23 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });                  
     }
-
+    // function to calculate distance, helper function
     function distance(x1, y1, x2, y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
+
+    // event listener to check for click on delete button, if yes will delete current shape
+    document.getElementById('del').addEventListener('click', function () {
+        if (shapes.length > 0) {
+            shapes.pop(); // Remove the last shape from the array
+            drawShapes(); // Redraw the canvas
+        } else {
+            alert("No shapes to delete!");
+        }
+    });
+
+
+    
 
     // event listener for moving the shapes
     // checks if a user is moving the mouse
@@ -470,12 +483,18 @@ document.addEventListener('DOMContentLoaded', function () {
     canvas.addEventListener('mousemove', function (e) {
 
         if (isDragging) {
-
+            let clickedShapeIndex = -1;
+            shapes.forEach(function (shape, index) {
+                if(currentShape === shape){
+                    clickedShapeIndex = index;
+                }
+            });
+            console.log("Clicked Shape Index: " + clickedShapeIndex);
             if(currentShape.type === "line"){
 
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-
+                
 
                 // Calculate distances to start, middle, and end points
                 let distanceToStart = distance(mouseX, mouseY, currentShape.start.x, currentShape.start.y);
@@ -526,7 +545,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentShape.end.y += deltaY;
                 }
 
-                
+                if (clickedShapeIndex > -1) {
+                    // Move the clicked shape to the back of the array
+                    let clickedShape = shapes.splice(clickedShapeIndex, 1)[0];
+                    shapes.push(clickedShape);
+                }
 
                 // update anchor points
                 updateAnchorPoints(shapes);
@@ -536,6 +559,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
         
+                if (clickedShapeIndex > -1) {
+                    console.log("Before Splice, Shapes Length: " + shapes.length);
+                    // Move the clicked shape to the back of the array
+                    let clickedShape = shapes.splice(clickedShapeIndex, 1)[0];
+                    shapes.push(clickedShape);
+                    console.log("After Splice, Shapes Length: " + shapes.length);
+                }
                 currentShape.x = mouseX - dragOffsetX;
                 currentShape.y = mouseY - dragOffsetY;
 
@@ -544,6 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 drawShapes();
                 }
+
         } 
     });
 
