@@ -8,7 +8,6 @@
 const SNAP_THRESHOLD = 10;
 
 
-
 // set canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -166,8 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if(shape.anchorPoints) {
             shape.anchorPoints.forEach(point => {
                 ctx.beginPath();
-                ctx.strokeStyle = 'black';
-                //ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
                 ctx.arc(point.x, point.y, 5, 0, Math.PI * 2); // Draw small circle for anchor point
                 ctx.stroke();
             });
@@ -410,17 +408,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 ];
             } else if (shape.type === 'diamond') {
                 shape.anchorPoints = [
-                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top vertex
-                    { x: shape.x + shape.width / 2, y: shape.y }, // Right vertex
-                    { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom vertex
-                    { x: shape.x - shape.width / 2, y: shape.y }  // Left vertex
+                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top 
+                    { x: shape.x + shape.width / 2, y: shape.y }, // Right 
+                    { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom 
+                    { x: shape.x - shape.width / 2, y: shape.y }  // Left 
                 ];
             } else if (shape.type === "line"){
                 shape.anchorPoints = [
                     { x: shape.start.x, y: shape.start.y}, // Start point
                     { x: shape.end.x, y: shape.end.y},// End point
                     { x: shape.middle.x, y: shape.middle.y}, // middle 
-                    //{ x: shape.x + 60, y: shape.y}, // middle right
                 ];
             }
         });                  
@@ -536,11 +533,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
         
                 if (clickedShapeIndex > -1) {
-                    console.log("Before Splice, Shapes Length: " + shapes.length);
+                    //console.log("Before Splice, Shapes Length: " + shapes.length);
                     // Move the clicked shape to the back of the array
                     let clickedShape = shapes.splice(clickedShapeIndex, 1)[0];
                     shapes.push(clickedShape);
-                    console.log("After Splice, Shapes Length: " + shapes.length);
+                    //console.log("After Splice, Shapes Length: " + shapes.length);
                 }
                 currentShape.x = mouseX - dragOffsetX;
                 currentShape.y = mouseY - dragOffsetY;
@@ -650,25 +647,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-      function checkForSnapping(draggableElement) {
-        let closestDistance = SNAP_THRESHOLD;
-        let closestAnchor = null;
     
-        shapes.forEach(shape => {
-            shape.anchorPoints.forEach(anchor => {
-                let distance = distanceBetweenPoints(draggableElement.x, draggableElement.y, anchor.x, anchor.y);
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closestAnchor = anchor;
-                }
-            });
-        });
-    
-        if (closestAnchor) {
-            draggableElement.x = closestAnchor.x;
-            draggableElement.y = closestAnchor.y;
-        }
-    }
 
 
 
