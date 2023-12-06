@@ -59,31 +59,30 @@ const handleLogIn = async (event) => {
 
     try {
         const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(logInData)
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(logInData)
         });
-
-        if (response.ok) {
-            window.alert('Logged in successfully');
-            window.location.href = './home.html';
-        } else if (response.status === 401) {
-            console.error('Invalid credentials');
-            window.alert('Invalid credentials');
-            window.location.href = './index.html';
+    
+        const data = await response.json();
+    
+        if (data.success) {
+          window.alert('Logged in successfully');
+          window.location.href = `./home.html/${data.username}`;
         } else {
-            console.error('Error logging in');
-            window.alert('Error logging in');
-            window.location.href = './index.html';
+          // Handle login failure
+          console.error('Login failed:', data.message);
+          window.alert('Login failed');
+          window.location.href = './index.html'; // Redirect to the login page
         }
-    } catch (error) {
+      } catch (error) {
         console.error('Error logging in:', error);
         window.alert('Error logging in');
         window.location.href = './index.html';
-    }
-};
+      }
+    };
 
 // Event listeners
 signUpButton.addEventListener('click', () => {

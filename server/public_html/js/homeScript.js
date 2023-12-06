@@ -105,13 +105,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Populate the grid container with project cards
   const gridContainer = document.getElementById("wrapper");
-  fetch('/home/${username}')
+  fetch(`/home.html/${username}`)
     .then(response => response.json())
     .then(projectsData => {
+      if (Array.isArray(projectsData)) {
         projectsData.forEach(project => {
           const card = createProjectCard(project);
           gridContainer.appendChild(card);
         });
+      } else {
+        console.error('Invalid projects data format:', projectsData);
+      }
     })
     .catch(error => {
       console.error('Error fetching projects data:', error);
