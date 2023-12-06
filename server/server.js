@@ -18,13 +18,22 @@ mongoose.connect(connectStr, {
     useUnifiedTopology: true
 });
 
+store.on('error', function (error) {
+  console.error('Session store error:', error);
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
     secret: 'SuperSecretSpecialKeyThatNoOneWillEverGuess',
     resave: false,
-    saveUninitialized: false,
-    store: store
+    saveUninitialized: true,
+    store: store,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        secure: false,
+        httpOnly: true
+    }
 }));
 
 // Serve static files from the 'public_html' directory
@@ -77,12 +86,12 @@ app.post('/login', async (req, res) => {
 
   try {
       const user = await User.findOne({ username });
-
+      // Set the session user using 'username'
+      req.session.user = user.username;
       if (!user || !(await bcrypt.compare(password, user.password))) {
           return res.status(401).json({ success: false, 
                                         message: 'Invalid credentials' });
       }
-      req.session.username = username; // Set the session user using 'username'
       res.send({ success: true });
   } catch (error) {
       console.error('Error logging in:', error);
@@ -131,7 +140,7 @@ app.get('/logout', (req, res) => {
 // Route to save canvas image to database
 app.post('/save-canvas', requireAuth, async (req, res) => {
     try {
-        const username = req.session.username; // Retrieve username from session
+        const username = req.session.user; // Retrieve username from session
 
         if (!username) {
             return res.status(401).json({ success: false, message: 'User not authenticated' });

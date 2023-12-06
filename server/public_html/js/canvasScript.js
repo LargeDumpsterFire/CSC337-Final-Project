@@ -645,12 +645,6 @@ document.addEventListener('DOMContentLoaded', function () {
         drawShapes();
       });
 
-
-
-    
-
-
-
     // function to stringify shapes, to store in user
     // function getCanvasJson(shapes) {
     //     return JSON.stringify(shapes);
