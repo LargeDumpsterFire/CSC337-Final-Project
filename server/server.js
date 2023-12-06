@@ -18,13 +18,22 @@ mongoose.connect(connectStr, {
     useUnifiedTopology: true
 });
 
+store.on('error', function (error) {
+  console.error('Session store error:', error);
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
     secret: 'SuperSecretSpecialKeyThatNoOneWillEverGuess',
     resave: false,
-    saveUninitialized: false,
-    store: store
+    saveUninitialized: true,
+    store: store,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        secure: false,
+        httpOnly: true
+    }
 }));
 
 // Serve static files from the 'public_html' directory
@@ -77,12 +86,12 @@ app.post('/login', async (req, res) => {
 
   try {
       const user = await User.findOne({ username });
-
+      // Set the session user using 'username'
+      req.session.user = user.username;
       if (!user || !(await bcrypt.compare(password, user.password))) {
           return res.status(401).json({ success: false, 
                                         message: 'Invalid credentials' });
       }
-      req.session.username = username; // Set the session user using 'username'
       res.send({ success: true });
   } catch (error) {
       console.error('Error logging in:', error);
@@ -129,9 +138,9 @@ app.get('/logout', (req, res) => {
 });
 
 // Route to save canvas image to database
-app.post('/save-canvas', async (req, res) => {
+app.post('/save-canvas', requireAuth, async (req, res) => {
     try {
-        const username = req.session.username; // Retrieve username from session
+        const username = req.session.user; // Retrieve username from session
 
         if (!username) {
             return res.status(401).json({ success: false, message: 'User not authenticated' });
@@ -139,9 +148,11 @@ app.post('/save-canvas', async (req, res) => {
 
         // Retrieve the current user from the database using the username
         const currentUser = await User.findOne({ username });
+        console.log(currentUser); // For debugging
 
         if (!currentUser) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({ success: false, 
+                                          message: 'User not found' });
         }
 
         let imageName;
@@ -171,6 +182,7 @@ app.post('/save-canvas', async (req, res) => {
             imageType: 'image/jpeg',
             shapesData: req.body.shapesData
         };
+        console.log(newCanvasImage); // For debugging
 
         // Push the new canvas image to the user's projects array
         currentUser.projects.push(newCanvasImage);
@@ -179,7 +191,8 @@ app.post('/save-canvas', async (req, res) => {
         await currentUser.save();
 
         // Respond with a success message
-        res.status(200).json({ success: true, message: 'Canvas image saved successfully' });
+        res.status(200).json({ success: true, 
+                               message: 'Canvas image saved successfully' });
     } catch (error) {
         console.error('Error saving canvas image:', error);
         res.status(500).json({ success: false, message: 'Failed to save canvas image' });
