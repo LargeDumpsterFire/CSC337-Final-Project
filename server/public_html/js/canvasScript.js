@@ -1,11 +1,7 @@
 /*
     BUGS/NEEDS WORK:
 
-
-    diamond borders are too big for grabbing
-
-
-
+    anchor snapping
     
 */
 
@@ -36,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSize = document.getElementById('sizeRange').value; 
     const sliderProportion = 0.5;
     const defaultColor = "#FFFFFF";
+    const radius = 50;
+    const baseX = 500;
+    const baseY = 500;
 
     // Add an event listener for window resize
     window.addEventListener('resize', function() {
@@ -167,7 +166,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if(shape.anchorPoints) {
             shape.anchorPoints.forEach(point => {
                 ctx.beginPath();
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
+                ctx.strokeStyle = 'black';
+                //ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
                 ctx.arc(point.x, point.y, 5, 0, Math.PI * 2); // Draw small circle for anchor point
                 ctx.stroke();
             });
@@ -572,15 +572,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
-            type: 'rectangle', x: 500, y: 500, 
+            type: 'rectangle', x: baseX, y: baseY, 
             width: 120+(currentSize*sliderProportion), height: 80+(currentSize*sliderProportion), 
             color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 460 }, // top center
-                { x: 560, y: 500 }, // right middle
-                { x: 500, y: 540 }, // bottom center
-                { x: 440, y: 500 } // left middle
+                { x: baseX, y: 460 }, // top center
+                { x: 560, y: baseY }, // right middle
+                { x: baseX, y: 540 }, // bottom center
+                { x: 440, y: baseY } // left middle
             ]
         });
         drawShapes();
@@ -588,15 +588,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('circle').addEventListener('click', function () {
         shapes.push({
-            type: 'circle', x: 500, y: 500, 
-            radius: 50+(currentSize*sliderProportion), 
+            type: 'circle', x: baseX, y: baseY, 
+            radius: radius+(currentSize*sliderProportion), 
             color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 450 }, // top center
-                { x: 550, y: 500 }, // right middle
-                { x: 500, y: 550 }, // bottom center
-                { x: 450, y: 500 } // left middle
+                { x: baseX, y: baseY - radius }, // top center
+                { x: baseX + radius, y: baseY }, // right middle
+                { x: baseX, y: baseY + radius }, // bottom center
+                { x: baseX - radius, y: baseY } 
             ]
         });
         drawShapes();
@@ -604,15 +604,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, 
+            type: 'triangle', x: baseX, y: baseY, 
             width: 98+(currentSize*sliderProportion), height: 85+(currentSize*sliderProportion), 
             color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 460 }, // top center
+                { x: baseX, y: 460 }, // top center
                 { x: 545, y: 540 }, // right bottom
                 { x: 455, y: 540 }, // left bottom
-                { x: 500, y: 543 }, // bottom middle
+                { x: baseX, y: 543 }, // bottom middle
             ]
         });
         drawShapes();
@@ -620,15 +620,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('diamond').addEventListener('click', function () {
         shapes.push({
-            type: 'diamond', x: 500, y: 500, 
+            type: 'diamond', x: baseX, y: baseY, 
             width: 100+(currentSize*sliderProportion), height: 100+(currentSize*sliderProportion), 
             color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 450 }, // top center
-                { x: 550, y: 500 }, // right middle
-                { x: 500, y: 550 }, // bottom center
-                { x: 450, y: 500 } // left middle
+                { x: baseX, y: 450 }, // top center
+                { x: 550, y: baseY }, // right middle
+                { x: baseX, y: 550 }, // bottom center
+                { x: 450, y: baseY } // left middle
             ]
         });
         drawShapes();
@@ -647,6 +647,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         drawShapes();
       });
+
+
+
+      function checkForSnapping(draggableElement) {
+        let closestDistance = SNAP_THRESHOLD;
+        let closestAnchor = null;
+    
+        shapes.forEach(shape => {
+            shape.anchorPoints.forEach(anchor => {
+                let distance = distanceBetweenPoints(draggableElement.x, draggableElement.y, anchor.x, anchor.y);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestAnchor = anchor;
+                }
+            });
+        });
+    
+        if (closestAnchor) {
+            draggableElement.x = closestAnchor.x;
+            draggableElement.y = closestAnchor.y;
+        }
+    }
+
+
 
     // function to stringify shapes, to store in user
     // function getCanvasJson(shapes) {
