@@ -1,17 +1,17 @@
 //this code section is for the left navbar resizing by user 
-var resizer = document.querySelector(".resizer"),
+let resizer = document.querySelector(".resizer"),
   sidebar = document.querySelector(".left-navbar-container"),
   projectCardContainer = document.querySelector(".project-card-container");
 
 function initResizerFn(resizer, sidebar, projectCardContainer) {
 
-  var x, w;
+  let x, w;
 
   function rs_mousedownHandler(e) {
 
     x = e.clientX;
 
-    var sbWidth = window.getComputedStyle(sidebar).width;
+    let sbWidth = window.getComputedStyle(sidebar).width;
     w = parseInt(sbWidth, 10);
 
     document.addEventListener("mousemove", rs_mousemoveHandler);
@@ -19,9 +19,9 @@ function initResizerFn(resizer, sidebar, projectCardContainer) {
   }
 
   function rs_mousemoveHandler(e) {
-    var dx = e.clientX - x;
+    let dx = e.clientX - x;
 
-    var cw = w + dx; // complete width
+    let cw = w + dx; // complete width
 
     if (cw <= 700 && cw >= 250) {
       sidebar.style.width = `${cw}px`;
@@ -39,11 +39,11 @@ function initResizerFn(resizer, sidebar, projectCardContainer) {
 
 initResizerFn(resizer, sidebar, projectCardContainer);
 /* Optional: Add active class to the current button (highlight it) */
-var container = document.getElementById("buttonContainer");
-var btns = container.getElementsByClassName("btn");
-for (var i = 0; i < btns.length; i++) {
+let container = document.getElementById("buttonContainer");
+let btns = container.getElementsByClassName("btn");
+for (let i = 0; i < btns.length; i++) {
   btns[i].addEventListener("click", function () {
-    var current = document.getElementsByClassName("active");
+    let current = document.getElementsByClassName("active");
     current[0].className = current[0].className.replace(" active", "");
     this.className += " active";
   });
@@ -51,18 +51,21 @@ for (var i = 0; i < btns.length; i++) {
 //end of left navbar resizing code section
 //start of project cards section
 document.addEventListener("DOMContentLoaded", function () {
-  // Sample user projects
-  const userProjects = [
-    { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 3", description: "Description for Project 3", date: "2023-11-15", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 4", description: "Description for Project 4", date: "2023-11-16", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 5", description: "Description for Project 5", date: "2023-11-17", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 6", description: "Description for Project 6", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 7", description: "Description for Project 7", date: "2023-11-19", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 8", description: "Description for Project 8", date: "2023-11-12", imageUrl: "./img/TeamLogo.png" },
-    { name: "Project 9", description: "Description for Project 9", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
-  ];
+  const urlParams = new URLSearchParams(window.location.search);
+  const username = urlParams.get('username');
+
+  // // Sample user projects
+  // const userProjects = [
+  //   { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
+  //   { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/diagram2.png" },
+  //   { name: "Project 3", description: "Description for Project 3", date: "2023-11-15", imageUrl: "./img/TeamLogo.png" },
+  //   { name: "Project 4", description: "Description for Project 4", date: "2023-11-16", imageUrl: "./img/TeamLogo.png" },
+  //   { name: "Project 5", description: "Description for Project 5", date: "2023-11-17", imageUrl: "./img/TeamLogo.png" },
+  //   { name: "Project 6", description: "Description for Project 6", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
+  //   { name: "Project 7", description: "Description for Project 7", date: "2023-11-19", imageUrl: "./img/TeamLogo.png" },
+  //   { name: "Project 8", description: "Description for Project 8", date: "2023-11-12", imageUrl: "./img/diagram2.png" },
+  //   { name: "Project 9", description: "Description for Project 9", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
+  // ];
 
   // Function to create project cards
   function createProjectCard(project) {
@@ -93,16 +96,27 @@ document.addEventListener("DOMContentLoaded", function () {
     card.appendChild(projectImage);
     card.appendChild(textContainer);
 
+    card.addEventListener('click', () => {
+      window.location.href = `/canvas.html?projectId=${project.projectId}`;
+    });
+
     return card;
   }
 
   // Populate the grid container with project cards
   const gridContainer = document.getElementById("wrapper");
-  userProjects.forEach(project => {
-    const card = createProjectCard(project);
-    gridContainer.appendChild(card);
-  });
-
+  fetch('/home/${username}')
+    .then(response => response.json())
+    .then(projectsData => {
+        projectsData.forEach(project => {
+          const card = createProjectCard(project);
+          gridContainer.appendChild(card);
+        });
+    })
+    .catch(error => {
+      console.error('Error fetching projects data:', error);
+    });      
+  
   const wrapper = document.getElementById("wrapper");
 
   // Event listener for List and Grid view buttons
@@ -110,13 +124,97 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.target.matches(".btn.list")) {
       // List view
       event.preventDefault();
-      console.log("List view");
+      // console.log("List view");
       wrapper.classList.add("list");
     } else if (event.target.matches(".btn.grid")) {
       // Grid view
       event.preventDefault();
-      console.log("Grid view");
+      // console.log("Grid view");
       wrapper.classList.remove("list");
     }
+  });
+});
+// end of project cards section
+
+document.addEventListener("DOMContentLoaded", function () {
+  const dropdowns = document.querySelectorAll('.dropdown');
+  let activeIcon = null;
+
+  function toggleDropdown(dropdown) {
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    if (dropdownContent) {
+      dropdownContent.classList.toggle('show');
+      //console.log('Dropdown content toggled');
+    }
+  }
+
+  function resetIcon(icon) {
+    icon.style.transition = 'transform 0.5s ease-in-out';
+    icon.style.transform = 'rotate(0) scale(1)';
+  }
+
+  function animateIcon(icon, transformValue) {
+    icon.style.transition = 'transform 0.5s ease-in-out';
+    icon.style.transform = icon.style.transform === transformValue ? 'rotate(0) scale(1)' : transformValue;
+  }
+
+  function handleGlobalClick(event) {
+    dropdowns.forEach(function (dropdown) {
+      const dropdownContent = dropdown.querySelector('.dropdown-content');
+      const icon = dropdown.querySelector('.dropdown i');
+
+      // Check if the clicked target is outside the entire dropdown
+      if (!dropdown.contains(event.target)) {
+        // Close dropdown and reset icon animations
+        if (dropdownContent && dropdownContent.classList.contains('show')) {
+          dropdownContent.classList.remove('show');
+          // console.log('Dropdown content hidden');
+        }
+
+        if (icon) {
+          // console.log('Resetting icon:', icon.className);
+          resetIcon(icon);
+        }
+      }
+    });
+  }
+
+  window.addEventListener('click', handleGlobalClick);
+
+  dropdowns.forEach(function (dropdown) {
+    dropdown.addEventListener('click', function (event) {
+      event.stopPropagation();
+      //console.log('Dropdown clicked');
+
+      // Reset previous active icon and close its dropdown
+      if (activeIcon && activeIcon !== dropdown.querySelector('.dropdown i')) {
+        //console.log('Resetting active icon');
+        resetIcon(activeIcon);
+
+        const prevDropdown = activeIcon.parentElement.parentElement;
+        if (prevDropdown) {
+          prevDropdown.querySelector('.dropdown-content').classList.remove('show');
+          //console.log('Previous dropdown content hidden');
+        }
+      }
+
+      toggleDropdown(this);
+
+      const icon = this.querySelector('.dropdown i');
+      if (icon) {
+        //console.log('Icon clicked:', icon.className);
+        // Reset animations for clicked icon
+        if (icon.classList.contains('fa-cog')) {
+          animateIcon(icon, 'rotate(135deg)');
+        } else if (icon.classList.contains('fa-home')) {
+          animateIcon(icon, 'scale(1.5)');
+        } else if (icon.classList.contains('fa-user')) {
+          animateIcon(icon, 'scale(1.5)');
+        }
+
+        // Set the clicked icon as the active icon
+        activeIcon = icon;
+      }
+    });
   });
 });
