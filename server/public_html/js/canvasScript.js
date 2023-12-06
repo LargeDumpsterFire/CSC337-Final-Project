@@ -1,4 +1,9 @@
+/*  BUGS
 
+    Triangle's text box is slightly elevated. 
+
+    Mouse can sometimes jump between arrow grabbing and arrow anchor grabbing by accident
+*/
 
 
 
@@ -179,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
         
             if (shape.innerRect.text) {
-                ctx.font = '12px Arial';
+                ctx.font = '13px Helvetica';
                 ctx.fillStyle = 'black';
                 // Center text horizontally and vertically
                 let textWidth = ctx.measureText(shape.innerRect.text).width;
