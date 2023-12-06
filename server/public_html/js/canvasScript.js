@@ -4,8 +4,6 @@
 
     diamond borders are too big for grabbing
 
-    shape resizing
-
     text rectangle more centered
 
 
@@ -36,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
     let currentColor = document.getElementById('shapecolor').value; 
+    let currentSize = document.getElementById('sizeRange').value; 
+    const sliderProportion = 0.5;
     const defaultColor = "#FFFFFF";
 
     // Add an event listener for window resize
@@ -179,7 +179,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (shape.innerRect) {
             let innerX = shape.x-14;
             let innerY = shape.y-9;
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
+            ctx.strokeStyle = 'black';
+            //ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
         
             if (shape.innerRect.text) {
@@ -313,9 +314,9 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = shapes.length - 1; i >= 0; i--) {
             let shape = shapes[i];
             if (shape.innerRect) {
-                let innerX = shape.x;
-                let innerY = shape.y;
-    
+                let innerX = shape.x - shape.innerRect.width / 2;
+                let innerY = shape.y - shape.innerRect.height / 2;
+        
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
                     let text = prompt("Enter text here:");
@@ -420,6 +421,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });                  
     }
+
     // function to calculate distance, helper function
     function distance(x1, y1, x2, y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -547,14 +549,15 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
     });
 
-
-
     // event listener color input
     document.getElementById('shapecolor').addEventListener('input', function() {
         currentColor = this.value;
     });
 
-
+    // event listener size input
+    document.getElementById('sizeRange').addEventListener('input', function() {
+        currentSize = this.value;
+    });
 
     // checks for non clicking and makes shapes non draggable
     // if the user is not clicking anything
@@ -565,7 +568,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
-            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, color: currentColor,
+            type: 'rectangle', x: 500, y: 500, 
+            width: 120+(currentSize*sliderProportion), height: 80+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -579,7 +584,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('circle').addEventListener('click', function () {
         shapes.push({
-            type: 'circle', x: 500, y: 500, radius: 50, color: currentColor,
+            type: 'circle', x: 500, y: 500, 
+            radius: 50+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
@@ -593,7 +600,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, width: 98, height: 85, color: currentColor,
+            type: 'triangle', x: 500, y: 500, 
+            width: 98+(currentSize*sliderProportion), height: 85+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -607,7 +616,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('diamond').addEventListener('click', function () {
         shapes.push({
-            type: 'diamond', x: 500, y: 500, width: 100, height: 100, color: currentColor,
+            type: 'diamond', x: 500, y: 500, 
+            width: 100+(currentSize*sliderProportion), height: 100+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
