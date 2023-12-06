@@ -30,13 +30,15 @@
               </div>
             </li>
             <li class="dropdown" id="undoDropdown">
-              <button type="button" title="undo" class="icon-button"><i class="fa-sharp fa-solid fa-undo fa-2xl"></i></button>
+              <button type="button" title="undo" class="icon-button"><i
+                  class="fa-sharp fa-solid fa-undo fa-2xl"></i></button>
               <div class="dropdown-content">
                 <a href="#" id="undo">Undo</a>
               </div>
             </li>
             <li class="dropdown" id="redoDropdown">
-              <button type="button" title="redo" class="icon-button"><i class="fa-sharp fa-solid fa-redo fa-2xl"></i></button>
+              <button type="button" title="redo" class="icon-button"><i
+                  class="fa-sharp fa-solid fa-redo fa-2xl"></i></button>
               <div class="dropdown-content">
                 <a href="#" id="redo">Redo</a>
               </div>
@@ -52,7 +54,7 @@
             <li class="dropdown" id="homeDropdown">
               <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
               <div class="dropdown-content">
-                <a href="#">Home 1</a>
+                <a href="home.html">Home</a>
               </div>
             </li>
             <li class="dropdown" id="profileDropdown">
@@ -81,9 +83,12 @@
             <li id="triangle" class="shape">Triangle</li>
             <li id="diamond" class="shape">Diamond</li>
             <li id="line" class="line">Line</li>
-            <li id="slideSize" class="shape">Size: small->large</li>
-            <input type="range" min="-50" max="50" value="0" class="shape" id="sizeRange">
-            <li id="colorop" class="shape">Shape Color        
+            <li>
+              <label for="sizeRange">Size: small->large</label>
+              <input type="range" min="-50" max="50" value="0" class="shape" id="sizeRange">
+            </li>
+            <li>
+              <label for="shapecolor">Shape Color</label>
               <input id="shapecolor" name="Color Picker" type="color" class="shape">
             </li>
           </ul>
@@ -92,10 +97,10 @@
       </div>
     </div>
     <div class="canvas-container">
-    <canvas  class="canvas-style" id="canvas">
+      <canvas class="canvas-style" id="canvas">
 
-    </canvas>
-    <script src="./js/canvasScript.js"></script>
+      </canvas>
+      <script src="./js/canvasScript.js"></script>
 </body>
 </div>
 

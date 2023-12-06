@@ -94,7 +94,7 @@ nav t {
 .dropdown-content.show {
     display: block;
     opacity: 1;
-    transform: translate(-50%, 35%);
+    transform: translate(-50%, 60%);
 }
 
 .dropdown-content a {
@@ -152,7 +152,12 @@ nav t {
 .left-navbar-insides {
     padding: 20px;
     text-align: start;
-    /* Center text in the container */
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    list-style-type: none;
+    text-decoration: none;
 }
 
 .left-navbar-insides ul {
