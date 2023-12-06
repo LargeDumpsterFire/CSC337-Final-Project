@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'mongodb+srv://jc101:Bade24Mutt@cluster0.otwtwrn.mongodb.net/?retryWrites=true&w=majority';
+const connectStr = '';
 const store = new MongoDBStore({
     uri: connectStr,
     collection: 'sessions'
@@ -82,17 +82,16 @@ const requireAuth = async (req, res, next) => {
   };
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-      const user = await User.findOne({ username });
-      // Set the session user using 'username'
-      req.session.user = user.username;
+      const user = await User.findOne({ email });
       if (!user || !(await bcrypt.compare(password, user.password))) {
           return res.status(401).json({ success: false, 
                                         message: 'Invalid credentials' });
       }
-      res.send({ success: true });
+      req.session.user = user.username;
+      res.redirect('/home.html?username=${user.username}');
   } catch (error) {
       console.error('Error logging in:', error);
       res.status(500).send({ success: false, message: 'Error logging in' });
@@ -186,6 +185,7 @@ app.post('/save-canvas', requireAuth, async (req, res) => {
 
         // Push the new canvas image to the user's projects array
         currentUser.projects.push(newCanvasImage);
+        console.log(currentUser.projects); // For debugging
 
         // Save the updated user document
         await currentUser.save();
@@ -200,15 +200,22 @@ app.post('/save-canvas', requireAuth, async (req, res) => {
 });
 
 // Route to retrieve canvas images from database
-app.get('/home/:userId/projects', requireAuth, async (req, res) => {
+app.get('/home/:username', requireAuth, async (req, res) => {
   try {
-    const userId = req.params.userId; // Get the userId from request parameters
-    const user = await User.findById(userId); 
+    const userId = req.params.username;
+    const user = await User.findById(username); 
     // Fetch the user data from MongoDB based on the userId
 
     // If the user is found, send the user's projects data as a response
     if (user) {
-      res.status(200).json(user.projects);
+      const projectsData = user.projects.map(project => ({
+        imageName: project.imageName,
+        imageData: project.imageDataBuffer,
+        imageType: project.imageType,
+        shapesData: project.shapesData
+      }));
+
+      res.status(200).json(projectsData);
     } else {
       res.status(404).json({ message: 'User not found' });
     }
