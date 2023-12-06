@@ -4,7 +4,6 @@
 
     diamond borders are too big for grabbing
 
-    text rectangle more centered
 
 
     
@@ -179,8 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (shape.innerRect) {
             let innerX = shape.x-14;
             let innerY = shape.y-9;
-            ctx.strokeStyle = 'black';
-            //ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
         
             if (shape.innerRect.text) {
