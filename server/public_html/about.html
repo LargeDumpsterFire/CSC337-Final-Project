@@ -2,51 +2,64 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width" />
-  <title>DesignDex - About Us</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>DesignDex - Home</title>
   <link rel="stylesheet" href="./css/aboutStyle.css">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'>
-
 </head>
 
 <body>
-
-  <div class="upper-nav-bar">
-    <div>
-      <img class="logo" src="./img/team_logo_with_name_text.png" alt="Team Logo">
-      <ul class="nav-bar">
-        <li><a href="./home.html">Home</a></li>
-        <li><a href="./settings.html">Settings</a></li>
-      </ul>
-      <a></a>
+  <header>
+    <div class="upper-navbar-container">
+      <div class="upper-navbar">
+        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
+        <nav>
+          <ul class="menu">
+            <li class="dropdown" id="homeDropdown">
+              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="index.html">Home</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-  </div>
-
-  <div class="left-nav-bar-outside">
-    <div class="left-nav-bar-inside">
-      <h2>Team Members</h2>
-      <ul class="left-nav-bar">
-        <li><a href="#hunter">Hunter Copening</a></li>
-        <li><a href="#jacob">Jacob Cohen</a></li>
-        <li><a href="#josh">Josh Puhala</a></li>
-        <li><a href="#seth">Seth Perritt</a></li>
-      </ul>
+  </header>
+  <div class="main-container">
+    <div class="left-navbar-container">
+      <div class="left-navbar">
+        <div class="left-navbar-insides">
+          <h2>Team Members</h2>
+          <ul class="left-nav-bar">
+            <li><a href="#hunter">Hunter Copening</a></li>
+            <li><a href="#jacob">Jacob Cohen</a></li>
+            <li><a href="#josh">Josh Puhala</a></li>
+            <li><a href="#seth">Seth Perritt</a></li>
+          </ul>
+          <div class="resizer"></div>
+        </div>
+      </div>
 
     </div>
-  </div>
-  <section class="project-area">
-    <div class="aboutus-section">
-      <div id="hunter" class="profile-card">
+
+    <div class="member-cards-container">
+      <div class="profile-card" id="hunter">
         <div class="profile-img">
-          <img src="./img/hunter.jpg" alt="Hunter Copening">
+          <img src="./img/hunter.jpg" alt="Profile Image">
         </div>
         <div class="profile-text">
           <h1>Hunter Copening</h1>
-          <p>My short term goals include securing an internship for the coming summer. My long term goals include getting my bachelor's degree in Computer Science, starting my career in software engineering, and furthering my education beyond bachelors level..</p>
+          <p>My short term goals include securing an internship for the coming summer. My long term goals include
+            getting my bachelor's degree in Computer Science, starting my career in software engineering, and furthering
+            my education beyond bachelors level
+          </p>
         </div>
       </div>
       <br>
       <div class="row-border"></div>
+      <br>
       <div id="jacob" class="profile-card">
         <div class="profile-img">
           <img src="./img/jacob.jpg" alt="Jacob Cohen">
@@ -58,6 +71,7 @@
       </div>
       <br>
       <div class="row-border"></div>
+      <br>
       <div id="josh" class="profile-card">
         <div class="profile-img">
           <img src="./img/josh.jpg" alt="Josh Puhala">
@@ -69,19 +83,24 @@
       </div>
       <br>
       <div class="row-border"></div>
+      <br>
       <div id="seth" class="profile-card">
         <div class="profile-img">
           <img src="./img/seth.jpg" alt="Seth Perritt">
         </div>
         <br>
-    
+
         <div class="profile-text">
           <h1>Seth Perritt</h1>
           <p>Computer Science Student | Seeking Software Engineer Internships | University of Arizona.</p>
         </div>
-    </div>
-  </section>
+      </div>
 
+    </div>
+
+  </div>
+
+  <script src="./js/aboutScript.js"></script>
 </body>
 
 </html>
