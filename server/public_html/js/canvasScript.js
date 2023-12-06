@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // makes anchor points follow shape as its dragged
         shapes.forEach(function (shape) {
             if (shape.type === 'rectangle') {
-                //console.log("shape type identified at anchor point");
+                console.log("shape type identified at anchor point");
                 shape.anchorPoints = [
                     { x: shape.x - shape.width / 2, y: shape.y }, // Left middle
                     { x: shape.x + shape.width / 2, y: shape.y }, // Right middle
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     clickedShapeIndex = index;
                 }
             });
-            //console.log("Clicked Shape Index: " + clickedShapeIndex);
+            console.log("Clicked Shape Index: " + clickedShapeIndex);
             if(currentShape.type === "line"){
 
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
@@ -710,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Gather canvas data to be saved
         const canvas = document.getElementById('canvas');
         const jsonString = getCanvasJson(shapes);
-        const shapesData = JSON.stringify(JSON.parse(jsonString)); // Convert to JSON string
+        const shapesData = JSON.parse(jsonString);
         const imageData = canvas.toDataURL();
         // Get canvas image data (base64 encoded)
 
@@ -718,10 +718,10 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/save-canvas', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ imageData, shapesData }),
-          })
+            body: JSON.stringify({ imageData, shapesData })
+        })
             .then(response => {
                 // Handle the response after saving
                 if (response.ok) {
@@ -740,6 +740,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+//hunter do not touch
 //section below is for the dropdown menu for the canvas page
 document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll('.dropdown');

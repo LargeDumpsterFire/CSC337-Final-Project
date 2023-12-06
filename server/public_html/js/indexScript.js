@@ -1,15 +1,15 @@
 const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
+const logInButton = document.getElementById('login');
 const container = document.getElementById('container');
 const signUpForm = document.getElementById('signUpForm');
-const signInForm = document.getElementById('loginForm');
+const logInForm = document.getElementById('loginForm');
 
 // Function to handle sign-up form submission
 const handleSignUp = async (event) => {
     event.preventDefault();
     const username = document.getElementById('name-signup').value;
-    const email = document.getElementById('login').value;
-    const password = document.getElementById('signupPassword').value;
+    const email = document.getElementById('email-signup').value;
+    const password = document.getElementById('passwordSignup').value;
 
     const signUpData = {
         username: username,
@@ -27,6 +27,7 @@ const handleSignUp = async (event) => {
         });
 
         if (response.ok) {
+            window.alert('Signed up successfully!');
             window.location.href = './index.html';
         }
         else if (response.status === 400) {
@@ -46,12 +47,12 @@ const handleSignUp = async (event) => {
 };
 
 // Function to handle sign-in form submission
-const handleSignIn = async (event) => {
+const handleLogIn = async (event) => {
     event.preventDefault();
     const email = document.getElementById('email-login').value;
-    const password = document.getElementById('loginPassword').value;
+    const password = document.getElementById('passwordLogin').value;
 
-    const signInData = {
+    const logInData = {
         email: email,
         password: password
     };
@@ -62,7 +63,7 @@ const handleSignIn = async (event) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(signInData)
+            body: JSON.stringify(logInData)
         });
 
         if (response.ok) {
@@ -89,22 +90,27 @@ signUpButton.addEventListener('click', () => {
     container.classList.add('right-panel-active');
 });
 
-signInButton.addEventListener('click', () => {
+logInButton.addEventListener('click', () => {
     container.classList.remove('right-panel-active');
 });
 
 signUpForm.addEventListener('submit', handleSignUp);
-signInForm.addEventListener('submit', handleSignIn);
+logInForm.addEventListener('submit', handleLogIn);
 
+const toggleSignupPassword = document.querySelector('#showSignupPassword');
+const toggleLogInPassword = document.querySelector('#showLoginPassword');
 
-function togglePasswordVisibility(checkbox, passwordClass) {
-    let passwordInputs = document.getElementsByClassName(passwordClass);
+const signupPassword = document.querySelector('#passwordSignup');
+const logInPassword = document.querySelector('#passwordLogin');
 
-    Array.from(passwordInputs).forEach(function (passwordInput) {
-        if (checkbox.checked) {
-            passwordInput.type = 'text';
-        } else {
-            passwordInput.type = 'password';
-        }
-    });
-};
+toggleSignupPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = signupPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    signupPassword.setAttribute('type', type);
+    
+});
+toggleLogInPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = logInPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    logInPassword.setAttribute('type', type); 
+});

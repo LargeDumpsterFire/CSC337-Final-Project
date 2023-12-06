@@ -5,89 +5,217 @@
 
 */
 
-
-
-body, html {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+
+body,
+html {
     height: 100%;
     width: 100%;
     overflow: hidden;
-}
-
-body {
     display: flex;
     flex-direction: row;
+    font-family: 'Segoe UI', 'Arial Narrow', Arial, sans-serif;
+
 }
 
-#top-bar {
-    background-color: #0C234B;
-    color: white;
-    padding: 10px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
+/* start of upper navbar header styling */
+header {
+    width: 100%;
+    height: 100px;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000;
+    background-color: #9EABAE;
+    z-index: 2;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.40);
+
 }
 
-#top-bar button {
-    background-color: #555454;
-    color: white;
+.upper-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.upper-navbar img {
+    width: 225px;
+    height: 100px;
+    margin-left: 20px;
+}
+
+nav {
+    float: right;
+    margin-right: 60px;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav t {
+    font-size: 25px;
+    margin-right: 15px;
+}
+
+.dropdown {
+    position: relative;
+    /* Add relative positioning to the dropdown container */
+}
+
+/* Update transition properties for smoother animation */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 35%);
+    opacity: 0;
+    border-radius: 15px;
+
+    transition: opacity 0.5s, transform 0.5s, display 0.5s;
+}
+
+/* Add a class to show the dropdown with animation */
+.dropdown-content.show {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, 60%);
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    display: block;
+    text-decoration: none;
+    border-radius: 15px;
+    transition: background-color 0.5s ease;
+    /* Add transition for a smooth effect */
+}
+
+.icon-button {
+    background: none;
     border: none;
-    padding: 7px 15px;
-    margin: 0 5px;
     cursor: pointer;
 }
 
-#user-info {
+
+/* No need for :hover, we'll handle it with JavaScript */
+
+.dropdown-content a:hover {
+    background-color: #f2f2f2;
+    /* Change background color on hover */
+    border-radius: 15px;
+}
+
+.main-container {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    height: calc(100% - 100px);
+    width: 100%;
     display: flex;
+}
+
+.left-navbar-container {
+    position: relative;
+    height: 100%;
+    width: 25vw;
+    background-color: #0C234B;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-#user-info span {
-    margin-right: 10px;
+.left-navbar {
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
+    background-color: #AB0520;
+    border-radius: 25px;
+
 }
 
-#user-icon {
-    width: 24px;
-    height: 24px;
-    background-color: blue;
-    border-radius: 50%;
+.left-navbar-insides {
+    padding: 20px;
+    text-align: start;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+    list-style-type: none;
+    text-decoration: none;
 }
 
-#sidebar {
-    position: fixed; 
-    top: 100px;
-    left: 20px;
-    width: 200px; 
-    height: calc(100vh - 150px);
-    padding: 10px;
-    background-color: #9EABAE;
-    border-radius: 10px;
-    box-sizing: border-box;
-    z-index: 2; 
-    border: 5px solid #001C48;
+.left-navbar-insides ul {
+    /* Remove default list styling */
+
+    list-style-type: none;
+
 }
 
-.shape, .line {
+.left-navbar-insides ul li {
+    margin-bottom: 10px;
+    /* Add margin to list items for spacing */
+}
+
+.resizer {
+    width: 10px;
+    height: 100%;
+    position: absolute;
+    cursor: ew-resize;
+    top: 0;
+    right: 0;
+    background-color: #0C234B;
+    -webkit-user-select: none; /* Safari and other WebKit-based browsers */
+    -moz-user-select: none; /* Firefox */
+    user-select: none; /* Prevent text selection while dragging */
+}
+.canvas-container {
+    flex-grow: 1;
+    text-align: center;
+    overflow: auto;
+    /* Added this property for scrolling if needed */
+}
+.shape,
+.line {
     margin-bottom: 10px;
     padding: 5px;
     background-color: white;
     border: 1px solid #ccc;
     cursor: pointer;
 }
-
-#canvas {
-    position: relative; 
-    margin-top: 30px; 
-    padding: 20px;
+.canvas-style{
+    position: relative;
     background-color: #f0f0f0;
     box-sizing: border-box;
     width: 100vw;
-    height: 100vh; 
-    z-index: 1; 
+    height: 100vh;
+    z-index: 1;
+    flex-grow: 1;
+    overflow: auto;
+
 }
+/* #canvas {
+    position: relative;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    flex-grow: 1;
+    overflow: auto;
+} */
