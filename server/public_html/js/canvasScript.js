@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // restores previously deleted shape
-    document.getElementById('undoDropdown').addEventListener('click', function () {
+    document.getElementById('undo').addEventListener('click', function () {
         if (deletedShapes.length > 0) {
             let shapeToRestore = deletedShapes.pop(); // Get the last deleted shape
             shapes.push(shapeToRestore); // Restore it to the shapes array
