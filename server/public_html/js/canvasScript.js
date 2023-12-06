@@ -52,15 +52,10 @@
   </header>
 
   to html and use home script js for the funtionality
-
-
-
     
 */
 
 const SNAP_THRESHOLD = 10;
-
-
 
 // set canvas size
 canvas.width = window.innerWidth;
@@ -83,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let dragOffsetX, dragOffsetY, currentShape;
 
     // Add an event listener for window resize
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         let oldWidth = canvas.width;
         let oldHeight = canvas.height;
         // update canvas size
@@ -94,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
         shapes.forEach(shape => {
             let scaleX = canvas.width / oldWidth;
             let scaleY = canvas.height / oldHeight;
-    
-            if(shape.type === 'line'){
+
+            if (shape.type === 'line') {
                 // Scale the start, middle, and end points of the line
                 shape.start.x *= scaleX;
                 shape.start.y *= scaleY;
@@ -107,8 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Scale the position of other shapes using default x y
                 shape.x *= scaleX;
                 shape.y *= scaleY;
-            }   
-            updateAnchorPoints(shapes); 
+            }
+            updateAnchorPoints(shapes);
         });
 
         // Redraw the shapes
@@ -116,15 +111,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // allows user to download their diagram
-    document.getElementById('download').addEventListener('click', function(e) {
+    document.getElementById('download').addEventListener('click', function (e) {
         // convert canvas to data url
         let canvasUrl = canvas.toDataURL("image/jpeg", 1);
         const imgElement = document.createElement('a');
         imgElement.href = canvasUrl;
-    
+
         // name download
         imgElement.download = "diagram";
-    
+
         // click download button to download, dont want to download it twice
         imgElement.click();
         imgElement.remove();
@@ -181,25 +176,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Length and width of the arrow head
                 const arrowLength = 10; // Length of the arrow head lines
                 const arrowWidth = Math.PI / 8; // Width of the arrow head (in radians)
-            
+
                 // Draw one side of the arrow head
-                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle - arrowWidth), 
-                        shape.end.y - arrowLength * Math.sin(angle - arrowWidth));
-            
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle - arrowWidth),
+                    shape.end.y - arrowLength * Math.sin(angle - arrowWidth));
+
                 // Move back to the tip of the arrow
                 ctx.moveTo(shape.end.x, shape.end.y);
-            
+
                 // Draw the other side of the arrow head
-                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth), 
-                        shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
-            
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth),
+                    shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
+
                 ctx.closePath();
                 ctx.stroke();
                 break;
         }
 
         // to draw anchor points
-        if(shape.anchorPoints) {
+        if (shape.anchorPoints) {
             shape.anchorPoints.forEach(point => {
                 ctx.beginPath();
                 ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
@@ -211,18 +206,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
-            let innerX = shape.x-14;
-            let innerY = shape.y-9;
+            let innerX = shape.x - 14;
+            let innerY = shape.y - 9;
             ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
-        
+
             if (shape.innerRect.text) {
                 ctx.font = '12px Arial';
                 ctx.fillStyle = 'black';
                 // Center text horizontally and vertically
                 let textWidth = ctx.measureText(shape.innerRect.text).width;
                 let textX = shape.x - textWidth / 2;
-                let textY = shape.y + 6; 
+                let textY = shape.y + 6;
                 ctx.fillText(shape.innerRect.text, textX, textY);
             }
         }
@@ -238,13 +233,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
 
-        let rightX = shape.x + shape.width/2;
-        let leftX = shape.x - shape.width/2;
-        let topY = shape.y - shape.height/2;
-        let bottomY = shape.y + shape.height/2;
+        let rightX = shape.x + shape.width / 2;
+        let leftX = shape.x - shape.width / 2;
+        let topY = shape.y - shape.height / 2;
+        let bottomY = shape.y + shape.height / 2;
 
         return x >= leftX && x <= rightX &&
-               y >= topY && y <= bottomY;
+            y >= topY && y <= bottomY;
     }
 
     // Function to check if a point is inside a circle
@@ -261,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let bottomY = shape.y + shape.height / 2;
         let leftX = shape.x - shape.width / 2;
         let rightX = shape.x + shape.width / 2;
-    
+
         // Check if the point is inside the diamond by comparing the slopes
         if (
             (x >= leftX && x <= topX && y >= topY && y <= bottomY) ||
@@ -282,15 +277,15 @@ document.addEventListener('DOMContentLoaded', function () {
         let y2 = shape.y + shape.height / 2;
         let x3 = shape.x - shape.width / 2;
         let y3 = shape.y + shape.height / 2;
-        
+
         // Calculate the areas of the three triangles formed by the point (x, y) and the vertices
-        let area1 = Math.abs((x1*(y2-y) + x2*(y-y1) + x*(y1-y2)) / 2);
-        let area2 = Math.abs((x2*(y3-y) + x3*(y-y2) + x*(y2-y3)) / 2);
-        let area3 = Math.abs((x1*(y3-y) + x3*(y-y1) + x*(y1-y3)) / 2);
-        
+        let area1 = Math.abs((x1 * (y2 - y) + x2 * (y - y1) + x * (y1 - y2)) / 2);
+        let area2 = Math.abs((x2 * (y3 - y) + x3 * (y - y2) + x * (y2 - y3)) / 2);
+        let area3 = Math.abs((x1 * (y3 - y) + x3 * (y - y1) + x * (y1 - y3)) / 2);
+
         // Calculate the total area of the triangle
-        let totalArea = Math.abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2);
-        
+        let totalArea = Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
+
         // Check if the point is inside the triangle using the areas
         return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
     }
@@ -298,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function isOnArrow(arrow, mouseX, mouseY) {
         // Define grab margin
         const margin = 5;
-    
+
         // Function to check proximity to a line segment
         function isNearSegment(x1, y1, x2, y2) {
             // Calculate the distance from the point to the line segment
@@ -306,13 +301,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const B = mouseY - y1;
             const C = x2 - x1;
             const D = y2 - y1;
-    
+
             const dot = A * C + B * D;
             const lenSq = C * C + D * D;
             const param = lenSq !== 0 ? dot / lenSq : -1;
-    
+
             let xx, yy;
-    
+
             if (param < 0) {
                 xx = x1;
                 yy = y1;
@@ -323,17 +318,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 xx = x1 + param * C;
                 yy = y1 + param * D;
             }
-    
+
             const dx = mouseX - xx;
             const dy = mouseY - yy;
-    
+
             // Check if the distance is within the margin
             return (dx * dx + dy * dy) <= margin * margin;
         }
-    
+
         // Check both segments of the arrow
         return isNearSegment(arrow.start.x, arrow.start.y, arrow.middle.x, arrow.middle.y) ||
-               isNearSegment(arrow.middle.x, arrow.middle.y, arrow.end.x, arrow.end.y);
+            isNearSegment(arrow.middle.x, arrow.middle.y, arrow.end.x, arrow.end.y);
     }
 
     // event listener for mouse clicks on shapes, also determines the location of the click
@@ -364,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // it will check if the users cursor is inside the shape
         // by comparing x y coordinates
         // then if it is it will make the shape draggable
-        
+
         if (!clickedInnerRect) {
             shapes.forEach(function (shape) {
                 if (shape.type === "line") {
@@ -374,21 +369,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                }else if (shape.type === 'circle') { // for circles
+                } else if (shape.type === 'circle') { // for circles
                     if (isInsideCircle(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                }else if(shape.type === 'triangle'){
+                } else if (shape.type === 'triangle') {
                     if (isInsideTriangle(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                }else if(shape.type === 'diamond'){
+                } else if (shape.type === 'diamond') {
                     if (isInsideDiamond(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
@@ -405,10 +400,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
-    });    
+    });
 
     // update anchor function
-    function updateAnchorPoints(shapes){
+    function updateAnchorPoints(shapes) {
         // makes anchor points follow shape as its dragged
         shapes.forEach(function (shape) {
             if (shape.type === 'rectangle') {
@@ -418,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     { x: shape.x, y: shape.y - shape.height / 2 }, // Top middle
                     { x: shape.x, y: shape.y + shape.height / 2 }  // Bottom middle
                 ];
-            }else if (shape.type === 'circle') {
+            } else if (shape.type === 'circle') {
                 shape.anchorPoints = [
                     { x: shape.x, y: shape.y - shape.radius }, // Top
                     { x: shape.x + shape.radius, y: shape.y }, // Right
@@ -439,15 +434,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom vertex
                     { x: shape.x - shape.width / 2, y: shape.y }  // Left vertex
                 ];
-            } else if (shape.type === "line"){
+            } else if (shape.type === "line") {
                 shape.anchorPoints = [
-                    { x: shape.start.x, y: shape.start.y}, // Start point
-                    { x: shape.end.x, y: shape.end.y},// End point
-                    { x: shape.middle.x, y: shape.middle.y}, // middle 
+                    { x: shape.start.x, y: shape.start.y }, // Start point
+                    { x: shape.end.x, y: shape.end.y },// End point
+                    { x: shape.middle.x, y: shape.middle.y }, // middle 
                     //{ x: shape.x + 60, y: shape.y}, // middle right
                 ];
             }
-        });                  
+        });
     }
     // function to calculate distance, helper function
     function distance(x1, y1, x2, y2) {
@@ -484,16 +479,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isDragging) {
             let clickedShapeIndex = -1;
             shapes.forEach(function (shape, index) {
-                if(currentShape === shape){
+                if (currentShape === shape) {
                     clickedShapeIndex = index;
                 }
             });
             console.log("Clicked Shape Index: " + clickedShapeIndex);
-            if(currentShape.type === "line"){
+            if (currentShape.type === "line") {
 
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-                
+
 
                 // Calculate distances to start, middle, and end points
                 let distanceToStart = distance(mouseX, mouseY, currentShape.start.x, currentShape.start.y);
@@ -516,24 +511,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     closestPoint = 'none'; // No point is near the mouse pointer
                 }
-    
 
 
-                if(closestPoint === 'start'){
+
+                if (closestPoint === 'start') {
                     currentShape.start.x = mouseX;
                     currentShape.start.y = mouseY;
-                }else if(closestPoint === 'middle'){
+                } else if (closestPoint === 'middle') {
                     currentShape.middle.x = mouseX;
                     currentShape.middle.y = mouseY;
-                }else if(closestPoint === 'end'){
+                } else if (closestPoint === 'end') {
                     currentShape.end.x = mouseX;
                     currentShape.end.y = mouseY;
-                }else if(closestPoint === 'none'){
+                } else if (closestPoint === 'none') {
                     // move entire arrow
-                    
+
                     let deltaX = mouseX - dragOffsetX - currentShape.x;
                     let deltaY = mouseY - dragOffsetY - currentShape.y;
-                        
+
                     currentShape.x = mouseX - dragOffsetX;
                     currentShape.y = mouseY - dragOffsetY;
                     currentShape.start.x += deltaX;
@@ -552,12 +547,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // update anchor points
                 updateAnchorPoints(shapes);
-        
+
                 drawShapes();
-            }else{ // shape dragging for all other shapes
+            } else { // shape dragging for all other shapes
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-        
+
                 if (clickedShapeIndex > -1) {
                     console.log("Before Splice, Shapes Length: " + shapes.length);
                     // Move the clicked shape to the back of the array
@@ -572,9 +567,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateAnchorPoints(shapes);
 
                 drawShapes();
-                }
+            }
 
-        } 
+        }
     });
 
     // checks for non clicking and makes shapes non draggable
@@ -586,7 +581,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
-            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, 
+            type: 'rectangle', x: 500, y: 500, width: 120, height: 80,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -600,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('circle').addEventListener('click', function () {
         shapes.push({
-            type: 'circle', x: 500, y: 500, radius: 50, 
+            type: 'circle', x: 500, y: 500, radius: 50,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
@@ -614,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, width: 98, height: 85, 
+            type: 'triangle', x: 500, y: 500, width: 98, height: 85,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -628,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('diamond').addEventListener('click', function () {
         shapes.push({
-            type: 'diamond', x: 500, y: 500, width: 100, height: 100, 
+            type: 'diamond', x: 500, y: 500, width: 100, height: 100,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
@@ -641,18 +636,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById("line").addEventListener("click", function () {
-        shapes.push({ type: "line", x: 500, y: 500, width: 100, height: 100, 
-        start: { x: 500, y: 500},// keep track of start middle and end of arrow
-        middle: { x: 550, y: 500},
-        end: { x: 600, y: 500},
-        anchorPoints: [
-            { x: 500, y: 500, type: 'start' }, // Label for start
-            { x: 550, y: 500, type: 'middle' }, // Label for middle
-            { x: 600, y: 500, type: 'end' } // Label for end
-        ]
+        shapes.push({
+            type: "line", x: 500, y: 500, width: 100, height: 100,
+            start: { x: 500, y: 500 },// keep track of start middle and end of arrow
+            middle: { x: 550, y: 500 },
+            end: { x: 600, y: 500 },
+            anchorPoints: [
+                { x: 500, y: 500, type: 'start' }, // Label for start
+                { x: 550, y: 500, type: 'middle' }, // Label for middle
+                { x: 600, y: 500, type: 'end' } // Label for end
+            ]
         });
         drawShapes();
-      });
+    });
 
     // function to stringify shapes, to store in user
     // function getCanvasJson(shapes) {
@@ -682,14 +678,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to load canvas based on projectId
     function loadCanvasFromProjectId() {
-    // Get the projectId from the URL query parameters
+        // Get the projectId from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('projectId');
 
         fetch(`/canvas?projectId=${projectId}`)
             .then(response => response.json())
             .then(data => {
-                const shapesData = data.shapesData;             
+                const shapesData = data.shapesData;
                 // Clear existing shapes on canvas if needed
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 shapes = [];
@@ -704,7 +700,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error fetching shapes data:', error);
             });
-}
+    }
     // When the canvas page loads, call the function to load canvas based
     // on the projectId from the URL
     loadCanvasFromProjectId();
@@ -713,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function saveCanvasData() {
         // Gather canvas data to be saved
         const canvas = document.getElementById('canvas');
-        const imageData = canvas.toDataURL(); 
+        const imageData = canvas.toDataURL();
         // Get canvas image data (base64 encoded)
 
         // Make request to save canvas data to server
@@ -724,144 +720,159 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ imageData })
         })
-        .then(response => {
-            // Handle the response after saving
-            if (response.ok) {
-                console.log('Canvas data saved successfully.');
-            } else {
-                console.error('Failed to save canvas data.');
-            }
-        })
-        .catch(error => {
-            console.error('Error while saving canvas data:', error);
-        });
+            .then(response => {
+                // Handle the response after saving
+                if (response.ok) {
+                    console.log('Canvas data saved successfully.');
+                } else {
+                    console.error('Failed to save canvas data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error while saving canvas data:', error);
+            });
     }
 
     document.getElementById('saveDocument').addEventListener('click', () => {
         saveCanvasData();
     });
 });
+
+//hunter do not touch
 //section below is for the dropdown menu for the canvas page
 document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll('.dropdown');
     let activeIcon = null;
-  
+
     function toggleDropdown(dropdown) {
-      const dropdownContent = dropdown.querySelector('.dropdown-content');
-      if (dropdownContent) {
-        dropdownContent.classList.toggle('show');
-        //console.log('Dropdown content toggled');
-      }
-    }
-  
-    function resetIcon(icon) {
-      icon.style.transition = 'transform 0.5s ease-in-out';
-      icon.style.transform = 'rotate(0) scale(1)';
-    }
-  
-    function animateIcon(icon, transformValue) {
-      icon.style.transition = 'transform 0.5s ease-in-out';
-      icon.style.transform = icon.style.transform === transformValue ? 'rotate(0) scale(1)' : transformValue;
-    }
-  
-    function handleGlobalClick(event) {
-      dropdowns.forEach(function (dropdown) {
         const dropdownContent = dropdown.querySelector('.dropdown-content');
-        const icon = dropdown.querySelector('.dropdown i');
-  
-        // Check if the clicked target is outside the entire dropdown
-        if (!dropdown.contains(event.target)) {
-          // Close dropdown and reset icon animations
-          if (dropdownContent && dropdownContent.classList.contains('show')) {
-            dropdownContent.classList.remove('show');
-           // console.log('Dropdown content hidden');
-          }
-  
-          if (icon) {
-           // console.log('Resetting icon:', icon.className);
-            resetIcon(icon);
-          }
+        if (dropdownContent) {
+            dropdownContent.classList.toggle('show');
+            //console.log('Dropdown content toggled');
         }
-      });
     }
-  
+
+    function resetIcon(icon) {
+        icon.style.transition = 'transform 0.5s ease-in-out';
+        icon.style.transform = 'rotate(0) scale(1)';
+    }
+
+    function animateIcon(icon, transformValue) {
+        icon.style.transition = 'transform 0.5s ease-in-out';
+        icon.style.transform = icon.style.transform === transformValue ? 'rotate(0) scale(1)' : transformValue;
+    }
+
+    function handleGlobalClick(event) {
+        dropdowns.forEach(function (dropdown) {
+            const dropdownContent = dropdown.querySelector('.dropdown-content');
+            const icon = dropdown.querySelector('.dropdown i');
+
+            // Check if the clicked target is outside the entire dropdown
+            if (!dropdown.contains(event.target)) {
+                // Close dropdown and reset icon animations
+                if (dropdownContent && dropdownContent.classList.contains('show')) {
+                    dropdownContent.classList.remove('show');
+                    // console.log('Dropdown content hidden');
+                }
+
+                if (icon) {
+                    // console.log('Resetting icon:', icon.className);
+                    resetIcon(icon);
+                }
+            }
+        });
+    }
+
     window.addEventListener('click', handleGlobalClick);
-  
+
     dropdowns.forEach(function (dropdown) {
-      dropdown.addEventListener('click', function (event) {
-        event.stopPropagation();
-        //console.log('Dropdown clicked');
-  
-        // Reset previous active icon and close its dropdown
-        if (activeIcon && activeIcon !== dropdown.querySelector('.dropdown i')) {
-          //console.log('Resetting active icon');
-          resetIcon(activeIcon);
-  
-          const prevDropdown = activeIcon.parentElement.parentElement;
-          if (prevDropdown) {
-            prevDropdown.querySelector('.dropdown-content').classList.remove('show');
-            //console.log('Previous dropdown content hidden');
-          }
-        }
-  
-        toggleDropdown(this);
-  
-        const icon = this.querySelector('.dropdown i');
-        if (icon) {
-          //console.log('Icon clicked:', icon.className);
-          // Reset animations for clicked icon
-          if (icon.classList.contains('fa-cog')) {
-            animateIcon(icon, 'rotate(135deg)');
-          } else if (icon.classList.contains('fa-home')) {
-            animateIcon(icon, 'scale(1.5)');
-          }
-  
-          // Set the clicked icon as the active icon
-          activeIcon = icon;
-        }
-      });
+        dropdown.addEventListener('click', function (event) {
+            event.stopPropagation();
+            //console.log('Dropdown clicked');
+
+            // Reset previous active icon and close its dropdown
+            if (activeIcon && activeIcon !== dropdown.querySelector('.dropdown i')) {
+                //console.log('Resetting active icon');
+                resetIcon(activeIcon);
+
+                const prevDropdown = activeIcon.parentElement.parentElement;
+                if (prevDropdown) {
+                    prevDropdown.querySelector('.dropdown-content').classList.remove('show');
+                    //console.log('Previous dropdown content hidden');
+                }
+            }
+
+            toggleDropdown(this);
+
+            const icon = this.querySelector('.dropdown i');
+            if (icon) {
+                //console.log('Icon clicked:', icon.className);
+                // Reset animations for clicked icon
+                if (icon.classList.contains('fa-cog')) {
+                    animateIcon(icon, 'rotate(135deg)');
+                } else if (icon.classList.contains('fa-home')) {
+                    animateIcon(icon, 'scale(1.5)');
+                } else if (icon.classList.contains('fa-user')) {
+                    animateIcon(icon, 'scale(1.5)');
+                } else if (icon.classList.contains('fa-undo')) {
+                    animateIcon(icon, 'rotate(-65deg)');
+                } else if (icon.classList.contains('fa-redo')) {
+                    animateIcon(icon, 'rotate(65deg)');
+                } else if (icon.classList.contains('fa-trash')) {
+                    animateIcon(icon, 'scale(1.5)');
+                } else if (icon.classList.contains('fa-floppy-disk')) {
+                    animateIcon(icon, 'scale(1.5)');
+                } else if (icon.classList.contains('fa-download')) {
+                    animateIcon(icon, 'scale(1.5)');
+                }
+
+                // Set the clicked icon as the active icon
+                activeIcon = icon;
+            }
+        });
     });
-  });
+});
 //this code section is for the left navbar resizing by user 
 var resizer = document.querySelector(".resizer"),
-  sidebar = document.querySelector(".left-navbar-container"),
-  projectCardContainer = document.querySelector(".project-card-container");
+    sidebar = document.querySelector(".left-navbar-container"),
+    canvasContainer = document.querySelector(".canvas-container");
 
-function initResizerFn(resizer, sidebar, projectCardContainer) {
+function initResizerFn(resizer, sidebar, canvasContainer) {
 
-  var x, w;
+    var x, w;
 
-  function rs_mousedownHandler(e) {
+    function rs_mousedownHandler(e) {
 
-    x = e.clientX;
+        x = e.clientX;
 
-    var sbWidth = window.getComputedStyle(sidebar).width;
-    w = parseInt(sbWidth, 10);
+        var sbWidth = window.getComputedStyle(sidebar).width;
+        w = parseInt(sbWidth, 10);
 
-    document.addEventListener("mousemove", rs_mousemoveHandler);
-    document.addEventListener("mouseup", rs_mouseupHandler);
-  }
-
-  function rs_mousemoveHandler(e) {
-    var dx = e.clientX - x;
-
-    var cw = w + dx; // complete width
-
-    if (cw <= 450 && cw >= 250) {
-      sidebar.style.width = `${cw}px`;
-      projectCardContainer.style.left = `${cw + 30}px`; // Add the width of the .left-navbar-container and any additional spacing
+        document.addEventListener("mousemove", rs_mousemoveHandler);
+        document.addEventListener("mouseup", rs_mouseupHandler);
     }
-  }
 
-  function rs_mouseupHandler() {
-    document.removeEventListener("mouseup", rs_mouseupHandler);
-    document.removeEventListener("mousemove", rs_mousemoveHandler);
-  }
+    function rs_mousemoveHandler(e) {
+        var dx = e.clientX - x;
 
-  resizer.addEventListener("mousedown", rs_mousedownHandler);
+        var cw = w + dx; // complete width
+
+        if (cw <= 500 && cw >= 250) {
+            sidebar.style.width = `${cw}px`;
+            // Add the width of the .left-navbar-container and any additional spacing
+            canvasContainer.style.left = `${cw + 100}px`;
+        }
+    }
+
+    function rs_mouseupHandler() {
+        document.removeEventListener("mouseup", rs_mouseupHandler);
+        document.removeEventListener("mousemove", rs_mousemoveHandler);
+    }
+
+    resizer.addEventListener("mousedown", rs_mousedownHandler);
 }
 
-initResizerFn(resizer, sidebar, projectCardContainer);
+initResizerFn(resizer, sidebar, canvasContainer);
 /* Optional: Add active class to the current button (highlight it) */
-
+//end of the do not touch button
 //end of left navbar resizing code section  

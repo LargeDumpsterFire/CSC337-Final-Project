@@ -152,11 +152,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Close dropdown and reset icon animations
         if (dropdownContent && dropdownContent.classList.contains('show')) {
           dropdownContent.classList.remove('show');
-         // console.log('Dropdown content hidden');
+          // console.log('Dropdown content hidden');
         }
 
         if (icon) {
-         // console.log('Resetting icon:', icon.className);
+          // console.log('Resetting icon:', icon.className);
           resetIcon(icon);
         }
       }
@@ -191,6 +191,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (icon.classList.contains('fa-cog')) {
           animateIcon(icon, 'rotate(135deg)');
         } else if (icon.classList.contains('fa-home')) {
+          animateIcon(icon, 'scale(1.5)');
+        } else if (icon.classList.contains('fa-user')) {
           animateIcon(icon, 'scale(1.5)');
         }
 
