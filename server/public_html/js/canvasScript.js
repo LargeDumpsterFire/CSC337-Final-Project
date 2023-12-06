@@ -1,59 +1,11 @@
 /*
     BUGS/NEEDS WORK:
 
-    When you click on a text box and two shape's text boxes are
-    over eachother it will click both
-
     diamond borders are too big for grabbing
 
+    shape resizing
 
-
-    IMPORTANT: 
-    Arrows attach to shapes
-    make anchor point appear on clicking a shape
-
-
-    MAJOR:
-    Resizing shapes (slider)
-    Color changing RGB (slider)
-
-
-    TO DO LIST:
-    Copy this 
-      <header>
-    <div class="upper-navbar-container">
-      <div class="upper-navbar">
-        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
-        <nav>
-          <ul class="menu">
-            <li class="dropdown" id="cogDropdown">
-              <button type="button" title="settings" class="icon-button"><i class="fas fa-cog fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Settings 1</a>
-              </div>
-            </li>
-            <li class="dropdown" id="homeDropdown">
-              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Home 1</a>
-              </div>
-            </li>
-            <li class="dropdown" id="profileDropdown">
-              <button type="button" title="profileDropdown" class="icon-button"><t>Username</t><i class="fa-solid fa-user fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="./index.html">Logout</a>
-              </div>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  to html and use home script js for the funtionality
-
-
+    text rectangle more centered
 
     
 */
@@ -81,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let deletedShapes = [];
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
+    let currentColor = document.getElementById('shapecolor').value; 
+    const defaultColor = "#FFFFFF";
 
     // Add an event listener for window resize
     window.addEventListener('resize', function() {
@@ -132,14 +86,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to draw a specific shape
     function drawShape(shape) {
-        ctx.fillStyle = 'white';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
-        ctx.beginPath();
+
 
         // depending on shape we will draw it a different way
         switch (shape.type) {
             case 'rectangle':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.moveTo(shape.x - shape.width / 2, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
@@ -149,12 +104,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
             case 'circle':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();
                 break;
             case 'triangle':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
@@ -163,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
             case 'diamond':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y);
                 ctx.lineTo(shape.x, shape.y + shape.height / 2);
@@ -172,6 +133,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
             case 'line':
+                ctx.fillStyle = defaultColor;
+                ctx.beginPath();
                 ctx.moveTo(shape.start.x, shape.start.y);
                 ctx.lineTo(shape.middle.x, shape.middle.y)
                 ctx.lineTo(shape.end.x, shape.end.y);
@@ -197,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
         }
+
 
         // to draw anchor points
         if(shape.anchorPoints) {
@@ -240,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let rightX = shape.x + shape.width/2;
         let leftX = shape.x - shape.width/2;
-        let topY = shape.y - shape.height/2;
+        let topY = shape.y - shape.height/2;s
         let bottomY = shape.y + shape.height/2;
 
         return x >= leftX && x <= rightX &&
@@ -343,11 +307,14 @@ document.addEventListener('DOMContentLoaded', function () {
         let clickedInnerRect = false;
 
         // check for click on a text box
-        shapes.forEach(function (shape) {
+        // iterate through shapes to find individual inner rectangle
+        // to avoid double clicking overlayed shapes
+        for (let i = shapes.length - 1; i >= 0; i--) {
+            let shape = shapes[i];
             if (shape.innerRect) {
                 let innerX = shape.x;
                 let innerY = shape.y;
-
+    
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
                     let text = prompt("Enter text here:");
@@ -356,9 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         drawShapes();
                     }
                     clickedInnerRect = true;
+                    break; // Break the loop once the topmost shape is found and handled
                 }
             }
-        });
+        }
 
         // if not clicking in inner rectangle used for text
         // it will check if the users cursor is inside the shape
@@ -573,9 +541,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 drawShapes();
                 }
-
         } 
     });
+
+
+
+    // event listener color input
+    document.getElementById('shapecolor').addEventListener('input', function() {
+        currentColor = this.value;
+    });
+
+
 
     // checks for non clicking and makes shapes non draggable
     // if the user is not clicking anything
@@ -586,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
-            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, 
+            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -600,7 +576,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('circle').addEventListener('click', function () {
         shapes.push({
-            type: 'circle', x: 500, y: 500, radius: 50, 
+            type: 'circle', x: 500, y: 500, radius: 50, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
@@ -614,7 +590,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, width: 98, height: 85, 
+            type: 'triangle', x: 500, y: 500, width: 98, height: 85, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -628,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('diamond').addEventListener('click', function () {
         shapes.push({
-            type: 'diamond', x: 500, y: 500, width: 100, height: 100, 
+            type: 'diamond', x: 500, y: 500, width: 100, height: 100, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
