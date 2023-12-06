@@ -1,59 +1,11 @@
 /*
     BUGS/NEEDS WORK:
 
-    When you click on a text box and two shape's text boxes are
-    over eachother it will click both
-
     diamond borders are too big for grabbing
 
+    shape resizing
 
-
-    IMPORTANT: 
-    Arrows attach to shapes
-    make anchor point appear on clicking a shape
-
-
-    MAJOR:
-    Resizing shapes (slider)
-    Color changing RGB (slider)
-
-
-    TO DO LIST:
-    Copy this 
-      <header>
-    <div class="upper-navbar-container">
-      <div class="upper-navbar">
-        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
-        <nav>
-          <ul class="menu">
-            <li class="dropdown" id="cogDropdown">
-              <button type="button" title="settings" class="icon-button"><i class="fas fa-cog fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Settings 1</a>
-              </div>
-            </li>
-            <li class="dropdown" id="homeDropdown">
-              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Home 1</a>
-              </div>
-            </li>
-            <li class="dropdown" id="profileDropdown">
-              <button type="button" title="profileDropdown" class="icon-button"><t>Username</t><i class="fa-solid fa-user fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="./index.html">Logout</a>
-              </div>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  to html and use home script js for the funtionality
-
-
+    text rectangle more centered
 
     
 */
@@ -252,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let rightX = shape.x + shape.width/2;
         let leftX = shape.x - shape.width/2;
-        let topY = shape.y - shape.height/2;
+        let topY = shape.y - shape.height/2;s
         let bottomY = shape.y + shape.height/2;
 
         return x >= leftX && x <= rightX &&
@@ -355,11 +307,14 @@ document.addEventListener('DOMContentLoaded', function () {
         let clickedInnerRect = false;
 
         // check for click on a text box
-        shapes.forEach(function (shape) {
+        // iterate through shapes to find individual inner rectangle
+        // to avoid double clicking overlayed shapes
+        for (let i = shapes.length - 1; i >= 0; i--) {
+            let shape = shapes[i];
             if (shape.innerRect) {
                 let innerX = shape.x;
                 let innerY = shape.y;
-
+    
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
                     let text = prompt("Enter text here:");
@@ -368,9 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         drawShapes();
                     }
                     clickedInnerRect = true;
+                    break; // Break the loop once the topmost shape is found and handled
                 }
             }
-        });
+        }
 
         // if not clicking in inner rectangle used for text
         // it will check if the users cursor is inside the shape
@@ -585,7 +541,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 drawShapes();
                 }
-
         } 
     });
 

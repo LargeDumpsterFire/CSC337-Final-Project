@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'This_Shouldnt_be_on_GitHub';
+const connectStr = '';
 const store = new MongoDBStore({
     uri: connectStr,
     collection: 'sessions'
@@ -73,24 +73,22 @@ const requireAuth = async (req, res, next) => {
   };
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.findOne({ email });
-  
+  const { username, password } = req.body;
+
+  try {
+      const user = await User.findOne({ username });
+
       if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ success: false, message: 'Invalid credentials' });
+          return res.status(401).json({ success: false, 
+                                        message: 'Invalid credentials' });
       }
-  
-      req.session.user = email; // Set the session user
-  
+      req.session.username = username; // Set the session user using 'username'
       res.send({ success: true });
-    } catch (error) {
+  } catch (error) {
       console.error('Error logging in:', error);
       res.status(500).send({ success: false, message: 'Error logging in' });
-    }
+  }
 });
-  
 
 app.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
@@ -132,57 +130,63 @@ app.get('/logout', (req, res) => {
 
 // Route to save canvas image to database
 app.post('/save-canvas', async (req, res) => {
-  try {
-      // Retrieve the current user from the database
-      const userId = req.user.id;
-      const currentUser = await User.findById(userId);
+    try {
+        const username = req.session.username; // Retrieve username from session
 
-      if (!currentUser) {
-          return res.status(404).json({ success: false, message: 'User not found' });
-      }
+        if (!username) {
+            return res.status(401).json({ success: false, message: 'User not authenticated' });
+        }
 
-      let imageName;
-      let isDuplicate = true;
-      while (isDuplicate) {
-          const randomNumber = Math.floor(1000 + Math.random() * 9000);
-          imageName = `Project${randomNumber}.jpeg`;
+        // Retrieve the current user from the database using the username
+        const currentUser = await User.findOne({ username });
 
-          // Check if the generated name already exists in canvasImages array
-          const isExisting = currentUser.projects.some(image => image.imageName === imageName);
-          if (!isExisting) {
-              isDuplicate = false; // Exit the loop if the name is unique
-          }
-      }
+        if (!currentUser) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
 
-      // Get the imageData from the request body
-      const { imageData } = req.body;
+        let imageName;
+        let isDuplicate = true;
+        while (isDuplicate) {
+            const randomNumber = Math.floor(1000 + Math.random() * 9000);
+            imageName = `Project${randomNumber}.jpeg`;
 
-      // Convert base64 imageData to a Buffer object
-      const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
-      const imageDataBuffer = Buffer.from(base64Data, 'base64');
+            // Check if the generated name already exists in canvasImages array
+            const isExisting = currentUser.projects.some(image => image.imageName === imageName);
+            if (!isExisting) {
+                isDuplicate = false; // Exit the loop if the name is unique
+            }
+        }
 
-      // Create new canvas object /w generated name and image data
-      const newCanvasImage = {
-          imageName: imageName,
-          imageData: imageDataBuffer,
-          imageType: 'image/jpeg',
-          shapesData: req.body.shapesData
-      };
+        // Get the imageData from the request body
+        const { imageData } = req.body;
 
-      // Push the new canvas image to the user's  projects array
-      currentUser.projects.push(newCanvasImage);
+        // Convert base64 imageData to a Buffer object
+        const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
+        const imageDataBuffer = Buffer.from(base64Data, 'base64');
 
-      // Save the updated user document
-      await currentUser.save();
+        // Create new canvas object /w generated name and image data
+        const newCanvasImage = {
+            imageName: imageName,
+            imageData: imageDataBuffer,
+            imageType: 'image/jpeg',
+            shapesData: req.body.shapesData
+        };
 
-      // Respond with a success message
-      res.status(200).json({ success: true, message: 'Canvas image saved successfully' });
-  } catch (error) {
-      console.error('Error saving canvas image:', error);
-      res.status(500).json({ success: false, message: 'Failed to save canvas image' });
-  }
+        // Push the new canvas image to the user's projects array
+        currentUser.projects.push(newCanvasImage);
+
+        // Save the updated user document
+        await currentUser.save();
+
+        // Respond with a success message
+        res.status(200).json({ success: true, message: 'Canvas image saved successfully' });
+    } catch (error) {
+        console.error('Error saving canvas image:', error);
+        res.status(500).json({ success: false, message: 'Failed to save canvas image' });
+    }
 });
 
+// Route to retrieve canvas images from database
 app.get('/home/:userId/projects', requireAuth, async (req, res) => {
   try {
     const userId = req.params.userId; // Get the userId from request parameters
@@ -231,9 +235,3 @@ app.get('/features', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-
-/* 
-To-do:
-- Sanitize and validate inputs (espress-validator)
-- Implement HTTPS (Requires SSL certificate and key, can be self-signed)
-*/
