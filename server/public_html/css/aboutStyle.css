@@ -53,6 +53,15 @@ body {
     align-items: center; */
     overflow: auto;
     color: #fffcfc;
+  
+}
+.project-area img{
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    overflow: hidden;
+    padding: 25px;
+    
 }
 .aboutus-section{
     display: flex;
@@ -65,4 +74,37 @@ body {
     border-top: 5px solid rgb(0, 0, 0);
    width: 75%;
     margin: 0 auto;
+}
+.profile-card {
+    display: flex;
+    max-width: 600px;
+    background-color: #0C234B;
+    overflow: hidden;
+}
+
+.profile-img {
+    flex: 1;
+    overflow: hidden;
+    
+}
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-text {
+    flex: 1;
+    padding: 20px;
+}
+
+.profile-text h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.profile-text p {
+    font-size: 16px;
+    color: #666;
 }
