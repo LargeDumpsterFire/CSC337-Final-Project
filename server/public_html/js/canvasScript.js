@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // event listener to check for click on delete button, if yes will delete current shape
-    document.getElementById('del').addEventListener('click', function () {
+    document.getElementById('removeElement').addEventListener('click', function () {
         if (shapes.length > 0) {
             shapes.pop(); // Remove the last shape from the array
             drawShapes(); // Redraw the canvas
@@ -729,7 +729,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    document.getElementById('saveButton').addEventListener('click', () => {
+    document.getElementById('saveDocument').addEventListener('click', () => {
         saveCanvasData();
     });
 });
