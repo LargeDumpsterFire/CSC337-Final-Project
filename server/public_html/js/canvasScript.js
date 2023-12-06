@@ -719,9 +719,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Make request to save canvas data to server
         fetch('/save-canvas', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify({ imageData })
         })
         .then(response => {
@@ -741,6 +738,7 @@ document.addEventListener('DOMContentLoaded', function () {
         saveCanvasData();
     });
 });
+
 //section below is for the dropdown menu for the canvas page
 document.addEventListener("DOMContentLoaded", function () {
     const dropdowns = document.querySelectorAll('.dropdown');
@@ -822,6 +820,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   });
+
 //this code section is for the left navbar resizing by user 
 var resizer = document.querySelector(".resizer"),
   sidebar = document.querySelector(".left-navbar-container"),

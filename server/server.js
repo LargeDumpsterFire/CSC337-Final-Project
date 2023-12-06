@@ -129,7 +129,7 @@ app.get('/logout', (req, res) => {
 });
 
 // Route to save canvas image to database
-app.post('/save-canvas', async (req, res) => {
+app.post('/save-canvas', requireAuth, async (req, res) => {
     try {
         const username = req.session.username; // Retrieve username from session
 
@@ -139,9 +139,11 @@ app.post('/save-canvas', async (req, res) => {
 
         // Retrieve the current user from the database using the username
         const currentUser = await User.findOne({ username });
+        console.log(currentUser); // For debugging
 
         if (!currentUser) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({ success: false, 
+                                          message: 'User not found' });
         }
 
         let imageName;
@@ -171,6 +173,7 @@ app.post('/save-canvas', async (req, res) => {
             imageType: 'image/jpeg',
             shapesData: req.body.shapesData
         };
+        console.log(newCanvasImage); // For debugging
 
         // Push the new canvas image to the user's projects array
         currentUser.projects.push(newCanvasImage);
@@ -179,7 +182,8 @@ app.post('/save-canvas', async (req, res) => {
         await currentUser.save();
 
         // Respond with a success message
-        res.status(200).json({ success: true, message: 'Canvas image saved successfully' });
+        res.status(200).json({ success: true, 
+                               message: 'Canvas image saved successfully' });
     } catch (error) {
         console.error('Error saving canvas image:', error);
         res.status(500).json({ success: false, message: 'Failed to save canvas image' });
