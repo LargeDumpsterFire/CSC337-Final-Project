@@ -1,35 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width" />
-    <title>Canvas Page</title>
-    <link rel="stylesheet" href="./css/canvasStyle.css">
-  </head>
-  <body>
-    <div id="top-bar">
-      <button id="load">Load</button>
-      <button id="save">Save Document</button>
-      <button id="download">Export</button>
-      <button>Remove Element</button>
-      <div id="user-info">
-          <span>Username</span>
-          <div id="user-icon"></div>
-      </div>
-  </div>
-  <div id="sidebar">
-      
-      <div id="rectangle" class="shape">Rectangle</div>
-      <div id="circle" class="shape">Circle</div>
-      <div id="triangle" class="shape">Triangle</div>
-      <div id="diamond" class="shape">Diamond</div>
-      <div id="line" class="line">Line</div>
-      <img id="thumbnailDisplay" src="" alt="Thumbnail Preview">
-      
-  </div>
-  <canvas id="canvas">
-    
-  </canvas>
 
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width" />
+  <title>Canvas Page</title>
+  <link rel="stylesheet" href="./css/canvasStyle.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css'>
+</head>
+
+<body>
+  <header>
+    <div class="upper-navbar-container">
+      <div class="upper-navbar">
+        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
+        <nav>
+          <ul class="menu">
+            <li class="dropdown" id="saveDropdown">
+              <button type="button" title="saveDocument" class="icon-button"><i
+                  class="fa-sharp fa-solid fa-floppy-disk fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#" id="saveDocument">Save Document</a>
+              </div>
+            </li>
+            <li class="dropdown" id="downloadDropdown">
+              <button type="button" title="downloadDocument" class="icon-button"><i
+                  class="fa-sharp fa-solid fa-download fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#" id="download">Download</a>
+              </div>
+            </li>
+            <li class="dropdown" id="undoDropdown">
+              <button type="button" title="undo" class="icon-button"><i class="fa-sharp fa-solid fa-undo fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#" id="undo">Undo</a>
+              </div>
+            </li>
+            <li class="dropdown" id="redoDropdown">
+              <button type="button" title="redo" class="icon-button"><i class="fa-sharp fa-solid fa-redo fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#" id="redo">Redo</a>
+              </div>
+            </li>
+            <li class="dropdown" id="removeElementDropdown">
+              <button type="button" title="removeElement" class="icon-button"><i
+                  class="fa-sharp fa-solid fa-trash fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#" id="removeElement">Remove Element</a>
+              </div>
+
+            </li>
+            <li class="dropdown" id="homeDropdown">
+              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
+              <div class="dropdown-content">
+                <a href="#">Home 1</a>
+              </div>
+            </li>
+            <li class="dropdown" id="profileDropdown">
+              <button type="button" title="profileDropdown" class="icon-button">
+                <t>Username</t><i class="fa-solid fa-user fa-2xl"></i>
+              </button>
+              <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="./index.html">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <div class="left-navbar-container">
+      <div class="left-navbar">
+        <div class="left-navbar-insides" id="sidebar">
+          <h2>Shapes</h2>
+          <ul>
+            <li id="rectangle" class="shape">Rectangle</li>
+            <li id="circle" class="shape">Circle</li>
+            <li id="triangle" class="shape">Triangle</li>
+            <li id="diamond" class="shape">Diamond</li>
+            <li id="line" class="line">Line</li>
+            <li id="slideSize" class="slide">Size: small->large</li>
+            <input type="range" min="-50" max="50" value="0" class="slider" id="sizeRange">
+            <li id="colorop" class="colorOP">Shape Color
+              <input id="shapecolor" name="Color Picker" type="color">
+            </li>
+          </ul>
+        </div>
+        <div class="resizer"></div>
+      </div>
+    </div>
+    <div class="canvas-container">
+    <canvas  class="canvas-style" id="canvas">
+
+    </canvas>
     <script src="./js/canvasScript.js"></script>
-  </body>
+</body>
+</div>
+
 </html>
