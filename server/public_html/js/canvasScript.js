@@ -1,63 +1,11 @@
-/*
-    BUGS/NEEDS WORK:
 
 
 
-    diamond borders are too big for grabbing
 
 
-
-    IMPORTANT: 
-    Arrows attach to shapes
-    make anchor point appear on clicking a shape
-
-
-    MAJOR:
-    Resizing shapes (slider)
-    Color changing RGB (slider)
-
-
-    TO DO LIST:
-    Copy this 
-      <header>
-    <div class="upper-navbar-container">
-      <div class="upper-navbar">
-        <img src="./img/team_logo_with_name_text.png" alt="Team Logo">
-        <nav>
-          <ul class="menu">
-            <li class="dropdown" id="cogDropdown">
-              <button type="button" title="settings" class="icon-button"><i class="fas fa-cog fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Settings 1</a>
-              </div>
-            </li>
-            <li class="dropdown" id="homeDropdown">
-              <button type="button" title="homeDropdown" class="icon-button"><i class="fas fa-home fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Home 1</a>
-              </div>
-            </li>
-            <li class="dropdown" id="profileDropdown">
-              <button type="button" title="profileDropdown" class="icon-button"><t>Username</t><i class="fa-solid fa-user fa-2xl"></i></button>
-              <div class="dropdown-content">
-                <a href="#">Profile</a>
-                <a href="./index.html">Logout</a>
-              </div>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  to html and use home script js for the funtionality
-
-
-
-    
-*/
 
 const SNAP_THRESHOLD = 10;
+
 
 // set canvas size
 canvas.width = window.innerWidth;
@@ -79,10 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
     let currentColor = document.getElementById('shapecolor').value; 
+    let currentSize = document.getElementById('sizeRange').value; 
+    const sliderProportion = 0.5;
     const defaultColor = "#FFFFFF";
+    const radius = 50;
+    const baseX = 500;
+    const baseY = 500;
 
     // Add an event listener for window resize
-    window.addEventListener('resize', function () {
+    window.addEventListener('resize', function() {
         let oldWidth = canvas.width;
         let oldHeight = canvas.height;
         // update canvas size
@@ -93,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
         shapes.forEach(shape => {
             let scaleX = canvas.width / oldWidth;
             let scaleY = canvas.height / oldHeight;
-
-            if (shape.type === 'line') {
+    
+            if(shape.type === 'line'){
                 // Scale the start, middle, and end points of the line
                 shape.start.x *= scaleX;
                 shape.start.y *= scaleY;
@@ -106,8 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Scale the position of other shapes using default x y
                 shape.x *= scaleX;
                 shape.y *= scaleY;
-            }
-            updateAnchorPoints(shapes);
+            }   
+            updateAnchorPoints(shapes); 
         });
 
         // Redraw the shapes
@@ -115,15 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // allows user to download their diagram
-    document.getElementById('download').addEventListener('click', function (e) {
+    document.getElementById('download').addEventListener('click', function(e) {
         // convert canvas to data url
         let canvasUrl = canvas.toDataURL("image/jpeg", 1);
         const imgElement = document.createElement('a');
         imgElement.href = canvasUrl;
-
+    
         // name download
         imgElement.download = "diagram";
-
+    
         // click download button to download, dont want to download it twice
         imgElement.click();
         imgElement.remove();
@@ -189,18 +142,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Length and width of the arrow head
                 const arrowLength = 10; // Length of the arrow head lines
                 const arrowWidth = Math.PI / 8; // Width of the arrow head (in radians)
-
+            
                 // Draw one side of the arrow head
-                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle - arrowWidth),
-                    shape.end.y - arrowLength * Math.sin(angle - arrowWidth));
-
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle - arrowWidth), 
+                        shape.end.y - arrowLength * Math.sin(angle - arrowWidth));
+            
                 // Move back to the tip of the arrow
                 ctx.moveTo(shape.end.x, shape.end.y);
-
+            
                 // Draw the other side of the arrow head
-                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth),
-                    shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
-
+                ctx.lineTo(shape.end.x - arrowLength * Math.cos(angle + arrowWidth), 
+                        shape.end.y - arrowLength * Math.sin(angle + arrowWidth));
+            
                 ctx.closePath();
                 ctx.stroke();
                 break;
@@ -208,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         // to draw anchor points
-        if (shape.anchorPoints) {
+        if(shape.anchorPoints) {
             shape.anchorPoints.forEach(point => {
                 ctx.beginPath();
                 ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
@@ -220,18 +173,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // set the inner rectangle placement for each shape to house text box
         if (shape.innerRect) {
-            let innerX = shape.x - 14;
-            let innerY = shape.y - 9;
+            let innerX = shape.x-14;
+            let innerY = shape.y-9;
             ctx.strokeStyle = 'rgba(0, 0, 0, 0)'; // makes inner text box transparent
             ctx.strokeRect(innerX, innerY, shape.innerRect.width, shape.innerRect.height);
-
+        
             if (shape.innerRect.text) {
                 ctx.font = '12px Arial';
                 ctx.fillStyle = 'black';
                 // Center text horizontally and vertically
                 let textWidth = ctx.measureText(shape.innerRect.text).width;
                 let textX = shape.x - textWidth / 2;
-                let textY = shape.y + 6;
+                let textY = shape.y + 6; 
                 ctx.fillText(shape.innerRect.text, textX, textY);
             }
         }
@@ -246,14 +199,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
-
         let rightX = shape.x + shape.width/2;
         let leftX = shape.x - shape.width/2;
         let topY = shape.y - shape.height/2;
         let bottomY = shape.y + shape.height/2;
 
         return x >= leftX && x <= rightX &&
-            y >= topY && y <= bottomY;
+               y >= topY && y <= bottomY;
     }
 
     // Function to check if a point is inside a circle
@@ -264,23 +216,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function isInsideDiamond(shape, x, y) {
-        // Calculate the coordinates of the diamond's top, bottom, left, and right points
-        let topX = shape.x;
-        let topY = shape.y - shape.height / 2;
-        let bottomY = shape.y + shape.height / 2;
-        let leftX = shape.x - shape.width / 2;
-        let rightX = shape.x + shape.width / 2;
-
-        // Check if the point is inside the diamond by comparing the slopes
-        if (
-            (x >= leftX && x <= topX && y >= topY && y <= bottomY) ||
-            (x >= topX && x <= rightX && y >= topY && y <= bottomY) ||
-            (x >= leftX && x <= rightX && y >= topY && y <= topY + shape.height) ||
-            (x >= leftX && x <= rightX && y >= bottomY - shape.height && y <= bottomY)
-        ) {
-            return true;
+        // Vertices of the diamond
+        let top = { x: shape.x, y: shape.y - shape.height / 2 };
+        let bottom = { x: shape.x, y: shape.y + shape.height / 2 };
+        let left = { x: shape.x - shape.width / 2, y: shape.y };
+        let right = { x: shape.x + shape.width / 2, y: shape.y };
+        let p = { x, y };
+    
+        // Function to calculate area of triangle formed by three points
+        function triangleArea(a, b, c) {
+            return Math.abs((a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2);
         }
-        return false;
+    
+        // Calculate areas of four triangles
+        let area1 = triangleArea(p, top, right);
+        let area2 = triangleArea(p, right, bottom);
+        let area3 = triangleArea(p, bottom, left);
+        let area4 = triangleArea(p, left, top);
+    
+        // Calculate total area of diamond
+        let diamondArea = triangleArea(top, right, bottom) + triangleArea(top, left, bottom);
+    
+        // Check if the point is inside the diamond
+        return (area1 + area2 + area3 + area4) <= diamondArea;
     }
 
     function isInsideTriangle(shape, x, y) {
@@ -291,15 +249,15 @@ document.addEventListener('DOMContentLoaded', function () {
         let y2 = shape.y + shape.height / 2;
         let x3 = shape.x - shape.width / 2;
         let y3 = shape.y + shape.height / 2;
-
+        
         // Calculate the areas of the three triangles formed by the point (x, y) and the vertices
-        let area1 = Math.abs((x1 * (y2 - y) + x2 * (y - y1) + x * (y1 - y2)) / 2);
-        let area2 = Math.abs((x2 * (y3 - y) + x3 * (y - y2) + x * (y2 - y3)) / 2);
-        let area3 = Math.abs((x1 * (y3 - y) + x3 * (y - y1) + x * (y1 - y3)) / 2);
-
+        let area1 = Math.abs((x1*(y2-y) + x2*(y-y1) + x*(y1-y2)) / 2);
+        let area2 = Math.abs((x2*(y3-y) + x3*(y-y2) + x*(y2-y3)) / 2);
+        let area3 = Math.abs((x1*(y3-y) + x3*(y-y1) + x*(y1-y3)) / 2);
+        
         // Calculate the total area of the triangle
-        let totalArea = Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
-
+        let totalArea = Math.abs((x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) / 2);
+        
         // Check if the point is inside the triangle using the areas
         return Math.abs(totalArea - (area1 + area2 + area3)) < 1;
     }
@@ -307,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function isOnArrow(arrow, mouseX, mouseY) {
         // Define grab margin
         const margin = 5;
-
+    
         // Function to check proximity to a line segment
         function isNearSegment(x1, y1, x2, y2) {
             // Calculate the distance from the point to the line segment
@@ -315,13 +273,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const B = mouseY - y1;
             const C = x2 - x1;
             const D = y2 - y1;
-
+    
             const dot = A * C + B * D;
             const lenSq = C * C + D * D;
             const param = lenSq !== 0 ? dot / lenSq : -1;
-
+    
             let xx, yy;
-
+    
             if (param < 0) {
                 xx = x1;
                 yy = y1;
@@ -332,17 +290,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 xx = x1 + param * C;
                 yy = y1 + param * D;
             }
-
+    
             const dx = mouseX - xx;
             const dy = mouseY - yy;
-
+    
             // Check if the distance is within the margin
             return (dx * dx + dy * dy) <= margin * margin;
         }
-
+    
         // Check both segments of the arrow
         return isNearSegment(arrow.start.x, arrow.start.y, arrow.middle.x, arrow.middle.y) ||
-            isNearSegment(arrow.middle.x, arrow.middle.y, arrow.end.x, arrow.end.y);
+               isNearSegment(arrow.middle.x, arrow.middle.y, arrow.end.x, arrow.end.y);
     }
 
     // event listener for mouse clicks on shapes, also determines the location of the click
@@ -357,9 +315,9 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = shapes.length - 1; i >= 0; i--) {
             let shape = shapes[i];
             if (shape.innerRect) {
-                let innerX = shape.x;
-                let innerY = shape.y;
-    
+                let innerX = shape.x - shape.innerRect.width / 2;
+                let innerY = shape.y - shape.innerRect.height / 2;
+        
                 if (mouseX >= innerX && mouseX <= innerX + shape.innerRect.width &&
                     mouseY >= innerY && mouseY <= innerY + shape.innerRect.height) {
                     let text = prompt("Enter text here:");
@@ -377,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // it will check if the users cursor is inside the shape
         // by comparing x y coordinates
         // then if it is it will make the shape draggable
-
+        
         if (!clickedInnerRect) {
             shapes.forEach(function (shape) {
                 if (shape.type === "line") {
@@ -387,21 +345,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                } else if (shape.type === 'circle') { // for circles
+                }else if (shape.type === 'circle') { // for circles
                     if (isInsideCircle(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                } else if (shape.type === 'triangle') {
+                }else if(shape.type === 'triangle'){
                     if (isInsideTriangle(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                } else if (shape.type === 'diamond') {
+                }else if(shape.type === 'diamond'){
                     if (isInsideDiamond(shape, mouseX, mouseY)) {
                         isDragging = true;
                         currentShape = shape;
@@ -419,10 +377,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
-    });
+    });    
 
     // update anchor function
-    function updateAnchorPoints(shapes) {
+    function updateAnchorPoints(shapes){
         // makes anchor points follow shape as its dragged
         shapes.forEach(function (shape) {
             if (shape.type === 'rectangle') {
@@ -433,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     { x: shape.x, y: shape.y - shape.height / 2 }, // Top middle
                     { x: shape.x, y: shape.y + shape.height / 2 }  // Bottom middle
                 ];
-            } else if (shape.type === 'circle') {
+            }else if (shape.type === 'circle') {
                 shape.anchorPoints = [
                     { x: shape.x, y: shape.y - shape.radius }, // Top
                     { x: shape.x + shape.radius, y: shape.y }, // Right
@@ -449,21 +407,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 ];
             } else if (shape.type === 'diamond') {
                 shape.anchorPoints = [
-                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top vertex
-                    { x: shape.x + shape.width / 2, y: shape.y }, // Right vertex
-                    { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom vertex
-                    { x: shape.x - shape.width / 2, y: shape.y }  // Left vertex
+                    { x: shape.x, y: shape.y - shape.height / 2 }, // Top 
+                    { x: shape.x + shape.width / 2, y: shape.y }, // Right 
+                    { x: shape.x, y: shape.y + shape.height / 2 }, // Bottom 
+                    { x: shape.x - shape.width / 2, y: shape.y }  // Left 
                 ];
-            } else if (shape.type === "line") {
+            } else if (shape.type === "line"){
                 shape.anchorPoints = [
-                    { x: shape.start.x, y: shape.start.y }, // Start point
-                    { x: shape.end.x, y: shape.end.y },// End point
-                    { x: shape.middle.x, y: shape.middle.y }, // middle 
-                    //{ x: shape.x + 60, y: shape.y}, // middle right
+                    { x: shape.start.x, y: shape.start.y}, // Start point
+                    { x: shape.end.x, y: shape.end.y},// End point
+                    { x: shape.middle.x, y: shape.middle.y}, // middle 
                 ];
             }
-        });
+        });                  
     }
+
     // function to calculate distance, helper function
     function distance(x1, y1, x2, y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -499,16 +457,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isDragging) {
             let clickedShapeIndex = -1;
             shapes.forEach(function (shape, index) {
-                if (currentShape === shape) {
+                if(currentShape === shape){
                     clickedShapeIndex = index;
                 }
             });
             console.log("Clicked Shape Index: " + clickedShapeIndex);
-            if (currentShape.type === "line") {
+            if(currentShape.type === "line"){
 
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-
+                
 
                 // Calculate distances to start, middle, and end points
                 let distanceToStart = distance(mouseX, mouseY, currentShape.start.x, currentShape.start.y);
@@ -531,24 +489,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     closestPoint = 'none'; // No point is near the mouse pointer
                 }
+    
 
 
-
-                if (closestPoint === 'start') {
+                if(closestPoint === 'start'){
                     currentShape.start.x = mouseX;
                     currentShape.start.y = mouseY;
-                } else if (closestPoint === 'middle') {
+                }else if(closestPoint === 'middle'){
                     currentShape.middle.x = mouseX;
                     currentShape.middle.y = mouseY;
-                } else if (closestPoint === 'end') {
+                }else if(closestPoint === 'end'){
                     currentShape.end.x = mouseX;
                     currentShape.end.y = mouseY;
-                } else if (closestPoint === 'none') {
+                }else if(closestPoint === 'none'){
                     // move entire arrow
-
+                    
                     let deltaX = mouseX - dragOffsetX - currentShape.x;
                     let deltaY = mouseY - dragOffsetY - currentShape.y;
-
+                        
                     currentShape.x = mouseX - dragOffsetX;
                     currentShape.y = mouseY - dragOffsetY;
                     currentShape.start.x += deltaX;
@@ -567,18 +525,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // update anchor points
                 updateAnchorPoints(shapes);
-
+        
                 drawShapes();
-            } else { // shape dragging for all other shapes
+            }else{ // shape dragging for all other shapes
                 let mouseX = e.clientX - canvas.getBoundingClientRect().left;
                 let mouseY = e.clientY - canvas.getBoundingClientRect().top;
-
+        
                 if (clickedShapeIndex > -1) {
-                    console.log("Before Splice, Shapes Length: " + shapes.length);
+                    //console.log("Before Splice, Shapes Length: " + shapes.length);
                     // Move the clicked shape to the back of the array
                     let clickedShape = shapes.splice(clickedShapeIndex, 1)[0];
                     shapes.push(clickedShape);
-                    console.log("After Splice, Shapes Length: " + shapes.length);
+                    //console.log("After Splice, Shapes Length: " + shapes.length);
                 }
                 currentShape.x = mouseX - dragOffsetX;
                 currentShape.y = mouseY - dragOffsetY;
@@ -588,18 +546,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 drawShapes();
                 }
-
         } 
     });
-
-
 
     // event listener color input
     document.getElementById('shapecolor').addEventListener('input', function() {
         currentColor = this.value;
     });
 
-
+    // event listener size input
+    document.getElementById('sizeRange').addEventListener('input', function() {
+        currentSize = this.value;
+    });
 
     // checks for non clicking and makes shapes non draggable
     // if the user is not clicking anything
@@ -610,13 +568,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
-            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, 
+            type: 'rectangle', x: baseX, y: baseY, 
+            width: 120+(currentSize*sliderProportion), height: 80+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 460 }, // top center
-                { x: 560, y: 500 }, // right middle
-                { x: 500, y: 540 }, // bottom center
-                { x: 440, y: 500 } // left middle
+                { x: baseX, y: 460 }, // top center
+                { x: 560, y: baseY }, // right middle
+                { x: baseX, y: 540 }, // bottom center
+                { x: 440, y: baseY } // left middle
             ]
         });
         drawShapes();
@@ -624,13 +584,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('circle').addEventListener('click', function () {
         shapes.push({
-            type: 'circle', x: 500, y: 500, radius: 50, 
+            type: 'circle', x: baseX, y: baseY, 
+            radius: radius+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 450 }, // top center
-                { x: 550, y: 500 }, // right middle
-                { x: 500, y: 550 }, // bottom center
-                { x: 450, y: 500 } // left middle
+                { x: baseX, y: baseY - radius }, // top center
+                { x: baseX + radius, y: baseY }, // right middle
+                { x: baseX, y: baseY + radius }, // bottom center
+                { x: baseX - radius, y: baseY } 
             ]
         });
         drawShapes();
@@ -638,13 +600,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, width: 98, height: 85, 
+            type: 'triangle', x: baseX, y: baseY, 
+            width: 98+(currentSize*sliderProportion), height: 85+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 460 }, // top center
+                { x: baseX, y: 460 }, // top center
                 { x: 545, y: 540 }, // right bottom
                 { x: 455, y: 540 }, // left bottom
-                { x: 500, y: 543 }, // bottom middle
+                { x: baseX, y: 543 }, // bottom middle
             ]
         });
         drawShapes();
@@ -652,32 +616,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('diamond').addEventListener('click', function () {
         shapes.push({
-            type: 'diamond', x: 500, y: 500, width: 100, height: 100, 
+            type: 'diamond', x: baseX, y: baseY, 
+            width: 100+(currentSize*sliderProportion), height: 100+(currentSize*sliderProportion), 
+            color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
-                { x: 500, y: 450 }, // top center
-                { x: 550, y: 500 }, // right middle
-                { x: 500, y: 550 }, // bottom center
-                { x: 450, y: 500 } // left middle
+                { x: baseX, y: 450 }, // top center
+                { x: 550, y: baseY }, // right middle
+                { x: baseX, y: 550 }, // bottom center
+                { x: 450, y: baseY } // left middle
             ]
         });
         drawShapes();
     });
 
     document.getElementById("line").addEventListener("click", function () {
-        shapes.push({
-            type: "line", x: 500, y: 500, width: 100, height: 100,
-            start: { x: 500, y: 500 },// keep track of start middle and end of arrow
-            middle: { x: 550, y: 500 },
-            end: { x: 600, y: 500 },
-            anchorPoints: [
-                { x: 500, y: 500, type: 'start' }, // Label for start
-                { x: 550, y: 500, type: 'middle' }, // Label for middle
-                { x: 600, y: 500, type: 'end' } // Label for end
-            ]
+        shapes.push({ type: "line", x: 500, y: 500, width: 100, height: 100, 
+        start: { x: 500, y: 500},// keep track of start middle and end of arrow
+        middle: { x: 550, y: 500},
+        end: { x: 600, y: 500},
+        anchorPoints: [
+            { x: 500, y: 500, type: 'start' }, // Label for start
+            { x: 550, y: 500, type: 'middle' }, // Label for middle
+            { x: 600, y: 500, type: 'end' } // Label for end
+        ]
         });
         drawShapes();
-    });
+      });
+
 
     // function to stringify shapes, to store in user
     // function getCanvasJson(shapes) {
