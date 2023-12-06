@@ -187,6 +187,11 @@ nav t {
   border-radius: 50%;
 }
 
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
 input:checked + .slider {
   background-color: #2196F3;
 }
