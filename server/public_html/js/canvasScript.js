@@ -577,6 +577,23 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
     });
 
+    // fills color of shape by option
+    function fillColor(shape, color) {
+        ctx.fillStyle = color; // Set the fill color
+        switch (shape.type) {
+            case 'rectangle':
+                ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
+                break;
+            case 'circle':
+                ctx.beginPath();
+                ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
+                ctx.fill();
+                break;
+            // Add cases for other shapes as needed
+        }
+    }
+
+
     // checks for non clicking and makes shapes non draggable
     // if the user is not clicking anything
     canvas.addEventListener('mouseup', function (e) {
