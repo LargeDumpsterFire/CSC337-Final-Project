@@ -77,4 +77,41 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+        // JavaScript code to toggle dark mode
+    function darkModeSetter() {
+      var element = document.body;
+      element.classList.toggle("dark-mode");
+    
+      // Store the dark mode state in Local Storage
+      if (element.classList.contains("dark-mode")) {
+        localStorage.setItem("darkMode", "enabled");
+      } else {
+        localStorage.setItem("darkMode", "disabled");
+      }
+    }
+    
+    // Function to handle slider (checkbox) change
+    function handleSliderChange() {
+      darkModeSetter(); // Call the darkModeSetter() function when the slider changes
+    }
+    
+    // Function to load the dark mode state from Local Storage
+    function loadDarkModeState() {
+      var darkModeState = localStorage.getItem("darkMode");
+      if (darkModeState === "enabled") {
+        document.body.classList.add("dark-mode");
+      }
+    }
+    
+    // Apply dark mode state on page load
+    document.addEventListener("DOMContentLoaded", function () {
+      loadDarkModeState(); // Load dark mode state from Local Storage
+    });
+    
+    // Add an event listener to the slider (checkbox) for the "change" event
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener("change", handleSliderChange);
+    }
 });
