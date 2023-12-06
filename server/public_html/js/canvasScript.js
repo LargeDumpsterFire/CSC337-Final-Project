@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let deletedShapes = [];
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
+    let currentColor = document.getElementById('shapecolor').value; 
+    const defaultColor = "#FFFFFF";
 
     // Add an event listener for window resize
     window.addEventListener('resize', function() {
@@ -132,14 +134,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to draw a specific shape
     function drawShape(shape) {
-        ctx.fillStyle = 'white';
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 1;
-        ctx.beginPath();
+
 
         // depending on shape we will draw it a different way
         switch (shape.type) {
             case 'rectangle':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.moveTo(shape.x - shape.width / 2, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
@@ -149,12 +152,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
             case 'circle':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();
                 break;
             case 'triangle':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y + shape.height / 2);
                 ctx.lineTo(shape.x - shape.width / 2, shape.y + shape.height / 2);
@@ -163,6 +170,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
             case 'diamond':
+                ctx.fillStyle = shape.color;
+                ctx.beginPath();
                 ctx.moveTo(shape.x, shape.y - shape.height / 2);
                 ctx.lineTo(shape.x + shape.width / 2, shape.y);
                 ctx.lineTo(shape.x, shape.y + shape.height / 2);
@@ -172,6 +181,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
             case 'line':
+                ctx.fillStyle = defaultColor;
+                ctx.beginPath();
                 ctx.moveTo(shape.start.x, shape.start.y);
                 ctx.lineTo(shape.middle.x, shape.middle.y)
                 ctx.lineTo(shape.end.x, shape.end.y);
@@ -197,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.stroke();
                 break;
         }
+
 
         // to draw anchor points
         if(shape.anchorPoints) {
@@ -577,21 +589,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
     });
 
-    // fills color of shape by option
-    function fillColor(shape, color) {
-        ctx.fillStyle = color; // Set the fill color
-        switch (shape.type) {
-            case 'rectangle':
-                ctx.fillRect(shape.x, shape.y, shape.width, shape.height);
-                break;
-            case 'circle':
-                ctx.beginPath();
-                ctx.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
-                ctx.fill();
-                break;
-            // Add cases for other shapes as needed
-        }
-    }
+
+
+    // event listener color input
+    document.getElementById('shapecolor').addEventListener('input', function() {
+        currentColor = this.value;
+    });
+
 
 
     // checks for non clicking and makes shapes non draggable
@@ -603,7 +607,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for buttons to create the different shapes
     document.getElementById('rectangle').addEventListener('click', function () {
         shapes.push({
-            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, 
+            type: 'rectangle', x: 500, y: 500, width: 120, height: 80, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -617,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('circle').addEventListener('click', function () {
         shapes.push({
-            type: 'circle', x: 500, y: 500, radius: 50, 
+            type: 'circle', x: 500, y: 500, radius: 50, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
@@ -631,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('triangle').addEventListener('click', function () {
         shapes.push({
-            type: 'triangle', x: 500, y: 500, width: 98, height: 85, 
+            type: 'triangle', x: 500, y: 500, width: 98, height: 85, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 460 }, // top center
@@ -645,7 +649,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('diamond').addEventListener('click', function () {
         shapes.push({
-            type: 'diamond', x: 500, y: 500, width: 100, height: 100, 
+            type: 'diamond', x: 500, y: 500, width: 100, height: 100, color: currentColor,
             innerRect: { width: 30, height: 20, text: '' },
             anchorPoints: [
                 { x: 500, y: 450 }, // top center
