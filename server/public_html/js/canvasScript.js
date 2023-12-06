@@ -2,14 +2,11 @@
     BUGS/NEEDS WORK:
 
 
-
     diamond borders are too big for grabbing
 
     shape resizing
 
     text rectangle more centered
-
-
 
 
     
