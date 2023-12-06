@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
     let shapes = []; // store current shapes
+    let deletedShapes = [];
     let isDragging = false;
     let dragOffsetX, dragOffsetY, currentShape;
 
@@ -456,15 +457,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // event listener to check for click on delete button, if yes will delete current shape
     document.getElementById('removeElement').addEventListener('click', function () {
         if (shapes.length > 0) {
-            shapes.pop(); // Remove the last shape from the array
+            let removedShape = shapes.pop(); // Remove the last shape from the array
+            deletedShapes.push(removedShape); // Save a copy to deletedShapes
             drawShapes(); // Redraw the canvas
         } else {
             alert("No shapes to delete!");
         }
     });
 
-
-    
+    // restores previously deleted shape
+    document.getElementById('undoDropdown').addEventListener('click', function () {
+        if (deletedShapes.length > 0) {
+            let shapeToRestore = deletedShapes.pop(); // Get the last deleted shape
+            shapes.push(shapeToRestore); // Restore it to the shapes array
+            drawShapes(); // Redraw the canvas
+        }
+    });
 
     // event listener for moving the shapes
     // checks if a user is moving the mouse
