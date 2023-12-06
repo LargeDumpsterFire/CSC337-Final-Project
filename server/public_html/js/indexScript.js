@@ -1,5 +1,5 @@
-const signUpButton = document.getElementById('signUpButton');
-const logInButton = document.getElementById('loginButton');
+const signUpButton = document.getElementById('signUp');
+const logInButton = document.getElementById('login');
 const container = document.getElementById('container');
 const signUpForm = document.getElementById('signUpForm');
 const logInForm = document.getElementById('loginForm');
@@ -112,6 +112,5 @@ toggleSignupPassword.addEventListener('click', function (e) {
 toggleLogInPassword.addEventListener('click', function (e) {
     // toggle the type attribute
     const type = logInPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-    logInPassword.setAttribute('type', type);
-    
+    logInPassword.setAttribute('type', type); 
 });
