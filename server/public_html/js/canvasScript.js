@@ -219,23 +219,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function isInsideDiamond(shape, x, y) {
-        // Calculate the coordinates of the diamond's top, bottom, left, and right points
-        let topX = shape.x;
-        let topY = shape.y - shape.height / 2;
-        let bottomY = shape.y + shape.height / 2;
-        let leftX = shape.x - shape.width / 2;
-        let rightX = shape.x + shape.width / 2;
+        // Vertices of the diamond
+        let top = { x: shape.x, y: shape.y - shape.height / 2 };
+        let bottom = { x: shape.x, y: shape.y + shape.height / 2 };
+        let left = { x: shape.x - shape.width / 2, y: shape.y };
+        let right = { x: shape.x + shape.width / 2, y: shape.y };
+        let p = { x, y };
     
-        // Check if the point is inside the diamond by comparing the slopes
-        if (
-            (x >= leftX && x <= topX && y >= topY && y <= bottomY) ||
-            (x >= topX && x <= rightX && y >= topY && y <= bottomY) ||
-            (x >= leftX && x <= rightX && y >= topY && y <= topY + shape.height) ||
-            (x >= leftX && x <= rightX && y >= bottomY - shape.height && y <= bottomY)
-        ) {
-            return true;
+        // Function to calculate area of triangle formed by three points
+        function triangleArea(a, b, c) {
+            return Math.abs((a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2);
         }
-        return false;
+    
+        // Calculate areas of four triangles
+        let area1 = triangleArea(p, top, right);
+        let area2 = triangleArea(p, right, bottom);
+        let area3 = triangleArea(p, bottom, left);
+        let area4 = triangleArea(p, left, top);
+    
+        // Calculate total area of diamond
+        let diamondArea = triangleArea(top, right, bottom) + triangleArea(top, left, bottom);
+    
+        // Check if the point is inside the diamond
+        return (area1 + area2 + area3 + area4) <= diamondArea;
     }
 
     function isInsideTriangle(shape, x, y) {
