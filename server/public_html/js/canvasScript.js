@@ -206,10 +206,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to check if a point is inside a rectangle
     function isInsideRect(shape, x, y) {
-
         let rightX = shape.x + shape.width/2;
         let leftX = shape.x - shape.width/2;
-        let topY = shape.y - shape.height/2;s
+        let topY = shape.y - shape.height/2;
         let bottomY = shape.y + shape.height/2;
 
         return x >= leftX && x <= rightX &&
@@ -368,8 +367,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         dragOffsetX = mouseX - shape.x;
                         dragOffsetY = mouseY - shape.y;
                     }
-                } else { // for rectangles 
+                } else if(shape.type === 'rectangle'){ // for rectangles 
                     if (isInsideRect(shape, mouseX, mouseY)) {
+                        console.log("shape type identified at else staement for is inside rect");
                         isDragging = true;
                         currentShape = shape;
                         dragOffsetX = mouseX - shape.x;
@@ -385,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // makes anchor points follow shape as its dragged
         shapes.forEach(function (shape) {
             if (shape.type === 'rectangle') {
+                console.log("shape type identified at anchor point");
                 shape.anchorPoints = [
                     { x: shape.x - shape.width / 2, y: shape.y }, // Left middle
                     { x: shape.x + shape.width / 2, y: shape.y }, // Right middle
