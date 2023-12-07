@@ -86,6 +86,8 @@ if (username !== null) {
 
   // Function to create project cards
   function createProjectCard(project) {
+    console.log('Project Object:', project);
+
     const card = document.createElement("div");
     card.className = "outside-image-box";
 
