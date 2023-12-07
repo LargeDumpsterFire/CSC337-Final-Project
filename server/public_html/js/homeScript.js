@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('Project Name:', projectName);
 
     // Example: Redirect to the canvas page with the project name
-    window.location.href = `/canvas?projectName=${encodeURIComponent(projectName)}`;
+    window.location.href = `/canvas.html?imageName=${encodeURIComponent(projectName)}`;
   }
 
 
