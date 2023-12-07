@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'mongodb+srv://jpuhala:testpass@finalprojecttester.taobfc4.mongodb.net/';
+const connectStr = 'mongodb+srv://jc:Bade24Mutt@users.0xwayee.mongodb.net/';
 const store = new MongoDBStore({
     uri: connectStr,
     collection: 'sessions'
@@ -37,7 +37,7 @@ app.use(session({
 }));
 
 // Serve static files from the 'public_html' directory
-app.use(express.static(path.join(__dirname, 'public_html')));
+app.use(express.static(path.resolve(__dirname, 'public_html')));
 
 // Define the user schema, can be adjusted as needed.
 const userSchema = new mongoose.Schema({
@@ -86,12 +86,14 @@ const requireAuth = async (req, res, next) => {
   
     try {
       const user = await User.findOne({ email });
-  
+      console.log("retrieved user", email, password, user);
       if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(401).json({ success: false, message: 'Invalid credentials' });
       }
   
       req.session.user = user.username;
+      console.log("username", req.session.user)
+      console.log("username checkign", user.username)
       res.status(200).json({ success: true, username: user.username });
     } catch (error) {
       console.error('Error logging in:', error);
@@ -111,7 +113,7 @@ app.post('/signup', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
-
+    console.log("new user is:",newUser);
     await newUser.save();
 
     res.send({ success: true });
@@ -204,7 +206,7 @@ app.post('/save-canvas', requireAuth, async (req, res) => {
 app.get('/home.html/:username', requireAuth, async (req, res) => {
   try {
     const username = req.params.username;
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ username: username }); // Change this line
 
     if (user) {
       // If user is found, send the 'home.html' file
