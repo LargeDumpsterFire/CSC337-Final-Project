@@ -1,3 +1,13 @@
+/*
+Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
+project: Final Project CSC 337
+purpose: This JavaScript file serves as the backend of the website. 
+It is responsible for managing backend interactions with the database, 
+routing, and handling authentication and encryption processes.
+
+*/
+
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
