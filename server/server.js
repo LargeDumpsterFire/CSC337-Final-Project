@@ -4,14 +4,14 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'mongodb+srv://jc:Bade24Mutt@users.0xwayee.mongodb.net/';
+const connectStr = 'mongodb+srv://hgcopening:AMQJQqHtiYiGiW6G@chattyhunter.exn5van.mongodb.net/';
 const store = new MongoDBStore({
     uri: connectStr,
     collection: 'sessions'
 });
 const bcrypt = require('bcrypt');
 const app = express();
-const port = 80;
+const port = 3000;
 
 mongoose.connect(connectStr, {
     useNewUrlParser: true,
