@@ -4,18 +4,18 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'mongodb+srv://hgcopening:AMQJQqHtiYiGiW6G@chattyhunter.exn5van.mongodb.net/';
+const connectStr = 'mongodb+srv://jc:Bade24Mutt@users.0xwayee.mongodb.net/';
 const store = new MongoDBStore({
-    uri: connectStr,
-    collection: 'sessions'
+  uri: connectStr,
+  collection: 'sessions'
 });
 const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
 mongoose.connect(connectStr, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 store.on('error', function (error) {
@@ -25,15 +25,15 @@ store.on('error', function (error) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
-    secret: 'SuperSecretSpecialKeyThatNoOneWillEverGuess',
-    resave: false,
-    saveUninitialized: true,
-    store: store,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
-        secure: false,
-        httpOnly: true
-    }
+  secret: 'SuperSecretSpecialKeyThatNoOneWillEverGuess',
+  resave: false,
+  saveUninitialized: true,
+  store: store,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    secure: false,
+    httpOnly: true
+  }
 }));
 
 // Serve static files from the 'public_html' directory
@@ -41,16 +41,17 @@ app.use(express.static(path.join(__dirname, 'public_html')));
 
 // Define the user schema, can be adjusted as needed.
 const userSchema = new mongoose.Schema({
-    username: String,
-    email: String,
-    password: String,
-    projects: [
-      {
-          imageName: String, // Name to identify the image
-          imageData: Buffer, // Buffer to store binary image data
-          imageType: String,  // MIME type of the image
-          shapesData: String // JSON string to store shapes data
-      }
+  username: String,
+  email: String,
+  password: String,
+  projects: [
+    {
+      imageName: String, // Name to identify the image
+      imageData: Buffer, // Buffer to store binary image data
+      imageType: String,  // MIME type of the image
+      shapesData: String, // JSON string to store shapes data
+      lastEdited: { type: Date, default: Date.now() }
+    }
   ]
 });
 
@@ -60,43 +61,51 @@ module.exports = User;
 // Middleware to check authentication
 // Insert after route to be checked, before (req, res)
 const requireAuth = async (req, res, next) => {
-    try {
-      if (req.session && req.session.user) {
-        const user = await User.findOne({ username: req.session.user });
-  
-        if (user) {
-          next(); // Authenticated, proceed to next middleware/route handler
-        } else {
-          res.status(401).json({ success: false, 
-                                 message: 'Unauthorized: Invalid session' });
-        }
+  try {
+    if (req.session && req.session.user) {
+      const user = await User.findOne({ username: req.session.user });
+
+      if (user) {
+        next(); // Authenticated, proceed to next middleware/route handler
       } else {
-        res.status(401).json({ success: false, 
-                               message: 'Unauthorized: Please log in' });
+        res.status(401).json({
+          success: false,
+          message: 'Unauthorized: Invalid session'
+        });
       }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      res.status(500).json({ success: false, 
-                             message: 'Authentication error' });
+    } else {
+      res.status(401).json({
+        success: false,
+        message: 'Unauthorized: Please log in'
+      });
     }
-  };
+  } catch (error) {
+    console.error('Authentication error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Authentication error'
+    });
+  }
+};
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-      const user = await User.findOne({ email });
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-          return res.status(401).json({ success: false, 
-                                        message: 'Invalid credentials' });
-      }
-      req.session.user = user.username;
-      
-      console.log("username", req.session.user)
-      res.status(200).json({ success: true, username: user.username });
-    } catch (error) {
-      console.error('Error logging in:', error);
-      res.status(500).send({ success: false, message: 'Error logging in' });
+    const user = await User.findOne({ email });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+    req.session.user = user.username;
+
+    console.log("username", req.session.user)
+    res.status(200).json({ success: true, username: user.username });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).send({ success: false, message: 'Error logging in' });
   }
 });
 
@@ -125,16 +134,18 @@ app.post('/signup', async (req, res) => {
 // Logout route
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
-      if (err) {
-          console.error('Error destroying session:', err);
-          res.status(500).send({ success: false, 
-                                 message: 'Error logging out' });
-      } else {
-          res.clearCookie('connect.sid'); // Clear the session cookie
-          delete req.session.user; // Unset the session user
-          res.redirect('./index.html'); 
-          // Redirect to login after logout
-      }
+    if (err) {
+      console.error('Error destroying session:', err);
+      res.status(500).send({
+        success: false,
+        message: 'Error logging out'
+      });
+    } else {
+      res.clearCookie('connect.sid'); // Clear the session cookie
+      delete req.session.user; // Unset the session user
+      res.redirect('./index.html');
+      // Redirect to login after logout
+    }
   });
 });
 app.get('/projects/:username', async (req, res) => {
@@ -163,65 +174,79 @@ app.get('/projects/:username', async (req, res) => {
 });
 // Route to save canvas image to database
 app.post('/save-canvas', requireAuth, async (req, res) => {
-    try {
-        const username = req.session.user; // Retrieve username from session
+  try {
+    const username = req.session.user; // Retrieve username from session
 
-        if (!username) {
-            return res.status(401).json({ success: false, message: 'User not authenticated' });
-        }
-
-        // Retrieve the current user from the database using the username
-        const currentUser = await User.findOne({ username });
-        console.log(currentUser); // For debugging
-
-        if (!currentUser) {
-            return res.status(404).json({ success: false, 
-                                          message: 'User not found' });
-        }
-        let imageName;
-        let isDuplicate = true;
-        while (isDuplicate) {
-            const randomNumber = Math.floor(1000 + Math.random() * 9000);
-            imageName = `Project${randomNumber}`;
-
-            // Check if the generated name already exists in canvasImages array
-            const isExisting = currentUser.projects.some(image => image.imageName === imageName);
-            if (!isExisting) {
-                isDuplicate = false; // Exit the loop if the name is unique
-            }
-        }
-
-        // Get the imageData from the request body
-        const { imageData } = req.body;
-
-        // Convert base64 imageData to a Buffer object
-        const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
-        const imageDataBuffer = Buffer.from(base64Data, 'base64');
-
-        // Create new canvas object /w generated name and image data
-        const newCanvasImage = {
-            imageName: imageName,
-            imageData: imageDataBuffer,
-            imageType: 'image/jpeg',
-            shapesData: req.body.shapesData
-        };
-        console.log(newCanvasImage); // For debugging
-
-        // Push the new canvas image to the user's projects array
-        currentUser.projects.push(newCanvasImage);
-        console.log(currentUser.projects); // For debugging
-
-        // Save the updated user document
-        await currentUser.save();
-
-        // Respond with a success message
-        res.status(200).json({ success: true, 
-                               message: 'Canvas image saved successfully' });
-    } catch (error) {
-        console.error('Error saving canvas image:', error);
-        res.status(500).json({ success: false, message: 'Failed to save canvas image' });
+    if (!username) {
+      return res.status(401).json({ success: false, message: 'User not authenticated' });
     }
+
+    // Retrieve the current user from the database using the username
+    const currentUser = await User.findOne({ username });
+    console.log(currentUser); // For debugging
+
+    if (!currentUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Get the imageData from the request body
+    const { imageData } = req.body;
+
+    // Convert base64 imageData to a Buffer object
+    const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
+    const imageDataBuffer = Buffer.from(base64Data, 'base64');
+
+    // Create new canvas object /w generated name and image data
+    const newCanvasImage = {
+      imageName: generateUniqueImageName(currentUser.projects),
+      imageData: imageDataBuffer,
+      imageType: 'image/jpeg',
+      shapesData: req.body.shapesData,
+      lastEdited: new Date() // Save the current timestamp as lastEdited
+    };
+    console.log(newCanvasImage); // For debugging
+
+    // Push the new canvas image to the user's projects array
+    currentUser.projects.push(newCanvasImage);
+    console.log(currentUser.projects); // For debugging
+
+    // Save the updated user document
+    await currentUser.save();
+
+    // Respond with a success message
+    res.status(200).json({
+      success: true,
+      message: 'Canvas image saved successfully'
+    });
+  } catch (error) {
+    console.error('Error saving canvas image:', error);
+    res.status(500).json({ success: false, message: 'Failed to save canvas image' });
+  }
 });
+
+// Function to generate a unique image name
+function generateUniqueImageName(projects) {
+  let isDuplicate = true;
+  let imageName;
+
+  while (isDuplicate) {
+    const randomNumber = Math.floor(1000 + Math.random() * 9000);
+    imageName = `Project${randomNumber}`;
+
+    // Check if the generated name already exists in projects array
+    const isExisting = projects.some(project => project.imageName === imageName);
+    if (!isExisting) {
+      isDuplicate = false; // Exit the loop if the name is unique
+    }
+  }
+
+  return imageName;
+}
+
+
 
 // Route to send the home.html file with user-specific data
 // Update the server-side route to handle /home/:username
@@ -245,7 +270,7 @@ app.get('/home/:username', requireAuth, async (req, res) => {
 
 // Route for the root path ("/") to serve home.html
 app.get('/', requireAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
+  res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
 });
 
 // Route handlers for the individual pages if someone tries to access them 
@@ -258,24 +283,24 @@ app.get('/canvas', requireAuth, async (req, res) => {
   const imageName = req.query.imageName;
 
   try {
-      // Find the user who owns the project
-      // This requires knowing which user to look up
-      const user = await User.findOne({ 'projects.imageName':imageName });
-      if (!user) {
-          return res.status(404).send('Project not found');
-      }
+    // Find the user who owns the project
+    // This requires knowing which user to look up
+    const user = await User.findOne({ 'projects.imageName': imageName });
+    if (!user) {
+      return res.status(404).send('Project not found');
+    }
 
-      // Extract the specific project
-      const project = user.projects.find(p => p.imageName === imageName);
+    // Extract the specific project
+    const project = user.projects.find(p => p.imageName === imageName);
 
-      if (!project) {
-          return res.status(404).send('Project not found');
-      }
+    if (!project) {
+      return res.status(404).send('Project not found');
+    }
 
-      res.json(project);
+    res.json(project);
   } catch (error) {
-      console.error('Server error:', error);
-      res.status(500).send('Internal server error');
+    console.error('Server error:', error);
+    res.status(500).send('Internal server error');
   }
 });
 
@@ -293,5 +318,5 @@ app.get('/features', (req, res) => {
 
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

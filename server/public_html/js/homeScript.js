@@ -99,11 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const projectName = document.createElement("p");
     projectName.innerText = project.imageName;
 
-    const lastUpdated = document.createElement("p");
-    lastUpdated.innerText = `Last Edit: ${project.lastUpdated}`;
+    const lastEdited = document.createElement("p");
+    lastEdited.innerText = `Last Edit: ${formatLastEdited(project.lastEdited)}`;
 
     textContainer.appendChild(projectName);
-    textContainer.appendChild(lastUpdated);
+    textContainer.appendChild(lastEdited);
 
     card.appendChild(projectImage);
     card.appendChild(textContainer);
@@ -115,6 +115,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     return card;
+  }
+
+  // Function to format last edited time
+  function formatLastEdited(lastEdited) {
+    const date = new Date(lastEdited);
+    return date.toLocaleString(); // Adjust the format as needed
   }
 
   // Function to send project name to the canvas
