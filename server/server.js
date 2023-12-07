@@ -178,12 +178,11 @@ app.post('/save-canvas', requireAuth, async (req, res) => {
             return res.status(404).json({ success: false, 
                                           message: 'User not found' });
         }
-
         let imageName;
         let isDuplicate = true;
         while (isDuplicate) {
             const randomNumber = Math.floor(1000 + Math.random() * 9000);
-            imageName = `Project${randomNumber}.jpeg`;
+            imageName = `Project${randomNumber}`;
 
             // Check if the generated name already exists in canvasImages array
             const isExisting = currentUser.projects.some(image => image.imageName === imageName);
@@ -233,14 +232,8 @@ app.get('/home/:username', requireAuth, async (req, res) => {
 
     // If the user is found, retrieve the user's projects data
     if (user) {
-      // Assuming shapedata is a property of the user object
-      const shapedata = user.shapedata;
-
-      // Log the shapedata to the console
-      console.log('User Shape Data:', shapedata);
-
       // Send the user's projects data as a JSON response
-      res.json({ shapedata });
+      res.json({ projects: user.projects });
     } else {
       // Handle if the user is not found
       res.status(404).json({ message: 'User not found' });
@@ -249,6 +242,7 @@ app.get('/home/:username', requireAuth, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
 // Route for the root path ("/") to serve home.html
 app.get('/', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'public_html', 'home.html'));

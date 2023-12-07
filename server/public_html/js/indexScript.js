@@ -59,30 +59,29 @@ const handleLogIn = async (event) => {
 
     try {
         const response = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(logInData)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(logInData)
         });
     
         const data = await response.json();
     
         if (data.success) {
           window.alert('Logged in successfully');
-          window.location.href = `./home.html/${data.username}`;
+          window.location.href = `./home.html?username=${data.username}`;
         } else {
-          // Handle login failure
-          console.error('Login failed:', data.message);
-          window.alert('Login failed');
-          window.location.href = './index.html'; // Redirect to the login page
+            console.error('Error logging in');
+            window.alert('Error logging in');
+            window.location.href = './index.html';
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error logging in:', error);
         window.alert('Error logging in');
         window.location.href = './index.html';
-      }
-    };
+    }
+};
 
 // Event listeners
 signUpButton.addEventListener('click', () => {
