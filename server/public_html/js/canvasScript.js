@@ -730,7 +730,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ imageData, shapesData })
+            body: JSON.stringify({ imageData, jsonString })
         })
             .then(response => {
                 // Handle the response after saving
