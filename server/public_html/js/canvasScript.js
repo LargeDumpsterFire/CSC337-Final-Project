@@ -685,7 +685,17 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/canvas?projectId=${projectId}`)
             .then(response => response.json())
             .then(data => {
-                const shapesData = data.shapesData;
+                //const shapesData = data.shapesData;
+                let shapesData = data.shapesData;
+
+                if (typeof shapesData === 'string') {
+                    try {
+                        shapesData = JSON.parse(shapesData);
+                    } catch (error) {
+                        console.error('Error parsing shapes data:', error);
+                        return; // stop in case of parsing error
+                    }
+                }
                 // Clear existing shapes on canvas if needed
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 shapes = [];
@@ -710,7 +720,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Gather canvas data to be saved
         const canvas = document.getElementById('canvas');
         const jsonString = getCanvasJson(shapes);
-        const shapesData = JSON.parse(jsonString);
+        //const shapesData = JSON.parse(jsonString);
         const imageData = canvas.toDataURL();
         // Get canvas image data (base64 encoded)
 
