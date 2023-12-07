@@ -25,7 +25,7 @@ function drawBackground(ctx) {
 // wait for dom content to load
 document.addEventListener('DOMContentLoaded', function () {
     // set up our canvas
-    let canvas = document.getElementById('canvas');
+    const canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
     let shapes = []; // store current shapes
     let deletedShapes = [];
@@ -688,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const imageName = urlParams.get('imageName');
         //const imageName = 'Project2103.jpeg';
 
-        console.log(imageName);
+
         fetch(`/canvas?imageName=${imageName}`)
             .then(response => response.json())
             .then(data => {
@@ -697,7 +697,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (typeof shapesData === 'string') {
                     try {
                         shapesData = JSON.parse(shapesData);
-                        console.log("3",shapesData);
                     } catch (error) {
                         console.error('Error parsing shapes data:', error);
                         return; // stop in case of parsing error
@@ -725,8 +724,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function saveCanvasData() {
         // Gather canvas data to be saved
         const canvas = document.getElementById('canvas');
-        const jsonString = getCanvasJson(shapes);
-        //const shapesData = JSON.parse(jsonString);
+        const shapesData = getCanvasJson(shapes);
         const imageData = canvas.toDataURL();
         // Get canvas image data (base64 encoded)
 
@@ -736,7 +734,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ imageData, jsonString })
+            body: JSON.stringify({ imageData, shapesData })
         })
             .then(response => {
                 // Handle the response after saving
