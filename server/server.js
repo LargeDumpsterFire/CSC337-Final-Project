@@ -249,10 +249,6 @@ app.get('/home/:username', requireAuth, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
-
-
 // Route for the root path ("/") to serve home.html
 app.get('/', requireAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'public_html', 'home.html'));

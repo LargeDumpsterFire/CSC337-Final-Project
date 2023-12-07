@@ -100,14 +100,14 @@ function createProjectCard(project) {
 
   const projectName = document.createElement("p"); // Change <t> to <p> or <span>
   projectName.id = "projectName";
-  projectName.innerText = project.projectName; // Assuming projectName is available in your project data
+  projectName.innerText = "project.projectName"; // Assuming projectName is available in your project data
 
   const lastUpdated = document.createElement("p"); // Change <t> to <p> or <span>
   lastUpdated.innerText = "Last Edit:";
 
   const date = document.createElement("p"); // Change <t> to <p> or <span>
   date.id = "date";
-  date.innerText = project.lastUpdated; // Assuming lastUpdated is available in your project data
+  date.innerText = "project.lastUpdated"; // Assuming lastUpdated is available in your project data
 
   textContainer.appendChild(projectName);
   textContainer.appendChild(lastUpdated);
@@ -123,16 +123,52 @@ function createProjectCard(project) {
   return card;
 }
 
+// Function to add test cards
+function addTestCards(container) {
+  const testCardData = [
+    { imageUrl: 'https://via.placeholder.com/150', projectName: 'Test Project 1', lastUpdated: '2023-01-01' },
+    { imageUrl: 'https://via.placeholder.com/150', projectName: 'Test Project 2', lastUpdated: '2023-01-02' },
+    { imageUrl: 'https://via.placeholder.com/150', projectName: 'Test Project 3', lastUpdated: '2023-01-03' }
+  ];
 
-  // Function to add test cards
-  function addTestCards(container) {
-    for (let i = 1; i <= 3; i++) {
-      const testCard = document.createElement("div");
-      testCard.className = "outside-image-box";
-      testCard.innerHTML = `<div class="project-image"><img src="https://via.placeholder.com/150" alt="Test Image ${i}"></div>`;
-      container.appendChild(testCard);
-    }
+  testCardData.forEach(data => {
+    const testCard = document.createElement("div");
+    testCard.className = "outside-image-box";
+    testCard.innerHTML = `<div class="project-image"><img src="${data.imageUrl}" alt="${data.projectName}"></div>`;
+
+    const textContainer = document.createElement("div");
+    textContainer.className = "image-box-text";
+
+    const projectName = document.createElement("p");
+    projectName.innerText = data.projectName;
+
+    const lastUpdated = document.createElement("p");
+    lastUpdated.innerText = `Last Edit: ${data.lastUpdated}`;
+
+    textContainer.appendChild(projectName);
+    textContainer.appendChild(lastUpdated);
+
+    testCard.appendChild(textContainer);
+
+    testCard.addEventListener('click', () => {
+      // You can add your logic to handle test card clicks here
+      // For example, update a text box with the project name
+      updateTextBox(data.projectName);
+    });
+
+    container.appendChild(testCard);
+  });
+}
+
+// Function to update the text box
+function updateTextBox(text) {
+  // Replace 'textBoxId' with the actual ID of your text box
+  const textBox = document.getElementById('textBoxId');
+  if (textBox) {
+    textBox.value = text;
   }
+}
+
 
   // Function to send shapesData to the canvas
   function sendShapesDataToCanvas(shapesData) {
