@@ -55,39 +55,37 @@ document.addEventListener("DOMContentLoaded", function () {
   const username = urlParams.get('username');
   console.log('Username from URL:', username);
 
-// Fetching projects data for the current user
-if (username !== null) {
-  fetch(`/home/${username}`)
-    .then(response => response.json())
-    .then(data => {
-      const projectsData = data.projects; // Access the 'projects' property
-      console.log('User Projects Data:', projectsData);
+  // Fetching projects data for the current user
+  if (username !== null) {
+    fetch(`/home/${username}`)
+      .then(response => response.json())
+      .then(data => {
+        const projectsData = data.projects; // Access the 'projects' property
+        console.log('User Projects Data:', projectsData);
 
-      // Check if the projectsData is an array and not empty
-      if (Array.isArray(projectsData) && projectsData.length > 0) {
-        console.log(`Number of projects: ${projectsData.length}`);
-        projectsData.forEach(canvasData => {
-          const card = createProjectCard(canvasData);
-          gridContainer.appendChild(card);
-        });
-      } else {
-        console.error('Invalid projects data format or empty array:', projectsData);
-        // If the data is not in the expected format or is empty, you can handle it accordingly
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching projects data:', error);
-      // If there's an error fetching data, you can handle it accordingly
-    });
-} else {
-  console.error('Username is null. Redirect or handle accordingly.');
-}
+        // Check if the projectsData is an array and not empty
+        if (Array.isArray(projectsData) && projectsData.length > 0) {
+          console.log(`Number of projects: ${projectsData.length}`);
+          projectsData.forEach(canvasData => {
+            const card = createProjectCard(canvasData);
+            gridContainer.appendChild(card);
+          });
+        } else {
+          console.error('Invalid projects data format or empty array:', projectsData);
+          // If the data is not in the expected format or is empty, you can handle it accordingly
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching projects data:', error);
+        // If there's an error fetching data, you can handle it accordingly
+      });
+  } else {
+    console.error('Username is null. Redirect or handle accordingly.');
+  }
 
 
   // Function to create project cards
   function createProjectCard(project) {
-    console.log('Project Object:', project);
-
     const card = document.createElement("div");
     card.className = "outside-image-box";
 
@@ -99,10 +97,10 @@ if (username !== null) {
     textContainer.className = "image-box-text";
 
     const projectName = document.createElement("p");
-    projectName.innerText = project.imageName; // Assuming imageName is available in your project data
+    projectName.innerText = project.imageName;
 
     const lastUpdated = document.createElement("p");
-    lastUpdated.innerText = `Last Edit: ${project.lastUpdated}`; // Assuming lastUpdated is available in your project data
+    lastUpdated.innerText = `Last Edit: ${project.lastUpdated}`;
 
     textContainer.appendChild(projectName);
     textContainer.appendChild(lastUpdated);
@@ -110,12 +108,24 @@ if (username !== null) {
     card.appendChild(projectImage);
     card.appendChild(textContainer);
 
+    // Add an event listener to the card
     card.addEventListener('click', () => {
-      sendShapesDataToCanvas(project.shapesData);
+      // Call a function to send the project name to the canvas
+      sendProjectNameToCanvas(project.imageName);
     });
 
     return card;
   }
+
+  // Function to send project name to the canvas
+  function sendProjectNameToCanvas(projectName) {
+    // You can use projectName to load the corresponding project in the canvas
+    console.log('Project Name:', projectName);
+
+    // Example: Redirect to the canvas page with the project name
+    window.location.href = `/canvas?projectName=${encodeURIComponent(projectName)}`;
+  }
+
 
 
   // Function to send shapesData to the canvas

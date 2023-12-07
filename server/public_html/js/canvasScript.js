@@ -685,17 +685,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadCanvasFromProjectId() {
         // Get the projectId from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const projectId = urlParams.get('projectId');
+        const imageName = urlParams.get('imageName');
+        //const imageName = 'Project2103.jpeg';
 
-        fetch(`/canvas?projectId=${projectId}`)
+        console.log(imageName);
+        fetch(`/canvas?imageName=${imageName}`)
             .then(response => response.json())
             .then(data => {
                 //const shapesData = data.shapesData;
                 let shapesData = data.shapesData;
-
                 if (typeof shapesData === 'string') {
                     try {
                         shapesData = JSON.parse(shapesData);
+                        console.log("3",shapesData);
                     } catch (error) {
                         console.error('Error parsing shapes data:', error);
                         return; // stop in case of parsing error
@@ -705,7 +707,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 shapes = [];
                 drawBackground(ctx);
-
                 // Iterate over each shape data and draw it on the canvas
                 shapesData.forEach(shapeData => {
                     shapes.push(shapeData);
