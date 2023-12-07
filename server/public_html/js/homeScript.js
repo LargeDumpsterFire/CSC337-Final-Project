@@ -53,72 +53,6 @@ for (let i = 0; i < btns.length; i++) {
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   const username = urlParams.get('username');
-<<<<<<< Updated upstream
-
-  // // Sample user projects
-  // const userProjects = [
-  //   { name: "Project 1", description: "Description for Project 1", date: "2023-11-13", imageUrl: "./img/TeamLogo.png" },
-  //   { name: "Project 2", description: "Description for Project 2", date: "2023-11-14", imageUrl: "./img/diagram2.png" },
-  //   { name: "Project 3", description: "Description for Project 3", date: "2023-11-15", imageUrl: "./img/TeamLogo.png" },
-  //   { name: "Project 4", description: "Description for Project 4", date: "2023-11-16", imageUrl: "./img/TeamLogo.png" },
-  //   { name: "Project 5", description: "Description for Project 5", date: "2023-11-17", imageUrl: "./img/TeamLogo.png" },
-  //   { name: "Project 6", description: "Description for Project 6", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
-  //   { name: "Project 7", description: "Description for Project 7", date: "2023-11-19", imageUrl: "./img/TeamLogo.png" },
-  //   { name: "Project 8", description: "Description for Project 8", date: "2023-11-12", imageUrl: "./img/diagram2.png" },
-  //   { name: "Project 9", description: "Description for Project 9", date: "2023-11-18", imageUrl: "./img/TeamLogo.png" },
-  // ];
-
-  // Function to create project cards
-  function createProjectCard(project) {
-    const card = document.createElement("div");
-    card.className = "outside-image-box";
-
-    const projectImage = document.createElement("div");
-    projectImage.className = "project-image";
-    projectImage.innerHTML = `<img src="${project.imageUrl}" alt="Project Image">`;
-    const textContainer = document.createElement("div");
-    textContainer.className = "image-box-text";
-
-    const projectName = document.createElement("t");
-    projectName.id = "projectName";
-    projectName.innerText = project.name;
-
-    const lastUpdated = document.createElement("t");
-    lastUpdated.innerText = "Last Edit:";
-
-    const date = document.createElement("t");
-    date.id = "date";
-    date.innerText = project.date;
-
-    textContainer.appendChild(projectName);
-    textContainer.appendChild(lastUpdated);
-    textContainer.appendChild(date);
-
-    card.appendChild(projectImage);
-    card.appendChild(textContainer);
-
-    card.addEventListener('click', () => {
-      window.location.href = `/canvas.html?projectId=${project.projectId}`;
-    });
-
-    return card;
-  }
-
-  // Populate the grid container with project cards
-  const gridContainer = document.getElementById("wrapper");
-  fetch('/home/${username}')
-    .then(response => response.json())
-    .then(projectsData => {
-        projectsData.forEach(project => {
-          const card = createProjectCard(project);
-          gridContainer.appendChild(card);
-        });
-    })
-    .catch(error => {
-      console.error('Error fetching projects data:', error);
-    });      
-  
-=======
   console.log('Username from URL:', username);
 
   if (username !== null) {
@@ -143,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     console.error('Username is null. Redirect or handle accordingly.');
   }
->>>>>>> Stashed changes
   const wrapper = document.getElementById("wrapper");
 
   // Event listener for List and Grid view buttons
