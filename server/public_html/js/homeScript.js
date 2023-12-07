@@ -72,7 +72,64 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error('Username is null. Redirect or handle accordingly.');
   }
 
+<<<<<<< Updated upstream
   const wrapper = document.getElementById("wrapper");
+=======
+  // Function to create project cards
+ // Function to create project cards
+function createProjectCard(project) {
+  const card = document.createElement("div");
+  card.className = "outside-image-box";
+
+  const projectImage = document.createElement("div");
+  projectImage.className = "project-image";
+  projectImage.innerHTML = `<img src="${project.imageUrl}" alt="Project Image">`;
+
+  const textContainer = document.createElement("div");
+  textContainer.className = "image-box-text";
+
+  const projectName = document.createElement("p"); // Change <t> to <p> or <span>
+  projectName.id = "projectName";
+  projectName.innerText = project.projectName; // Assuming projectName is available in your project data
+
+  const lastUpdated = document.createElement("p"); // Change <t> to <p> or <span>
+  lastUpdated.innerText = "Last Edit:";
+
+  const date = document.createElement("p"); // Change <t> to <p> or <span>
+  date.id = "date";
+  date.innerText = project.lastUpdated; // Assuming lastUpdated is available in your project data
+
+  textContainer.appendChild(projectName);
+  textContainer.appendChild(lastUpdated);
+  textContainer.appendChild(date);
+
+  card.appendChild(projectImage);
+  card.appendChild(textContainer);
+
+  card.addEventListener('click', () => {
+    sendShapesDataToCanvas(project.shapesData);
+  });
+
+  return card;
+}
+
+
+  // Function to add test cards
+  function addTestCards(container) {
+    for (let i = 1; i <= 3; i++) {
+      const testCard = document.createElement("div");
+      testCard.className = "outside-image-box";
+      testCard.innerHTML = `<div class="project-image"><img src="https://via.placeholder.com/150" alt="Test Image ${i}"></div>`;
+      container.appendChild(testCard);
+    }
+  }
+
+  // Function to send shapesData to the canvas
+  function sendShapesDataToCanvas(shapesData) {
+    // Handle shapesData as needed, e.g., redirect to the canvas page with shapesData
+    console.log('Shapes Data:', shapesData);
+  }
+>>>>>>> Stashed changes
 
   // Event listener for List and Grid view buttons
   document.addEventListener("click", function (event) {
