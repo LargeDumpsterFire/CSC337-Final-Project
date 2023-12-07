@@ -1,4 +1,14 @@
-/*  BUGS
+/*  
+
+
+Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
+project: Final Project CSC 337
+purpose: This file is the javascript file for the canvas html page.
+It handles the creation of webpage elements and user interaction with the objects.
+
+
+
+    KNOWN BUGS
 
     Triangle's text box is slightly elevated. 
 
