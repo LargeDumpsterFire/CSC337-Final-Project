@@ -21,7 +21,7 @@ const store = new MongoDBStore({
 });
 const bcrypt = require('bcrypt');
 const app = express();
-const port = 3000;
+const port = 80;
 
 mongoose.connect(connectStr, {
   useNewUrlParser: true,

@@ -1,4 +1,14 @@
-/*  BUGS
+/*  
+
+
+Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
+project: Final Project CSC 337
+purpose: This file is the javascript file for the canvas html page.
+It handles the creation of webpage elements and user interaction with the objects.
+
+
+
+    KNOWN BUGS
 
     Triangle's text box is slightly elevated. 
 
@@ -658,28 +668,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // //loads json canvas data and draws it to current window
-    // document.getElementById('load').addEventListener('click', function() {
 
-    //     //const jsonString = getCanvasJson(shapes);
-        
-    //     // tester json
-    //     const jsonString = '[{"type":"rectangle","x":150,"y":237,"width":120,"height":80,"color":"#3584e4","innerRect":{"width":30,"height":20,"text":"This is a test"},"anchorPoints":[{"x":90,"y":237},{"x":210,"y":237},{"x":150,"y":197},{"x":150,"y":277}]}]';
-    //     //console.log(jsonString);
-    //     const shapesInfo = JSON.parse(jsonString);
-    //     //console.log(shapesInfo);
-
-    //     // Clear existing shapes on canvas if needed
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //     shapes = [];
-    //     // clearCanvas();
-    //     drawBackground(ctx);
-    //     // Iterate over each shape data and draw it on the canvas
-    //     shapesInfo.forEach(shapeData => {
-    //         shapes.push(shapeData);
-    //         drawShape(shapeData);
-    //     });
-    // });
 
     // Function to load canvas based on projectId
     function loadCanvasFromProjectId() {
