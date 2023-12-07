@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const projectImage = document.createElement("div");
     projectImage.className = "project-image";
-    projectImage.innerHTML = `<img src="${project.imageUrl}" alt="Project Image">`;
+    projectImage.innerHTML = `<img src="./img/TeamLogo.png" alt="Project Image">`;
 
     const textContainer = document.createElement("div");
     textContainer.className = "image-box-text";
