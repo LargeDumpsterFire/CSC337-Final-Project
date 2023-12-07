@@ -1,8 +1,9 @@
 /*
 Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
 project: Final Project CSC 337
-purpose: This file is the javascript file for the server. It handles
-backend requests to the database, routing, and authentication/incryption.
+purpose: This JavaScript file serves as the backend of the website. 
+It is responsible for managing backend interactions with the database, 
+routing, and handling authentication and encryption processes.
 
 */
 
