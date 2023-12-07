@@ -2,7 +2,7 @@
 Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
 project: Final Project CSC 337
 purpose: This file is the javascript file for the server. It handles
-backend requests to the database, routing, and authentication.
+backend requests to the database, routing, and authentication/incryption.
 
 */
 
