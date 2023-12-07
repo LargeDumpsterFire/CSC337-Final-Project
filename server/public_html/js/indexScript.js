@@ -1,3 +1,12 @@
+/*
+Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
+project: Final Project CSC 337
+purpose: This file is the javascript file for the index.html page. 
+It handles the sign up and login functionality
+
+*/
+
+
 const signUpButton = document.getElementById('signUp');
 const logInButton = document.getElementById('login');
 const container = document.getElementById('container');

@@ -1,3 +1,12 @@
+/*
+Names: Jacob Cohen, Seth Perritt, Hunter Copening, Josh Puhala
+project: Final Project CSC 337
+purpose: This file contains a function that helps the left navbar resize by user 
+a function that populates the grid with the user projects after each save and a function that 
+adds the active class to the current button
+
+
+*/
 // This code section is for the left navbar resizing by user 
 let resizer = document.querySelector(".resizer"),
   sidebar = document.querySelector(".left-navbar-container"),
@@ -35,7 +44,7 @@ function initResizerFn(resizer, sidebar, projectCardContainer) {
 
 initResizerFn(resizer, sidebar, projectCardContainer);
 
-// Optional: Add active class to the current button (highlight it)
+// added active class to the current button (highlight it)
 let container = document.getElementById("buttonContainer");
 let btns = container.getElementsByClassName("btn");
 for (let i = 0; i < btns.length; i++) {
@@ -77,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch(error => {
         console.error('Error fetching projects data:', error);
-        // If there's an error fetching data, you can handle it accordingly
+        // If there's an error fetching data, resolve it accordingly
       });
   } else {
     console.error('Username is null. Redirect or handle accordingly.');
@@ -125,19 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to send project name to the canvas
   function sendProjectNameToCanvas(projectName) {
-    // You can use projectName to load the corresponding project in the canvas
+    // *EVERYONE* You can use projectName to load the corresponding project in the canvas
     console.log('Project Name:', projectName);
 
     // Example: Redirect to the canvas page with the project name
     window.location.href = `/canvas.html?imageName=${encodeURIComponent(projectName)}`;
-  }
-
-
-
-  // Function to send shapesData to the canvas
-  function sendShapesDataToCanvas(shapesData) {
-    // Handle shapesData as needed, e.g., redirect to the canvas page with shapesData
-    console.log('Shapes Data:', shapesData);
   }
 
   // Event listener for List and Grid view buttons
@@ -154,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // End of project cards section
-
+// this code section is for the dropdown menu in the top right corner.
 document.addEventListener("DOMContentLoaded", function () {
   const dropdowns = document.querySelectorAll('.dropdown');
   let activeIcon = null;

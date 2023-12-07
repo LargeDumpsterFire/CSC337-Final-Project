@@ -236,7 +236,7 @@ function generateUniqueImageName(projects) {
     const randomNumber = Math.floor(1000 + Math.random() * 9000);
     imageName = `Project${randomNumber}`;
 
-    // Check if the generated name already exists in projects array
+    // Checks if the generated name already exists in projects array
     const isExisting = projects.some(project => project.imageName === imageName);
     if (!isExisting) {
       isDuplicate = false; // Exit the loop if the name is unique
