@@ -137,7 +137,30 @@ app.get('/logout', (req, res) => {
       }
   });
 });
+app.get('/projects/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
 
+    // Find the user by username
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Extract relevant information from the user object, e.g., projects
+    const projects = user.projects.map(project => ({
+      _id: project._id,
+      name: project.name,
+      // Include other project properties you need
+    }));
+
+    res.json({ success: true, projects });
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
 // Route to save canvas image to database
 app.post('/save-canvas', requireAuth, async (req, res) => {
     try {
@@ -202,23 +225,31 @@ app.post('/save-canvas', requireAuth, async (req, res) => {
 });
 
 // Route to send the home.html file with user-specific data
-app.get('/home.html/:username', requireAuth, async (req, res) => {
+// Update the server-side route to handle /home/:username
+app.get('/home/:username', requireAuth, async (req, res) => {
   try {
     const username = req.params.username;
     const user = await User.findOne({ username: username });
 
-    // If the user is found, send the user's projects data as a response
+    // If the user is found, retrieve the user's projects data
     if (user) {
-      // Send the 'home.html' file
-      res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
+      // Assuming shapedata is a property of the user object
+      const shapedata = user.shapedata;
+
+      // Log the shapedata to the console
+      console.log('User Shape Data:', shapedata);
+
+      // Send the user's projects data as a JSON response
+      res.json({ shapedata });
     } else {
       // Handle if the user is not found
-      res.status(404).send('User not found');
+      res.status(404).json({ message: 'User not found' });
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
 
 
 
@@ -233,8 +264,29 @@ app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, 'public_html', 'index.html'));
 });
 
-app.get('/canvas', requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public_html', 'canvas.html'));
+app.get('/canvas', requireAuth, async (req, res) => {
+  const imageName = req.query.imageName;
+
+  try {
+      // Find the user who owns the project
+      // This requires knowing which user to look up
+      const user = await User.findOne({ 'projects.imageName':imageName });
+      if (!user) {
+          return res.status(404).send('Project not found');
+      }
+
+      // Extract the specific project
+      const project = user.projects.find(p => p.imageName === imageName);
+
+      if (!project) {
+          return res.status(404).send('Project not found');
+      }
+
+      res.json(project);
+  } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).send('Internal server error');
+  }
 });
 
 app.get('/settings', requireAuth, (req, res) => {

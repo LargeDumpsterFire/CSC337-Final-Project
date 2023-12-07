@@ -57,43 +57,102 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (username !== null) {
     const gridContainer = document.getElementById("wrapper");
-    fetch(`/home.html/${username}`)
+
+    // Fetching projects data
+    fetch(`/home/${username}`)
       .then(response => response.json())
       .then(projectsData => {
-        console.log('User Projects Data:', projectsData); // Log all user info
+        console.log('User Projects Data:', projectsData);
 
-        if (Array.isArray(projectsData)) {
+        // Check if the projectsData is an array and not empty
+        if (Array.isArray(projectsData) && projectsData.length > 0) {
           projectsData.forEach(project => {
             const card = createProjectCard(project);
             gridContainer.appendChild(card);
           });
         } else {
-          console.error('Invalid projects data format:', projectsData);
+          console.error('Invalid projects data format or empty array:', projectsData);
+          // If the data is not in the expected format or is empty, add some test cards
+          addTestCards(gridContainer);
         }
       })
       .catch(error => {
         console.error('Error fetching projects data:', error);
+        // If there's an error fetching data, add some test cards
+        addTestCards(gridContainer);
       });
   } else {
     console.error('Username is null. Redirect or handle accordingly.');
   }
-  const wrapper = document.getElementById("wrapper");
+
+  // Function to create project cards
+  function createProjectCard(project) {
+    const card = document.createElement("div");
+    card.className = "outside-image-box";
+
+    const projectImage = document.createElement("div");
+    projectImage.className = "project-image";
+    projectImage.innerHTML = `<img src="${project.imageUrl}" alt="Project Image">`;
+    const textContainer = document.createElement("div");
+    textContainer.className = "image-box-text";
+
+    const projectName = document.createElement("t");
+    projectName.id = "projectName";
+    projectName.innerText = project.imageName; // Assuming imageName is available in your project data
+
+    const lastUpdated = document.createElement("t");
+    lastUpdated.innerText = "Last Edit:";
+
+    const date = document.createElement("t");
+    date.id = "date";
+    date.innerText = project.date;
+
+    textContainer.appendChild(projectName);
+    textContainer.appendChild(lastUpdated);
+    textContainer.appendChild(date);
+
+    card.appendChild(projectImage);
+    card.appendChild(textContainer);
+
+    card.addEventListener('click', () => {
+      sendShapesDataToCanvas(project.shapesData);
+    });
+
+    return card;
+  }
+
+  // Function to add test cards
+  function addTestCards(container) {
+    for (let i = 1; i <= 3; i++) {
+      const testCard = document.createElement("div");
+      testCard.className = "outside-image-box";
+      testCard.innerHTML = `<div class="project-image"><img src="https://via.placeholder.com/150" alt="Test Image ${i}"></div>`;
+      container.appendChild(testCard);
+    }
+  }
+
+  // Function to send shapesData to the canvas
+  function sendShapesDataToCanvas(shapesData) {
+    // Handle shapesData as needed, e.g., redirect to the canvas page with shapesData
+    console.log('Shapes Data:', shapesData);
+  }
 
   // Event listener for List and Grid view buttons
+  const wrapper = document.getElementById("wrapper");
   document.addEventListener("click", function (event) {
     if (event.target.matches(".btn.list")) {
       // List view
       event.preventDefault();
-      // console.log("List view");
       wrapper.classList.add("list");
     } else if (event.target.matches(".btn.grid")) {
       // Grid view
       event.preventDefault();
-      // console.log("Grid view");
       wrapper.classList.remove("list");
     }
   });
 });
+
+
 // end of project cards section
 
 document.addEventListener("DOMContentLoaded", function () {
