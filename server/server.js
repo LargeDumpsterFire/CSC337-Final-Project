@@ -91,8 +91,15 @@ app.post('/login', async (req, res) => {
                                         message: 'Invalid credentials' });
       }
       req.session.user = user.username;
+<<<<<<< Updated upstream
       res.redirect('/home.html?username=${user.username}');
   } catch (error) {
+=======
+      
+      console.log("username", req.session.user)
+      res.status(200).json({ success: true, username: user.username });
+    } catch (error) {
+>>>>>>> Stashed changes
       console.error('Error logging in:', error);
       res.status(500).send({ success: false, message: 'Error logging in' });
   }
@@ -199,15 +206,24 @@ app.post('/save-canvas', requireAuth, async (req, res) => {
     }
 });
 
+<<<<<<< Updated upstream
 // Route to retrieve canvas images from database
 app.get('/home/:username', requireAuth, async (req, res) => {
   try {
     const userId = req.params.username;
     const user = await User.findById(username); 
     // Fetch the user data from MongoDB based on the userId
+=======
+// Route to send the home.html file with user-specific data
+app.get('/home.html/:username', requireAuth, async (req, res) => {
+  try {
+    const username = req.params.username;
+    const user = await User.findOne({ username: username });
+>>>>>>> Stashed changes
 
     // If the user is found, send the user's projects data as a response
     if (user) {
+<<<<<<< Updated upstream
       const projectsData = user.projects.map(project => ({
         imageName: project.imageName,
         imageData: project.imageDataBuffer,
@@ -218,11 +234,20 @@ app.get('/home/:username', requireAuth, async (req, res) => {
       res.status(200).json(projectsData);
     } else {
       res.status(404).json({ message: 'User not found' });
+=======
+      // Send the 'home.html' file
+      res.sendFile(path.join(__dirname, 'public_html', 'home.html'));
+    } else {
+      // Handle if the user is not found
+      res.status(404).send('User not found');
+>>>>>>> Stashed changes
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+
 
 // Route for the root path ("/") to serve home.html
 app.get('/', requireAuth, (req, res) => {

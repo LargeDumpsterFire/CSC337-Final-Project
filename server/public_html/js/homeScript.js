@@ -53,6 +53,7 @@ for (let i = 0; i < btns.length; i++) {
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   const username = urlParams.get('username');
+<<<<<<< Updated upstream
 
   // // Sample user projects
   // const userProjects = [
@@ -117,6 +118,32 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error('Error fetching projects data:', error);
     });      
   
+=======
+  console.log('Username from URL:', username);
+
+  if (username !== null) {
+    const gridContainer = document.getElementById("wrapper");
+    fetch(`/home.html/${username}`)
+      .then(response => response.json())
+      .then(projectsData => {
+        console.log('User Projects Data:', projectsData); // Log all user info
+
+        if (Array.isArray(projectsData)) {
+          projectsData.forEach(project => {
+            const card = createProjectCard(project);
+            gridContainer.appendChild(card);
+          });
+        } else {
+          console.error('Invalid projects data format:', projectsData);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching projects data:', error);
+      });
+  } else {
+    console.error('Username is null. Redirect or handle accordingly.');
+  }
+>>>>>>> Stashed changes
   const wrapper = document.getElementById("wrapper");
 
   // Event listener for List and Grid view buttons

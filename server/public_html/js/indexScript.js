@@ -65,6 +65,7 @@ const handleLogIn = async (event) => {
             },
             body: JSON.stringify(logInData)
         });
+<<<<<<< Updated upstream
 
         if (response.ok) {
             window.alert('Logged in successfully');
@@ -73,6 +74,14 @@ const handleLogIn = async (event) => {
             console.error('Invalid credentials');
             window.alert('Invalid credentials');
             window.location.href = './index.html';
+=======
+    
+        const data = await response.json();
+    
+        if (data.success) {
+          window.alert('Logged in successfully');
+          window.location.href = `./home.html?username=${data.username}`;
+>>>>>>> Stashed changes
         } else {
             console.error('Error logging in');
             window.alert('Error logging in');
