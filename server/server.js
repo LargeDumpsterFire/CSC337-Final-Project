@@ -14,7 +14,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const connectStr = 'mongodb+srv://jc:Bade24Mutt@users.0xwayee.mongodb.net/';
+const connectStr = '';
 const store = new MongoDBStore({
   uri: connectStr,
   collection: 'sessions'
